@@ -1,0 +1,77 @@
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-2">
+      <nav id="sidebar">
+        <ul class="list-unstyled components">
+          <!-- Araç Formları -->
+          <li>
+            <a
+              href="#homeSubmenu"
+              data-toggle="collapse"
+              aria-expanded="false"
+              class="dropdown-toggle"
+              >Araç Formları</a
+            >
+            <ul class="collapse list-unstyled" id="homeSubmenu">
+              <li>
+                <a routerLink="/muhasebe/tirkamyon" routerLinkActive="active"
+                  >Tır Kamyon Günlük Çalışma Formu</a
+                >
+              </li>
+              <li>
+                <a routerLink="/muhasebe/ismakinesi" routerLinkActive="active"
+                  >İş Makinesi Günlük Çalışma Formu</a
+                >
+              </li>
+            </ul>
+          </li>
+
+          <!-- Yakıt Formları -->
+          <li>
+            <a
+              href="#homeSubmenu1"
+              data-toggle="collapse"
+              aria-expanded="false"
+              class="dropdown-toggle"
+              >Yakıt Formları</a
+            >
+            <ul class="collapse list-unstyled" id="homeSubmenu1">
+              <li>
+                <a routerLink="/muhasebe/gelenyakitformu" routerLinkActive="active">Gelen Yakıt Formu</a>
+              </li>
+              <li>
+                <a routerLink="/muhasebe/gidenyakitformu" routerLinkActive="active">Giden Yakıt Formu</a>
+              </li>
+            </ul>
+          </li>
+
+          <!-- Raporlar Formları -->
+          <li>
+            <a
+              href="#homeSubmenu2"
+              data-toggle="collapse"
+              aria-expanded="false"
+              class="dropdown-toggle"
+              >Raporlar</a
+            >
+            <ul class="collapse list-unstyled" id="homeSubmenu2">
+              <li>
+                <a routerLink="/muhasebe/firmacarileri" routerLinkActive="active">Firma Carileri</a>
+              </li>
+              <li>
+                <a routerLink="/muhasebe/tahsilat" routerLinkActive="active">Tahsilat</a>
+              </li>
+              <li>
+                <a routerLink="/muhasebe/seferfisi" routerLinkActive="active">Sefer Fişi</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="col-10">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

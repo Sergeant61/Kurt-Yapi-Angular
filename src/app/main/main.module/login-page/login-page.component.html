@@ -1,0 +1,84 @@
+<div class="container">
+  <div
+    class="bg-danger p-2 text-center text-white"
+    *ngIf="errorMessage != null"
+  >
+    {{ errorMessage }}
+  </div>
+
+  <div class="container-fluid">
+    <div class="row no-gutter">
+      <div class="d-none d-md-flex col-md-4 col-lg-6 bg-image"></div>
+      <div class="col-md-8 col-lg-6">
+        <div class="login d-flex align-items-center py-5">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-9 col-lg-8 mx-auto">
+                <h4 class="text-center">Hoş geldin.</h4>
+                <form #formLogin="ngForm" class="form-signin">
+                  <div class="text-center">
+                    <img
+                      class="mb-4"
+                      src="assets/login.png"
+                      alt=""
+                      width="100"
+                      height="100"
+                    />
+
+                    <input
+                      [(ngModel)]="username"
+                      name="email"
+                      type="email"
+                      id="inputEmail"
+                      class="form-control"
+                      placeholder="Kullanıcı adı"
+                      required
+                      autofocus
+                    />
+                    <input
+                      [(ngModel)]="password"
+                      name="password"
+                      type="password"
+                      id="inputPassword"
+                      class="form-control mt-2"
+                      placeholder="Şifre"
+                      required
+                    />
+                    <br />
+                    <!-- <re-captcha ngControl="captcha" (resolved)="resolved($event)" siteKey="6LcjY-gUAAAAAD-SnuR97A6HQKmVFcj8upat8WSx"></re-captcha> -->
+
+                    <re-captcha
+                      [(ngModel)]="declarativeFormCaptchaValue"
+                      (resolved)="resolved($event)"
+                      name="captcha"
+                      required
+                    ></re-captcha>
+                  </div>
+
+                  <div class="checkbox mb-5 mt-2">
+                    <input type="checkbox" value="remember-me" /> Beni hatırla
+                  </div>
+                  <button
+                    type="submit"
+                    class="btn btn-primary btn-block"
+                    (click)="login()"
+                    [class.disabled]="isLoading || formLogin.invalid || !isReCaptcha"
+                    [disabled]="isLoading || formLogin.invalid || !isReCaptcha"
+                  >
+                    <span
+                      name="loadingSpan"
+                      class="spinner-border spinner-border-sm"
+                      role="status"
+                      *ngIf="isLoading"
+                    ></span>
+                    Giriş
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

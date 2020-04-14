@@ -1,0 +1,84 @@
+<nav
+  class="navbar navbar-expand-md navbar-light shadow"
+>
+  <div class="container">
+    <img src="assets/logo.png" routerLink="/home"  height="40" class="mr-2" />
+    <!-- <a class="navbar-brand" routerLink="/home">Kurt Yapı</a> -->
+
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/home" routerLinkActive="active">
+            Ana Sayfa</a
+          >
+        </li>
+        <li class="nav-item" >
+          <a class="nav-link" routerLink="/muhasebe" routerLinkActive="active"
+            >Kurumsal</a
+          >
+        </li>
+
+        <li class="nav-item" >
+          <a class="nav-link" routerLink="/muhasebe" routerLinkActive="active"
+            >Hizmetlerimiz</a
+          >
+        </li>
+        <li class="nav-item" >
+          <a class="nav-link" routerLink="/muhasebe" routerLinkActive="active"
+            >Araçlarımız</a
+          >
+        </li>
+
+        <li class="nav-item" >
+          <a class="nav-link" routerLink="/muhasebe" routerLinkActive="active"
+            >İletişim</a
+          >
+        </li>
+
+      </ul>
+
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item" *ngIf="authService.isTokenValid">
+          <a class="nav-link" routerLink="/muhasebe" routerLinkActive="active"
+            >Muhasebe</a
+          >
+        </li>
+        <li class="nav-item" *ngIf="authService.isTokenValid">
+          <a class="nav-link" routerLink="/admin" routerLinkActive="active"
+            >Admin</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/login" routerLinkActive="active">
+            {{
+              authService.isTokenValid
+                ? authService.currentUser.name + " " + authService.currentUser.surname
+                : "Giriş Yap"
+            }}</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            routerLinkActive="active"
+            (click)="authService.logout()"
+            *ngIf="authService.isTokenValid"
+            >Çıkış Yap</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

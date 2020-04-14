@@ -1,0 +1,322 @@
+<div class="row">
+  <div class="col-md-12 bg-dark p-2">
+    <button
+      class="btn btn-outline-light mr-2"
+      [routerLink]="[baseUrl, 'create']"
+    >
+      Yeni Kayıt Ekle
+    </button>
+    <!-- <button class="btn btn-outline-light" [routerLink]="[baseUrl, 'create']">
+      Özel Arama
+    </button> -->
+
+    <div class="form-inline float-right m-0 p-0">
+      <select
+        class="form-control-sm"
+        [value]="perViewPage"
+        (change)="changePageSize($event.target.value)"
+      >
+        <option value="5">5 tane</option>
+        <option value="10">10 tane</option>
+        <option value="15">15 tane</option>
+        <option value="20">20 tane</option>
+        <option value="25">25 tane</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="col-md-12 bg-success p-2" *ngIf="!gelenYakitFormuList">
+    <div
+      class="spinner-border spinner-border-sm text-light mr-2"
+      role="status"
+    ></div>
+    <div
+      class="spinner-grow spinner-grow-sm text-light mr-2"
+      role="status"
+    ></div>
+    <span class="text-white">Yükleniyor lütfen bekleyin.</span>
+  </div>
+
+  <table class="table" *ngIf="gelenYakitFormuList">
+    <thead class="thead-dark">
+      <tr>
+        <th>#</th>
+        <th>İrsaliye No</th>
+        <th>Firma Ünvanı</th>
+        <th>Alınan Yakıt</th>
+        <th>Birim Fiyatı</th>
+        <th>Yakıtı Aln Personel</th>
+        <th>İlk Kayıt Tarihi</th>
+        <th>Son Güncelleme Tarihi</th>
+        <th>#</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let value of gelenYakitFormuList; index as i">
+        <th>{{ index + i + 1 }}</th>
+        <td>{{ value.irsaliyeNo }}</td>
+        <td>{{ value.firmaUnvani }}</td>
+        <td>{{ value.alinanYakitLitre +" Litre" }}</td>
+        <td>{{ value.birimFiyati + " ₺" }} </td>
+        <td>{{ value.yakitiAlanPersonel.name + " " + value.yakitiAlanPersonel.surname }}</td>
+        <td>{{ value.createdAt | date: "dd/MM/yyyy - hh:mm:ss" }}</td>
+        <td>{{ value.lastEditAt | date: "dd/MM/yyyy - hh:mm:ss" }}</td>
+        <td>
+          <div class="btn-group">
+            <button
+              type="button"
+              class="btn btn-warning"
+              [routerLink]="[baseUrl, 'edit', value._id]"
+            >
+              Düzenle
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              *ngIf="authService.currentUser.isAdmin"
+              data-toggle="modal"
+              data-target="#exampleModal"
+              (click)="setSelected(value)"
+            >
+              Sil
+            </button>
+            <button
+              type="button"
+              class="btn btn-success"
+              *ngIf="authService.currentUser.isAdmin && !value.onaylimi"
+              data-toggle="modal"
+              data-target="#largeModal"
+              (click)="setOnaylaLoading(value)"
+            >
+              Onayla
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="col-md-12">
+    <ngb-pagination
+      class="d-flex justify-content-center"
+      [collectionSize]="listLength"
+      [(page)]="selectedPage"
+      [pageSize]="perViewPage"
+      [maxSize]="5"
+      [boundaryLinks]="true"
+      (pageChange)="changePage($event)"
+    ></ngb-pagination>
+  </div>
+</div>
+
+<!-- Modal dialog penceresi -->
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          Silmek istediğinize emin misiniz ?
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Seçtiğiniz veri kalıcı olarak silinecektir.
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-success"
+          #closebutton
+          data-dismiss="modal"
+        >
+          Vazgeç
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="delete()"
+          [class.disabled]="isLoading"
+          [disabled]="isLoading"
+        >
+          <span
+            name="loadingSpan"
+            class="spinner-border spinner-border-sm"
+            role="status"
+            *ngIf="isLoading"
+          ></span>
+          Evet
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  id="largeModal"
+  class="modal fade bd-example-modal-lg"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myLargeModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          Onaylamak istediğinize emin misiniz ?
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-6">
+            <span class="badge badge-primary mr-1">İrsaliye No :</span>
+            <label>
+              {{ onayGelenYakitFormu.irsaliyeNo }}
+            </label>
+            <br />
+
+            <span class="badge badge-primary mr-1">Alınan Yakıt :</span>
+            <label>
+              {{ onayGelenYakitFormu.alinanYakitLitre +" Litre" }}
+            </label>
+            <br />
+
+            <span class="badge badge-primary mr-1">Birim Fiyatı</span>
+            <label>
+              {{ onayGelenYakitFormu.birimFiyati + " ₺" }}
+            </label>
+            <br />
+
+          </div>
+
+          <div class="col-6">
+            <span class="badge badge-primary mr-1">Form Tarihi :</span>
+            <label>
+              {{ onayGelenYakitFormu.formTarihi | date: "dd/MM/yyyy" }}
+            </label>
+            <br />
+
+            <span class="badge badge-primary mr-1">Yakıtı Alan Personel Bilgileri :</span>
+            <label>
+              {{
+                onayGelenYakitFormu.yakitiAlanPersonel.name +
+                  " " +
+                  onayGelenYakitFormu.yakitiAlanPersonel.surname
+              }}
+            </label>
+            <br />
+            <span class="badge badge-primary mr-1">Firmanın Unvanı :</span>
+            <label>
+              {{ onayGelenYakitFormu.firmaUnvani }}
+            </label>
+            <br />
+
+          </div>
+        </div>
+
+        <hr />
+
+        <div class="row">
+          <div class="col-6">
+            <span class="badge badge-primary mr-1"
+              >İlk Kayıt Eden Kullanıcı :</span
+            >
+            <label>
+              {{
+                onayGelenYakitFormu.createdUser.name +
+                onayGelenYakitFormu.createdUser.surname
+              }}
+            </label>
+            <br />
+            <span class="badge badge-primary mr-1">İlk Kayıt Tarihi :</span>
+            <label>
+              {{
+                onayGelenYakitFormu.createdAt
+                  | date: "dd/MM/yyyy - hh:mm:ss"
+              }}
+            </label>
+          </div>
+          <div class="col-6">
+            <span class="badge badge-primary mr-1"
+              >Son Güncelleyen Kullanıcı :</span
+            >
+            <label>
+              {{
+                onayGelenYakitFormu.lastEditUser.name +
+                onayGelenYakitFormu.lastEditUser.surname
+              }}
+            </label>
+            <br />
+            <span class="badge badge-primary mr-1"
+              >Son Güncelleme Tarihi :</span
+            >
+            <label>
+              {{
+                onayGelenYakitFormu.lastEditAt
+                  | date: "dd/MM/yyyy - hh:mm:ss"
+              }}
+            </label>
+          </div>
+        </div>
+
+        <hr />
+
+        <div class="row">
+          <div class="col-10">
+            <span class="badge badge-primary mr-1">Notlar :</span>
+            <label>
+              {{ onayGelenYakitFormu.notlar }}
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-warning"
+          #closebuttonOnay
+          data-dismiss="modal"
+        >
+          Hayır
+        </button>
+        <button
+          type="button"
+          (click)="onayla()"
+          [class.disabled]="isLoading"
+          [disabled]="isLoading"
+          class="btn btn-success"
+        >
+          <span
+            name="loadingSpan"
+            class="spinner-border spinner-border-sm"
+            role="status"
+            *ngIf="isLoading"
+          ></span>
+          Evet
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

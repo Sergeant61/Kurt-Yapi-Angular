@@ -1,0 +1,54 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-2">
+      <div class="list-group">
+        <button
+          routerLink="/admin/ismakinesi"
+          class="list-group-item list-group-item-action"
+          routerLinkActive="active"
+        >
+          İş Makinaları
+        </button>
+        <button
+          routerLink="/admin/ozelbinekarac"
+          class="list-group-item list-group-item-action"
+          routerLinkActive="active"
+        >
+          Özel Binek Araçlar
+        </button>
+        <button
+          routerLink="/admin/tirkamyon"
+          class="list-group-item list-group-item-action"
+          routerLinkActive="active"
+        >
+          Tır Kamyonlar
+        </button>
+        <button
+          routerLink="/admin/firma"
+          class="list-group-item list-group-item-action"
+          routerLinkActive="active"
+        >
+          Firmalar
+        </button>
+        <button
+          routerLink="/admin/personel"
+          class="list-group-item list-group-item-action"
+          routerLinkActive="active"
+        >
+          Personel
+        </button>
+        <button
+          routerLink="/admin/dokumsahasi"
+          class="list-group-item list-group-item-action"
+          routerLinkActive="active"
+        >
+          Döküm Sahalari
+        </button>
+      </div>
+    </div>
+
+    <div class="col-9">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
