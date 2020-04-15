@@ -45,6 +45,7 @@
         <th>Plaka</th>
         <th>Firma</th>
         <th>Personel</th>
+        <th>Form Tarihi</th>
         <th>İlk Kayıt Tarihi</th>
         <th>Son Güncelleme Tarihi</th>
         <th>#</th>
@@ -57,6 +58,7 @@
         <td>{{ value.isMakinesi.plaka }}</td>
         <td>{{ value.firma.name }}</td>
         <td>{{ value.personel.name + " " + value.personel.surname }}</td>
+        <td>{{ value.formTarihi | date: "dd/MM/yyyy" }}</td>
         <td>{{ value.createdAt | date: "dd/MM/yyyy - hh:mm:ss" }}</td>
         <td>{{ value.lastEditAt | date: "dd/MM/yyyy - hh:mm:ss" }}</td>
         <td>
@@ -265,7 +267,7 @@
             >
             <label>
               {{
-                onayIsMakinesiGunlukCalisma.createdUser.name +
+                onayIsMakinesiGunlukCalisma.createdUser.name + " " +
                 onayIsMakinesiGunlukCalisma.createdUser.surname
               }}
             </label>
@@ -284,7 +286,7 @@
             >
             <label>
               {{
-                onayIsMakinesiGunlukCalisma.lastEditUser.name +
+                onayIsMakinesiGunlukCalisma.lastEditUser.name + " " +
                 onayIsMakinesiGunlukCalisma.lastEditUser.surname
               }}
             </label>

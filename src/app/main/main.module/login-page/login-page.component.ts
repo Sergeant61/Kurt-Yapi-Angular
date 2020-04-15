@@ -16,6 +16,7 @@ export class LoginPageComponent implements OnInit {
   isLoading: boolean = false;
   declarativeFormCaptchaValue: boolean;
   isReCaptcha: boolean = false;
+  dogrulamaNumber: number = 0;
 
 
   constructor(
@@ -47,14 +48,17 @@ export class LoginPageComponent implements OnInit {
   }
 
   sendTokenToBackend(token) {
-
+    this.dogrulamaNumber = 1;
     this.authService.sendCaptchaToken(token).subscribe(
       data => {
         this.isReCaptcha = data.success;
+        this.dogrulamaNumber = 2;
       },
       err => {
         this.isReCaptcha = false;
         this.errorMessage = 'Doğrulama sağlanamadı sayfayı yeniledikten sonra tekrar deneyiniz.';
+        this.dogrulamaNumber = 3;
+
       },
       () => { }
     );

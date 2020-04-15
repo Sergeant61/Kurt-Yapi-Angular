@@ -45,7 +45,8 @@
         <th>Firma Ünvanı</th>
         <th>Alınan Yakıt</th>
         <th>Birim Fiyatı</th>
-        <th>Yakıtı Aln Personel</th>
+        <th>Yakıtı Alan Personel</th>
+        <th>Form Tarihi</th>
         <th>İlk Kayıt Tarihi</th>
         <th>Son Güncelleme Tarihi</th>
         <th>#</th>
@@ -59,6 +60,7 @@
         <td>{{ value.alinanYakitLitre +" Litre" }}</td>
         <td>{{ value.birimFiyati + " ₺" }} </td>
         <td>{{ value.yakitiAlanPersonel.name + " " + value.yakitiAlanPersonel.surname }}</td>
+        <td>{{ value.formTarihi | date: "dd/MM/yyyy" }}</td>
         <td>{{ value.createdAt | date: "dd/MM/yyyy - hh:mm:ss" }}</td>
         <td>{{ value.lastEditAt | date: "dd/MM/yyyy - hh:mm:ss" }}</td>
         <td>
@@ -245,7 +247,7 @@
             >
             <label>
               {{
-                onayGelenYakitFormu.createdUser.name +
+                onayGelenYakitFormu.createdUser.name + " " +
                 onayGelenYakitFormu.createdUser.surname
               }}
             </label>
@@ -264,7 +266,7 @@
             >
             <label>
               {{
-                onayGelenYakitFormu.lastEditUser.name +
+                onayGelenYakitFormu.lastEditUser.name + " " +
                 onayGelenYakitFormu.lastEditUser.surname
               }}
             </label>

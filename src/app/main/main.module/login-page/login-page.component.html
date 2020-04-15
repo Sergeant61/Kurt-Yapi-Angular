@@ -44,10 +44,15 @@
                       placeholder="Şifre"
                       required
                     />
-                    <br />
-                    <!-- <re-captcha ngControl="captcha" (resolved)="resolved($event)" siteKey="6LcjY-gUAAAAAD-SnuR97A6HQKmVFcj8upat8WSx"></re-captcha> -->
+
+                    <div
+                      *ngIf="dogrulamaNumber == 1"
+                      class="spinner-grow spinner-grow-sm mr-2"
+                      role="status"
+                    ></div>
 
                     <re-captcha
+                      class="d-flex justify-content-center mt-2"
                       [(ngModel)]="declarativeFormCaptchaValue"
                       (resolved)="resolved($event)"
                       name="captcha"
@@ -55,14 +60,14 @@
                     ></re-captcha>
                   </div>
 
-                  <div class="checkbox mb-5 mt-2">
-                    <input type="checkbox" value="remember-me" /> Beni hatırla
-                  </div>
+                  <br />
                   <button
                     type="submit"
                     class="btn btn-primary btn-block"
                     (click)="login()"
-                    [class.disabled]="isLoading || formLogin.invalid || !isReCaptcha"
+                    [class.disabled]="
+                      isLoading || formLogin.invalid || !isReCaptcha
+                    "
                     [disabled]="isLoading || formLogin.invalid || !isReCaptcha"
                   >
                     <span

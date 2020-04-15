@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md-12 bg-dark p-2">
     <h5 class="text-white">
-      İş Makinesi Günlük Çalışma Formu {{ editing ? "Düzenle" : "Oluştur" }}
+      Gelen Yakıt Formu {{ editing ? "Düzenle" : "Oluştur" }}
     </h5>
   </div>
 
@@ -46,10 +46,11 @@
                 />
               </div>
 
+
               <div class="input-group mb-4">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="inputGroup-sizing-default"
-                    >Tarih</span
+                    >Tarih </span
                   >
                 </div>
                 <input
@@ -61,6 +62,7 @@
                 />
               </div>
 
+
               <div class="input-group mb-4">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="inputGroup-sizing-default"
@@ -70,7 +72,7 @@
                 <input
                   type="text"
                   class="form-control"
-                  name="formTarihi"
+                  name="firmaUnvani"
                   [(ngModel)]="gelenYakitFormu.firmaUnvani"
                   required
                 />

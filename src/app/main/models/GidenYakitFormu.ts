@@ -24,8 +24,8 @@ export class GidenYakitFormu {
   /** */
   yakitiAlanPersonel: Personel = new Personel();
   yakitiVerenPersonel: Personel = new Personel();
-  tirKamyonPlaka: TirKamyon = new TirKamyon();
-  isMakinesiPlaka: IsMakinesi = new IsMakinesi();
+  tirKamyon: TirKamyon = new TirKamyon();
+  isMakinesi: IsMakinesi = new IsMakinesi();
   createdUser: User = new User();
   lastEditUser: User = new User();
   onaylayanUser: User = new User();
