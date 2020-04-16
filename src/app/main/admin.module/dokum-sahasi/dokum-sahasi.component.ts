@@ -29,7 +29,6 @@ export class DokumSahasiComponent implements OnInit {
           this.dokumSahasiList = [];
         }
 
-        console.log(data);
       }, err => { });
 
   }

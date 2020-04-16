@@ -11,8 +11,6 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 
-
-
     await this.authSevice.isAuthenticated();
 
     if (this.authSevice.isTokenValid) {

@@ -29,7 +29,6 @@ export class PersonelComponent implements OnInit {
           this.personelList = [];
         }
 
-        console.log(data);
       }, err => { });
 
   }

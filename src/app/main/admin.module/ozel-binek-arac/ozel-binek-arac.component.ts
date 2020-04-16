@@ -30,7 +30,6 @@ export class OzelBinekAracComponent implements OnInit {
           this.ozelBinekAracList = [];
         }
 
-        console.log(data);
       }, err => { });
 
   }

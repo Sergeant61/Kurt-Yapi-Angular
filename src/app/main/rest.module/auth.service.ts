@@ -8,6 +8,7 @@ import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { AlertifyService } from '../services/alertify.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +20,11 @@ export class AuthService {
   currentUser: User = new User();
   isTokenValid: boolean = false;
 
-  constructor(private http: HttpClient, private router: Router, public jwtHelper: JwtHelperService) {
-    //this.isAuthenticated();
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    public jwtHelper: JwtHelperService,
+    private alertifyService: AlertifyService) {
   }
 
   async isAuthenticated(): Promise<boolean> {
@@ -31,11 +35,13 @@ export class AuthService {
         this.isTokenValid = !this.jwtHelper.isTokenExpired(this.token);
       } catch (error) {
         this.logout();
+        this.alertifyService.error('Geçersiz oturum anahtarı. Lütfen tekrar giriş yapın.');
       }
       if (this.isTokenValid) {
         await this.getUser();
       } else {
         this.logout();
+        this.alertifyService.error('Oturum süresi doldu. Lütfen tekrar giriş yapın.');
       }
       return this.isTokenValid;
     } else {
@@ -52,21 +58,30 @@ export class AuthService {
         if (response.success) {
           this.token = response.data.token;
           localStorage.setItem('token', this.token);
+          this.alertifyService.success('Giriş Başarılı.');
           this.getUser();
           return response.success;
-        } else {
-          console.log(response);
         }
-
       }));
   }
 
   logout() {
-    localStorage.removeItem('token');
-    this.token = null;
-    this.currentUser = new User();
-    this.isTokenValid = false;
-    this.router.navigateByUrl('/login');
+    this.http.post<ApiResponse<void>>(this.path + '/api/users/logout', {},
+    { headers: new HttpHeaders({ 'x-access-token': this.token }) })
+    .subscribe(res => {
+      localStorage.removeItem('token');
+      this.token = null;
+      this.currentUser = new User();
+      this.isTokenValid = false;
+      this.router.navigateByUrl('/login');
+      this.alertifyService.error('Çıkış başarılı.');
+    }, err => {
+
+    });
+
+
+
+
   }
 
   getUser() {
@@ -76,6 +91,7 @@ export class AuthService {
           this.currentUser = res.data;
           this.isTokenValid = res.success;
         } else {
+          this.alertifyService.error('Geçersiz oturum anahtarı. Lütfen tekrar giriş yapın.');
           this.logout();
         }
       }).catch(err => {

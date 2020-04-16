@@ -29,7 +29,6 @@ export class FirmaComponent implements OnInit {
           this.firmaList = [];
         }
 
-        console.log(data);
       }, err => { });
 
   }

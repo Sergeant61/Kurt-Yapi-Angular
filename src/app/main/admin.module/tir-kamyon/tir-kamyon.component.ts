@@ -29,7 +29,6 @@ export class TirKamyonComponent implements OnInit {
           this.tirKamyonList = [];
         }
 
-        console.log(data);
       }, err => { });
 
   }

@@ -14,6 +14,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AdminGuard } from './main/rest.module/admin.guard';
 import { AuthService } from './main/rest.module/auth.service';
 import { HomeGuard } from './main/rest.module/home.guard';
+import { AlertifyService } from './main/services/alertify.service';
+import { ErrorService } from './main/services/error.service';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,7 @@ import { HomeGuard } from './main/rest.module/home.guard';
       { path: '**', redirectTo: '/home' }
     ])
   ],
-  providers: [AuthService],
+  providers: [AuthService, AlertifyService, ErrorService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -5,6 +5,8 @@ import { ApiResponse } from '../models/ApiResponse';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 import { Personel } from '../models/Personel';
+import { map } from 'rxjs/operators';
+import { ErrorService } from '../services/error.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,28 +17,63 @@ export class PersonelService {
   baseUrl = '/api/personel';
   headers: HttpHeaders;
 
-  constructor(private http: HttpClient, private authService: AuthService) {
+  constructor(private http: HttpClient, private authService: AuthService, private errorService: ErrorService) {
     this.headers = new HttpHeaders({ 'x-access-token': authService.token });
   }
 
   post(data: Personel): Observable<ApiResponse<Personel>> {
-    return this.http.post<ApiResponse<Personel>>(this.path + this.baseUrl, data, { headers: this.headers });
+    return this.http.post<ApiResponse<Personel>>(this.path + this.baseUrl, data, { headers: this.headers })
+    .pipe(map(res => {
+      if (!res.success) {
+        this.errorService.getErrorParse(res);
+      } else {
+        return res;
+      }
+    }));
   }
 
   getAll(): Observable<ApiResponse<Personel[]>> {
-    return this.http.get<ApiResponse<Personel[]>>(this.path + this.baseUrl, { headers: this.headers });
+    return this.http.get<ApiResponse<Personel[]>>(this.path + this.baseUrl, { headers: this.headers })
+    .pipe(map(res => {
+      if (!res.success) {
+        this.errorService.getErrorParse(res);
+      } else {
+        return res;
+      }
+    }));
   }
 
   get(id: string): Observable<ApiResponse<Personel>> {
-    return this.http.get<ApiResponse<Personel>>(this.path + this.baseUrl + '/' + id, { headers: this.headers });
+    return this.http.get<ApiResponse<Personel>>(this.path + this.baseUrl + '/' + id, { headers: this.headers })
+    .pipe(map(res => {
+      if (!res.success) {
+        this.errorService.getErrorParse(res);
+      } else {
+        return res;
+      }
+    }));
   }
 
   put(id: string, data: Personel): Observable<ApiResponse<Personel>> {
-    return this.http.put<ApiResponse<Personel>>(this.path + this.baseUrl + '/' + id, data, { headers: this.headers });
+    return this.http.put<ApiResponse<Personel>>(this.path + this.baseUrl + '/' + id, data, { headers: this.headers })
+    .pipe(map(res => {
+      if (!res.success) {
+        this.errorService.getErrorParse(res);
+      } else {
+        return res;
+      }
+    }));
   }
 
   delete(id: string): Observable<ApiResponse<Personel>> {
-    return this.http.delete<ApiResponse<Personel>>(this.path + this.baseUrl + '/' + id, { headers: this.headers });
+    return this.http.delete<ApiResponse<Personel>>(this.path + this.baseUrl + '/' + id, { headers: this.headers })
+    .pipe(map(res => {
+      if (!res.success) {
+        this.errorService.getErrorParse(res);
+      } else {
+        return res;
+      }
+    }));
   }
 
 }

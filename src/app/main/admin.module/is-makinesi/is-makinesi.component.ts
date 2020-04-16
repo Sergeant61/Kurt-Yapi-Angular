@@ -29,7 +29,6 @@ export class IsMakinesiComponent implements OnInit {
           this.isMakinesiList = [];
         }
 
-        console.log(data);
       }, err => { });
 
   }
