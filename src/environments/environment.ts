@@ -12,7 +12,7 @@ export const environment = {
   baseUrlFirma: '/admin/firma',
   baseUrlPersonel: '/admin/personel',
   baseUrlDokumSahasi: '/admin/dokumsahasi',
-  //--------
+  // --------
   baseUrlTirKamyonCalisma: '/muhasebe/tirkamyon',
   baseUrlIsMakinesiCalisma: '/muhasebe/ismakinesi',
   baseUrlYakitFormu: '/muhasebe/yakitformu',
