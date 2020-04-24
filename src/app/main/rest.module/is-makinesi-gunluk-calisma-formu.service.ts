@@ -26,7 +26,9 @@ export class IsMakinesiGunlukCalismaFormuService {
     return this.http.post<ApiResponse<IsMakinesiGunlukCalisma>>(this.path + this.baseUrl, data, { headers: this.headers })
     .pipe(map(res => {
       if (!res.success) {
-        this.errorService.getErrorParse(res);
+        if (this.errorService.getErrorParse(res)) {
+          return res;
+        }
       } else {
         return res;
       }
@@ -37,7 +39,9 @@ export class IsMakinesiGunlukCalismaFormuService {
     return this.http.get<ApiResponse<IsMakinesiGunlukCalisma[]>>(this.path + this.baseUrl, { headers: this.headers })
     .pipe(map(res => {
       if (!res.success) {
-        this.errorService.getErrorParse(res);
+        if (this.errorService.getErrorParse(res)) {
+          return res;
+        }
       } else {
         return res;
       }
@@ -48,7 +52,9 @@ export class IsMakinesiGunlukCalismaFormuService {
     return this.http.put<ApiResponse<number>>(this.path + this.baseUrl, {}, { headers: this.headers })
     .pipe(map(res => {
       if (!res.success) {
-        this.errorService.getErrorParse(res);
+        if (this.errorService.getErrorParse(res)) {
+          return res;
+        }
       } else {
         return res;
       }
@@ -60,7 +66,9 @@ export class IsMakinesiGunlukCalismaFormuService {
       this.path + this.baseUrl + '/' + start + '/' + end, { headers: this.headers })
       .pipe(map(res => {
         if (!res.success) {
-          this.errorService.getErrorParse(res);
+          if (this.errorService.getErrorParse(res)) {
+            return res;
+          }
         } else {
           return res;
         }
@@ -71,7 +79,9 @@ export class IsMakinesiGunlukCalismaFormuService {
     return this.http.get<ApiResponse<IsMakinesiGunlukCalisma>>(this.path + this.baseUrl + '/' + id, { headers: this.headers })
     .pipe(map(res => {
       if (!res.success) {
-        this.errorService.getErrorParse(res);
+        if (this.errorService.getErrorParse(res)) {
+          return res;
+        }
       } else {
         return res;
       }
@@ -83,7 +93,9 @@ export class IsMakinesiGunlukCalismaFormuService {
     .get<ApiResponse<IsMakinesiGunlukCalisma>>(this.path + this.baseUrl + '/detail/' + id + '/' + mode, { headers: this.headers })
     .pipe(map(res => {
       if (!res.success) {
-        this.errorService.getErrorParse(res);
+        if (this.errorService.getErrorParse(res)) {
+          return res;
+        }
       } else {
         return res;
       }
@@ -94,7 +106,9 @@ export class IsMakinesiGunlukCalismaFormuService {
     return this.http.put<ApiResponse<IsMakinesiGunlukCalisma>>(this.path + this.baseUrl + '/' + id, data, { headers: this.headers })
     .pipe(map(res => {
       if (!res.success) {
-        this.errorService.getErrorParse(res);
+        if (this.errorService.getErrorParse(res)) {
+          return res;
+        }
       } else {
         return res;
       }
@@ -105,7 +119,9 @@ export class IsMakinesiGunlukCalismaFormuService {
     return this.http.delete<ApiResponse<IsMakinesiGunlukCalisma>>(this.path + this.baseUrl + '/' + id, { headers: this.headers })
     .pipe(map(res => {
       if (!res.success) {
-        this.errorService.getErrorParse(res);
+        if (this.errorService.getErrorParse(res)) {
+          return res;
+        }
       } else {
         return res;
       }

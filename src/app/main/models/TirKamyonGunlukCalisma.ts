@@ -14,6 +14,7 @@ export class TirKamyonGunlukCalisma {
   dokumSahasiId: string;
   malzemeCinsi: string;
   seferSayisi: string;
+  tonajList: string[];
   alinanMotorin: string;
   kilometre: string;
   personelId: string;

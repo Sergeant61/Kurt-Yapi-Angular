@@ -1,4 +1,3 @@
-
 <div class="container-fluid">
   <div class="row">
     <div class="col-2">
@@ -11,7 +10,7 @@
               data-toggle="collapse"
               aria-expanded="false"
               class="dropdown-toggle"
-              >Araç Formları</a
+              >Çalışma Formları</a
             >
             <ul class="collapse list-unstyled" id="homeSubmenu">
               <li>
@@ -24,46 +23,63 @@
                   >İş Makinesi Günlük Çalışma Formu</a
                 >
               </li>
+
+              <!-- Yakıt Formları -->
+              <li>
+                <a
+                  href="#homeSubmenu1"
+                  data-toggle="collapse"
+                  aria-expanded="false"
+                  class="dropdown-toggle"
+                  >Yakıt Formları</a
+                >
+                <ul class="collapse list-unstyled" id="homeSubmenu1">
+                  <li>
+                    <a
+                      routerLink="/muhasebe/gelenyakitformu"
+                      routerLinkActive="active"
+                      >Gelen Yakıt Formu</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      routerLink="/muhasebe/gidenyakitformu"
+                      routerLinkActive="active"
+                      >Giden Yakıt Formu</a
+                    >
+                  </li>
+                </ul>
+              </li>
             </ul>
+
+            <!-- Raporlar Formları -->
           </li>
 
-          <!-- Yakıt Formları -->
-          <li>
-            <a
-              href="#homeSubmenu1"
-              data-toggle="collapse"
-              aria-expanded="false"
-              class="dropdown-toggle"
-              >Yakıt Formları</a
-            >
-            <ul class="collapse list-unstyled" id="homeSubmenu1">
-              <li>
-                <a routerLink="/muhasebe/gelenyakitformu" routerLinkActive="active">Gelen Yakıt Formu</a>
-              </li>
-              <li>
-                <a routerLink="/muhasebe/gidenyakitformu" routerLinkActive="active">Giden Yakıt Formu</a>
-              </li>
-            </ul>
-          </li>
-
-          <!-- Raporlar Formları -->
           <li>
             <a
               href="#homeSubmenu2"
               data-toggle="collapse"
               aria-expanded="false"
               class="dropdown-toggle"
-              >Raporlar</a
+              >Genel Raporlar</a
             >
             <ul class="collapse list-unstyled" id="homeSubmenu2">
               <li>
-                <a routerLink="/muhasebe/firmacarileri" routerLinkActive="active">Firma Carileri</a>
+                <a
+                  routerLink="/muhasebe/firmacarileri"
+                  routerLinkActive="active"
+                  >Firma Carileri</a
+                >
               </li>
               <li>
-                <a routerLink="/muhasebe/tahsilat" routerLinkActive="active">Tahsilat</a>
+                <a routerLink="/muhasebe/tahsilat" routerLinkActive="active"
+                  >Tahsilat</a
+                >
               </li>
               <li>
-                <a routerLink="/muhasebe/seferfisi" routerLinkActive="active">Sefer Fişi</a>
+                <a routerLink="/muhasebe/seferfisi" routerLinkActive="active"
+                  >Sefer Fişi</a
+                >
               </li>
             </ul>
           </li>

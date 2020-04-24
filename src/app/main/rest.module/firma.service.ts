@@ -25,7 +25,9 @@ export class FirmaService {
     return this.http.post<ApiResponse<Firma>>(this.path + this.baseUrl, data, { headers: this.headers })
       .pipe(map(res => {
         if (!res.success) {
-          this.errorService.getErrorParse(res);
+          if (this.errorService.getErrorParse(res)) {
+            return res;
+          }
         } else {
           return res;
         }
@@ -36,7 +38,9 @@ export class FirmaService {
     return this.http.get<ApiResponse<Firma[]>>(this.path + this.baseUrl, { headers: this.headers })
       .pipe(map(res => {
         if (!res.success) {
-          this.errorService.getErrorParse(res);
+          if (this.errorService.getErrorParse(res)) {
+            return res;
+          }
         } else {
           return res;
         }
@@ -47,7 +51,9 @@ export class FirmaService {
     return this.http.get<ApiResponse<Firma>>(this.path + this.baseUrl + '/' + id, { headers: this.headers })
     .pipe(map(res => {
       if (!res.success) {
-        this.errorService.getErrorParse(res);
+        if (this.errorService.getErrorParse(res)) {
+          return res;
+        }
       } else {
         return res;
       }
@@ -58,7 +64,9 @@ export class FirmaService {
     return this.http.put<ApiResponse<Firma>>(this.path + this.baseUrl + '/' + id, data, { headers: this.headers })
     .pipe(map(res => {
       if (!res.success) {
-        this.errorService.getErrorParse(res);
+        if (this.errorService.getErrorParse(res)) {
+          return res;
+        }
       } else {
         return res;
       }
@@ -69,7 +77,9 @@ export class FirmaService {
     return this.http.delete<ApiResponse<Firma>>(this.path + this.baseUrl + '/' + id, { headers: this.headers })
     .pipe(map(res => {
       if (!res.success) {
-        this.errorService.getErrorParse(res);
+        if (this.errorService.getErrorParse(res)) {
+          return res;
+        }
       } else {
         return res;
       }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TirKamyonService } from '../../rest.module/tir-kamyon.service';
 import { TirKamyon } from '../../models/TirKamyon';
 import { FirmaService } from '../../rest.module/firma.service';
@@ -14,6 +14,7 @@ import { TirKamyonGunlukCalisma } from '../../models/TirKamyonGunlukCalisma';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../../rest.module/auth.service';
 import { Mode } from '../../enums/mode.enum';
+import { SeferTonaj } from '../../models/SeferTonaj';
 
 @Component({
   selector: 'app-tir-kamyon-calisma-create-edit',
@@ -27,6 +28,8 @@ export class TirKamyonCalismaCreateEditComponent implements OnInit {
   dokumSahasiList: DokumSahasi[] = [];
   personelList: Personel[] = [];
 
+  seferTonajList: SeferTonaj[] = [];
+
   tirKamyonGunlukCalisma: TirKamyonGunlukCalisma = null;
   editing: boolean = false;
   errorMessage: string;
@@ -37,6 +40,8 @@ export class TirKamyonCalismaCreateEditComponent implements OnInit {
   newFirmaBaseUrl: string = environment.baseUrlFirma;
   newDokumBaseUrl: string = environment.baseUrlDokumSahasi;
   newPersonelBaseUrl: string = environment.baseUrlPersonel;
+
+  @ViewChild('closebutton') closebutton;
 
   constructor(
     private tirKamyonService: TirKamyonService,
@@ -53,14 +58,25 @@ export class TirKamyonCalismaCreateEditComponent implements OnInit {
       tirKamyonGunlukCalismaFormuService.get(activeRoute.snapshot.params.id).subscribe(data => {
         if (data.success) {
           this.tirKamyonGunlukCalisma = data.data;
-        } else {
-
+          this.setTonajList(this.tirKamyonGunlukCalisma.seferSayisi);
+          localStorage.removeItem('tirKamyonGunlukCalisma');
         }
       }, err => {
 
       });
     } else {
-      this.tirKamyonGunlukCalisma = new TirKamyonGunlukCalisma();
+      const gunlukCalisma: TirKamyonGunlukCalisma = JSON.parse(localStorage.getItem('tirKamyonGunlukCalisma'));
+
+      if (gunlukCalisma !== undefined && gunlukCalisma !== null) {
+        if (gunlukCalisma._id !== undefined && gunlukCalisma._id !== null) {
+          localStorage.removeItem('tirKamyonGunlukCalisma');
+          this.tirKamyonGunlukCalisma = new TirKamyonGunlukCalisma();
+        } else {
+          this.tirKamyonGunlukCalisma = gunlukCalisma;
+        }
+      } else {
+        this.tirKamyonGunlukCalisma = new TirKamyonGunlukCalisma();
+      }
     }
   }
 
@@ -100,6 +116,7 @@ export class TirKamyonCalismaCreateEditComponent implements OnInit {
         this.tirKamyonGunlukCalismaFormuService.put(this.tirKamyonGunlukCalisma._id, this.tirKamyonGunlukCalisma).subscribe(data => {
           if (data.success) {
             this.router.navigateByUrl(this.baseUrl);
+            localStorage.removeItem('tirKamyonGunlukCalisma');
           } else {
             this.errorMessage = data.message;
           }
@@ -112,6 +129,7 @@ export class TirKamyonCalismaCreateEditComponent implements OnInit {
         this.tirKamyonGunlukCalismaFormuService.post(this.tirKamyonGunlukCalisma).subscribe(data => {
           if (data.success) {
             this.router.navigateByUrl(this.baseUrl);
+            localStorage.removeItem('tirKamyonGunlukCalisma');
           } else {
             this.errorMessage = data.message;
           }
@@ -121,5 +139,33 @@ export class TirKamyonCalismaCreateEditComponent implements OnInit {
     } else {
       this.errorMessage = 'Formu doğru şekilde doldurunuz.';
     }
+  }
+
+  formChange(form: NgForm) {
+    localStorage.setItem('tirKamyonGunlukCalisma', JSON.stringify(this.tirKamyonGunlukCalisma));
+  }
+
+  setTonajList(event: any) {
+
+    this.seferTonajList = [];
+
+    for (let index = 0; index < +event; index++) {
+      this.seferTonajList.push(new SeferTonaj(''));
+    }
+
+    if (this.tirKamyonGunlukCalisma.tonajList !== undefined) {
+      for (let index = 0; index < +this.seferTonajList.length; index++) {
+        this.seferTonajList[index].tonaj = this.tirKamyonGunlukCalisma.tonajList[index];
+      }
+    }
+
+  }
+
+  tonajSave() {
+    this.tirKamyonGunlukCalisma.tonajList = [];
+    for (let index = 0; index < +this.seferTonajList.length; index++) {
+      this.tirKamyonGunlukCalisma.tonajList.push(this.seferTonajList[index].tonaj);
+    }
+    this.closebutton.nativeElement.click();
   }
 }

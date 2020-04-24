@@ -23,7 +23,7 @@
   </div>
 
   <div class="col-md-12 mt-2">
-    <form #form="ngForm" (ngSubmit)="save(form)" *ngIf="tirKamyonGunlukCalisma">
+    <form #form="ngForm" (ngSubmit)="save(form)" (change)="formChange(form)" *ngIf="tirKamyonGunlukCalisma">
       <div class="row">
         <div class="col-6">
           <div class="card">
@@ -105,14 +105,14 @@
 
               <div class="input-group mb-4">
                 <div class="input-group-prepend">
-                  <label class="input-group-text" for="inputGroupSelect01"
+                  <label class="input-group-text" for="inputGroupSelect02"
                     >Boşaltım Yeri</label
                   >
                 </div>
                 <select
                   [(ngModel)]="tirKamyonGunlukCalisma.dokumSahasiId"
                   class="form-control"
-                  id="inputGroupSelect01"
+                  id="inputGroupSelect02"
                   name="dokumSahasiId"
                   required
                 >
@@ -154,12 +154,21 @@
                   >
                 </div>
                 <input
+                  (ngModelChange)="setTonajList($event)"
                   type="number"
                   class="form-control"
                   name="seferSayisi"
                   [(ngModel)]="tirKamyonGunlukCalisma.seferSayisi"
                   required
                 />
+                <button
+                  type="button"
+                  class="btn btn-primary ml-2"
+                  data-toggle="modal"
+                  data-target="#tonajModal"
+                >
+                  Tonajları Gir
+                </button>
               </div>
             </div>
           </div>
@@ -173,14 +182,14 @@
             <div class="card-body">
               <div class="input-group mb-4">
                 <div class="input-group-prepend">
-                  <label class="input-group-text" for="inputGroupSelect01"
+                  <label class="input-group-text" for="inputGroupSelect03"
                     >Tır - Kamyon</label
                   >
                 </div>
                 <select
                   [(ngModel)]="tirKamyonGunlukCalisma.plakaId"
                   class="form-control"
-                  id="inputGroupSelect01"
+                  id="inputGroupSelect03"
                   name="plakaId"
                   required
                 >
@@ -218,7 +227,7 @@
               <div class="input-group mb-4">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="inputGroup-sizing-default"
-                    >Yapılan Kilometre</span
+                    >Kilometre</span
                   >
                 </div>
                 <input
@@ -232,14 +241,14 @@
 
               <div class="input-group mb-4">
                 <div class="input-group-prepend">
-                  <label class="input-group-text" for="inputGroupSelect01"
+                  <label class="input-group-text" for="inputGroupSelect04"
                     >Personel Bilgileri</label
                   >
                 </div>
                 <select
                   [(ngModel)]="tirKamyonGunlukCalisma.personelId"
                   class="form-control"
-                  id="inputGroupSelect01"
+                  id="inputGroupSelect04"
                   name="personelId"
                   required
                 >
@@ -335,5 +344,82 @@
         </button>
       </div>
     </form>
+  </div>
+</div>
+
+<!-- Modal dialog penceresi -->
+<div
+  class="modal fade"
+  id="tonajModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="tonajModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="tonajModalLabel">
+          Silmek istediğinize emin misiniz ?
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered table-condensed">
+          <tbody>
+            <tr *ngFor="let value of seferTonajList; index as i">
+              <td>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span
+                      class="input-group-text"
+                      id="inputGroup-sizing-default"
+                      >{{ i + 1 + ". Tonaj" }}</span
+                    >
+                  </div>
+                  <input
+                    type="number"
+                    name="s"
+                    [(ngModel)]="value.tonaj"
+                    class="form-control"
+                  />
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-warning"
+          #closebutton
+          data-dismiss="modal"
+        >
+          Vazgeç
+        </button>
+        <button
+          type="button"
+          class="btn btn-success"
+          (click)="tonajSave()"
+        >
+          <span
+            name="loadingSpan"
+            class="spinner-border spinner-border-sm"
+            role="status"
+            *ngIf="isLoading"
+          ></span>
+          Kaydet
+        </button>
+      </div>
+    </div>
   </div>
 </div>

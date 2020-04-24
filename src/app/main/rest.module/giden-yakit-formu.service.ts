@@ -26,7 +26,9 @@ export class GidenYakitFormuService {
     return this.http.post<ApiResponse<GidenYakitFormu>>(this.path + this.baseUrl, data, { headers: this.headers })
     .pipe(map(res => {
       if (!res.success) {
-        this.errorService.getErrorParse(res);
+        if (this.errorService.getErrorParse(res)) {
+          return res;
+        }
       } else {
         return res;
       }
@@ -37,7 +39,9 @@ export class GidenYakitFormuService {
     return this.http.get<ApiResponse<GidenYakitFormu[]>>(this.path + this.baseUrl, { headers: this.headers })
     .pipe(map(res => {
       if (!res.success) {
-        this.errorService.getErrorParse(res);
+        if (this.errorService.getErrorParse(res)) {
+          return res;
+        }
       } else {
         return res;
       }
@@ -48,7 +52,9 @@ export class GidenYakitFormuService {
     return this.http.put<ApiResponse<number>>(this.path + this.baseUrl, {}, { headers: this.headers })
     .pipe(map(res => {
       if (!res.success) {
-        this.errorService.getErrorParse(res);
+        if (this.errorService.getErrorParse(res)) {
+          return res;
+        }
       } else {
         return res;
       }
@@ -64,7 +70,9 @@ export class GidenYakitFormuService {
     return this.http.get<ApiResponse<GidenYakitFormu>>(this.path + this.baseUrl + '/' + id, { headers: this.headers })
     .pipe(map(res => {
       if (!res.success) {
-        this.errorService.getErrorParse(res);
+        if (this.errorService.getErrorParse(res)) {
+          return res;
+        }
       } else {
         return res;
       }
@@ -76,7 +84,9 @@ export class GidenYakitFormuService {
     .get<ApiResponse<GidenYakitFormu>>(this.path + this.baseUrl + '/detail/' + id + '/' + mode, { headers: this.headers })
     .pipe(map(res => {
       if (!res.success) {
-        this.errorService.getErrorParse(res);
+        if (this.errorService.getErrorParse(res)) {
+          return res;
+        }
       } else {
         return res;
       }
@@ -87,7 +97,9 @@ export class GidenYakitFormuService {
     return this.http.put<ApiResponse<GidenYakitFormu>>(this.path + this.baseUrl + '/' + id, data, { headers: this.headers })
     .pipe(map(res => {
       if (!res.success) {
-        this.errorService.getErrorParse(res);
+        if (this.errorService.getErrorParse(res)) {
+          return res;
+        }
       } else {
         return res;
       }
@@ -98,7 +110,9 @@ export class GidenYakitFormuService {
     return this.http.delete<ApiResponse<GidenYakitFormu>>(this.path + this.baseUrl + '/' + id, { headers: this.headers })
     .pipe(map(res => {
       if (!res.success) {
-        this.errorService.getErrorParse(res);
+        if (this.errorService.getErrorParse(res)) {
+          return res;
+        }
       } else {
         return res;
       }

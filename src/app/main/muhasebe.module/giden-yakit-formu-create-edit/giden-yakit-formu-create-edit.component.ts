@@ -48,7 +48,7 @@ export class GidenYakitFormuCreateEditComponent implements OnInit {
       gidenYakitFormuService.get(activeRoute.snapshot.params.id).subscribe(data => {
         if (data.success) {
           this.gidenYakitFormu = data.data;
-          if (this.gidenYakitFormu.isMakinesi == null) {
+          if (this.gidenYakitFormu.isMakinesiPlakaId === undefined) {
             this.isTirMi = true;
           } else {
             this.isTirMi = false;

@@ -34,24 +34,22 @@ a:focus {
 #sidebar ul li.active>a,
 a[aria-expanded="true"] {
     color: #fff;
-    background: #074ea2;
+    background: #5898e7;
 }
 
 a[data-toggle="collapse"] {
     position: relative;
 }
 
-.dropdown-toggle::after {
-    display: block;
-    position: absolute;
-    top: 50%;
-    right: 20px;
-    transform: translateY(-50%);
-}
 
 ul ul a {
     font-size: 0.9em !important;
-    padding-left: 30px !important;
+    padding-left: 20px !important;
+}
+
+ul ul ul a {
+  font-size: 0.9em !important;
+  padding-left: 40px !important;
 }
 
 ul ul a.active {

@@ -11,25 +11,27 @@ export class ErrorService {
 
   constructor(private alertifyService: AlertifyService, private authService: AuthService) { }
 
-  getErrorParse(apiResponse: ApiResponse<any>) {
+  getErrorParse(apiResponse: ApiResponse<any>): boolean {
 
     switch (apiResponse.statusCode) {
-      case 0: // Failed to authenticate token.
+      case 5: // Failed to authenticate token.
         this.alertifyService.error('Giriş sağlanamadı. Oturumunuzun süresi dolmuş. Lütfen tekrar giriş yapın.');
         this.authService.logout();
-        break;
+        return false;
       case 1: // Your ip address has changed, please login again.
         this.alertifyService.error('Farklı bir ip algılandı. Lütfen tekrar giriş yapın.');
         this.authService.logout();
-        break;
+        return false;
       case 15: // Authenticate failed, user not found.
         this.alertifyService.error('Kullanıcı bulunamadı.');
         this.authService.logout();
-        break;
+        return false;
       case 99: // Critical level request error, please don't try this again.
         this.alertifyService.error('Yetkisiz erişim denemesi. İp adresi kara listeye eklendi.');
         this.authService.logout();
-        break;
+        return false;
+      default:
+        return true;
 
     }
 
