@@ -23,7 +23,12 @@
   </div>
 
   <div class="col-md-12 mt-2">
-    <form #form="ngForm" (ngSubmit)="save(form)" (change)="formChange(form)" *ngIf="tirKamyonGunlukCalisma">
+    <form
+      #form="ngForm"
+      (ngSubmit)="save(form)"
+      (change)="formChange(form)"
+      *ngIf="tirKamyonGunlukCalisma"
+    >
       <div class="row">
         <div class="col-6">
           <div class="card">
@@ -79,13 +84,13 @@
                   }}</option>
                 </select>
 
-                <button
-                  type="button"
+                <a
+                  target="_blank"
                   class="btn btn-primary ml-2"
                   [routerLink]="[newFirmaBaseUrl, 'create']"
                 >
                   Yeni Firma Ekle
-                </button>
+                </a>
               </div>
 
               <div class="input-group mb-4">
@@ -123,13 +128,13 @@
                   >
                 </select>
 
-                <button
-                  type="button"
+                <a
+                  target="_blank"
                   class="btn btn-primary ml-2"
                   [routerLink]="[newDokumBaseUrl, 'create']"
                 >
                   Yeni Saha Ekle
-                </button>
+                </a>
               </div>
 
               <div class="input-group mb-4">
@@ -200,29 +205,14 @@
                   >
                 </select>
 
-                <button
-                  type="button"
+                <a
+                  target="_blank"
                   class="btn btn-primary ml-2"
                   [routerLink]="[newTirBaseUrl, 'create']"
                 >
                   Yeni Araç ekle
-                </button>
+                </a>
               </div>
-
-              <!-- <div class="input-group mb-4">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="inputGroup-sizing-default"
-                    >Alınan Motorin (Litre)</span
-                  >
-                </div>
-                <input
-                  type="number"
-                  class="form-control"
-                  name="alinanMotorin"
-                  [(ngModel)]="tirKamyonGunlukCalisma.alinanMotorin"
-                  required
-                />
-              </div> -->
 
               <div class="input-group mb-4">
                 <div class="input-group-prepend">
@@ -261,13 +251,13 @@
                   >
                 </select>
 
-                <button
-                  type="button"
+                <a
+                  target="_blank"
                   class="btn btn-primary ml-2"
                   [routerLink]="[newPersonelBaseUrl, 'create']"
                 >
                   Yeni Personel ekle
-                </button>
+                </a>
               </div>
 
               <div class="input-group mb-4">
@@ -406,11 +396,7 @@
         >
           Vazgeç
         </button>
-        <button
-          type="button"
-          class="btn btn-success"
-          (click)="tonajSave()"
-        >
+        <button type="button" class="btn btn-success" (click)="tonajSave()">
           <span
             name="loadingSpan"
             class="spinner-border spinner-border-sm"

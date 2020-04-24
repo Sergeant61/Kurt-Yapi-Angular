@@ -4,18 +4,13 @@ import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { MainModule } from './main/main.module/main.module';
-import { MainPageComponent } from './main/main.module/main-page/main-page.component';
-import { LoginPageComponent } from './main/main.module/login-page/login-page.component';
 import { RestModule } from './main/rest.module/rest.module';
-import { AuthGuard } from './main/rest.module/auth.guard';
 import { FormsModule } from '@angular/forms';
-import { LoginGuard } from './main/rest.module/login.guard';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { AdminGuard } from './main/rest.module/admin.guard';
 import { AuthService } from './main/rest.module/auth.service';
-import { HomeGuard } from './main/rest.module/home.guard';
 import { AlertifyService } from './main/services/alertify.service';
 import { ErrorService } from './main/services/error.service';
+import { AuthGuard } from './main/rest.module/auth.guard';
 
 @NgModule({
   declarations: [
@@ -24,12 +19,12 @@ import { ErrorService } from './main/services/error.service';
   imports: [
     BrowserModule,
     NgbModule,
-    MainModule,
     RestModule,
     FormsModule,
     RouterModule.forRoot([
-      { path: 'home', component: MainPageComponent, canActivate: [HomeGuard] },
-      { path: 'login', component: LoginPageComponent, canActivate: [LoginGuard] },
+      {
+        path: 'main', loadChildren: () => import('./main/main.module/main.module').then(m => m.MainModule)
+      },
       {
         path: 'muhasebe', loadChildren: () => import('./main/muhasebe.module/muhasebe.module').then(m => m.MuhasebeModule),
         canActivate: [AuthGuard]
@@ -38,7 +33,7 @@ import { ErrorService } from './main/services/error.service';
         path: 'admin', loadChildren: () => import('./main/admin.module/admin.module').then(m => m.AdminModule),
         canActivate: [AuthGuard]
       },
-      { path: '**', redirectTo: '/home' }
+      { path: '**', redirectTo: '/main/home' }
     ])
   ],
   providers: [AuthService, AlertifyService, ErrorService],

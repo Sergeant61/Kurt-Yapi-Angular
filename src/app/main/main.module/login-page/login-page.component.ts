@@ -32,7 +32,7 @@ export class LoginPageComponent implements OnInit {
     this.isLoading = true;
     this.authService.login({ username: this.username, password: this.password }).subscribe(res => {
       if (res) {
-        this.router.navigateByUrl('main');
+        this.router.navigateByUrl('main/home');
       } else {
         this.errorMessage = 'Hatalı Kullancı Adı veya Şifre';
       }

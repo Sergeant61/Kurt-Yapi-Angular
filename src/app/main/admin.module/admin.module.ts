@@ -15,6 +15,7 @@ import { TirKamyonFormComponent } from './tir-kamyon-form/tir-kamyon-form.compon
 import { FirmaFormComponent } from './firma-form/firma-form.component';
 import { PersonelFormComponent } from './personel-form/personel-form.component';
 import { DokumSahasiFormComponent } from './dokum-sahasi-form/dokum-sahasi-form.component';
+import { MalihuScrollbarService } from 'ngx-malihu-scrollbar';
 
 
 
@@ -37,6 +38,8 @@ import { DokumSahasiFormComponent } from './dokum-sahasi-form/dokum-sahasi-form.
     AdminRoutingModule,
     CommonModule,
     FormsModule
-  ]
+  ],
+  providers: [MalihuScrollbarService],
+  exports: []
 })
 export class AdminModule { }

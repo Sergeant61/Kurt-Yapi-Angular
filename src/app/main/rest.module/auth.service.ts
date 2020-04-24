@@ -73,7 +73,7 @@ export class AuthService {
       this.token = null;
       this.currentUser = new User();
       this.isTokenValid = false;
-      this.router.navigateByUrl('/login');
+      this.router.navigateByUrl('/main/login');
       this.alertifyService.error('Çıkış başarılı.');
     }, err => {
 

@@ -1,53 +1,118 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-2">
-      <div class="list-group">
-        <button
-          routerLink="/admin/ismakinesi"
-          class="list-group-item list-group-item-action"
-          routerLinkActive="active"
-        >
-          İş Makinaları
-        </button>
-        <button
-          routerLink="/admin/ozelbinekarac"
-          class="list-group-item list-group-item-action"
-          routerLinkActive="active"
-        >
-          Özel Binek Araçlar
-        </button>
-        <button
-          routerLink="/admin/tirkamyon"
-          class="list-group-item list-group-item-action"
-          routerLinkActive="active"
-        >
-          Tır Kamyonlar
-        </button>
-        <button
-          routerLink="/admin/firma"
-          class="list-group-item list-group-item-action"
-          routerLinkActive="active"
-        >
-          Firmalar
-        </button>
-        <button
-          routerLink="/admin/personel"
-          class="list-group-item list-group-item-action"
-          routerLinkActive="active"
-        >
-          Personel
-        </button>
-        <button
-          routerLink="/admin/dokumsahasi"
-          class="list-group-item list-group-item-action"
-          routerLinkActive="active"
-        >
-          Döküm Sahalari
-        </button>
-      </div>
+<div class="wrapper">
+  <!-- Sidebar  -->
+  <nav id="sidebar">
+    <div class="sidebar-header">
+      <img
+        src="assets/logo.png"
+        routerLink="/main/home"
+        height="60"
+        class="ml-2"
+      />
+
+      <!-- <h3>Kurt Yapı Muhasebe</h3> -->
     </div>
 
-    <div class="col-9">
+    <ul class="list-unstyled components" id="homeSubmenu">
+      <li>
+        <a routerLink="/admin/ismakinesi" routerLinkActive="active">
+          İş Makinaları</a
+        >
+      </li>
+      <li>
+        <a routerLink="/admin/ozelbinekarac" routerLinkActive="active"
+          >Özel Binek Araçlar</a
+        >
+      </li>
+      <li>
+        <a routerLink="/admin/tirkamyon" routerLinkActive="active"
+          >Tır Kamyonlar</a
+        >
+      </li>
+      <li>
+        <a routerLink="/admin/firma" routerLinkActive="active">Firmalar</a>
+      </li>
+      <li>
+        <a routerLink="/admin/personel" routerLinkActive="active">Personel</a>
+      </li>      <li>
+        <a routerLink="/admin/dokumsahasi" routerLinkActive="active">Döküm Sahaları</a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Page Content  -->
+  <div id="content">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow">
+      <div class="container-fluid">
+        <button type="button" id="sidebarCollapse" class="btn btn-primary">
+          <i class="fas fa-align-left"></i>
+          <span></span>
+        </button>
+
+        <button
+          class="navbar-toggler"
+          style="color: aliceblue;"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <i class="fas fa-align-justify"></i>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item" *ngIf="authService.isTokenValid">
+              <a
+                class="nav-link"
+                routerLink="/main/home"
+                routerLinkActive="active"
+                >Ana Sayfa</a
+              >
+            </li>
+            <li class="nav-item" *ngIf="authService.isTokenValid">
+              <a
+                class="nav-link"
+                routerLink="/muhasebe"
+                routerLinkActive="active"
+                >Muhasebe</a
+              >
+            </li>
+            <li class="nav-item" *ngIf="authService.isTokenValid">
+              <a class="nav-link" routerLink="/admin" routerLinkActive="active"
+                >Admin</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                routerLink="/main/login"
+                routerLinkActive="active"
+              >
+                {{
+                  authService.isTokenValid
+                    ? authService.currentUser.name +
+                      " " +
+                      authService.currentUser.surname
+                    : "Giriş Yap"
+                }}</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                routerLinkActive="active"
+                (click)="authService.logout()"
+                *ngIf="authService.isTokenValid"
+                >Çıkış Yap</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container-fluid">
       <router-outlet></router-outlet>
     </div>
   </div>

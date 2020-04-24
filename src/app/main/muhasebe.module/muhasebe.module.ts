@@ -17,7 +17,7 @@ import { GelenYakitFormuComponent } from './gelen-yakit-formu/gelen-yakit-formu.
 import { GelenYakitFormuCreateEditComponent } from './gelen-yakit-formu-create-edit/gelen-yakit-formu-create-edit.component';
 import { GidenYakitFormuComponent } from './giden-yakit-formu/giden-yakit-formu.component';
 import { GidenYakitFormuCreateEditComponent } from './giden-yakit-formu-create-edit/giden-yakit-formu-create-edit.component';
-
+import { MalihuScrollbarService } from 'ngx-malihu-scrollbar';
 
 @NgModule({
   declarations: [
@@ -42,7 +42,7 @@ import { GidenYakitFormuCreateEditComponent } from './giden-yakit-formu-create-e
     RouterModule,
     NgbModule
   ],
-  providers: [],
+  providers: [MalihuScrollbarService],
   exports: []
 })
 export class MuhasebeModule { }
