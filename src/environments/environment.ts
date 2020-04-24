@@ -4,8 +4,8 @@
 
 export const environment = {
   production: true,
-  path1: 'https://kurt-yapi-api.herokuapp.com',
-  path: 'http://192.168.8.150:3001',
+  path: 'https://kurt-yapi-api.herokuapp.com',
+  path1: 'http://192.168.8.150:3001',
   baseUrlOzelbinekarac: '/admin/ozelbinekarac',
   baseUrlIsmakinesi: '/admin/ismakinesi',
   baseUrlTirKamyon: '/admin/tirkamyon',
