@@ -30,7 +30,7 @@
         <td>{{ binek.plaka }}</td>
         <td>{{ binek.aracCinsi }}</td>
         <td>{{ binek.kilometre }}</td>
-        <td>{{ binek.createdAt }}</td>
+        <td>{{ binek.createdAt | date: "dd/MM/yyyy - hh:mm:ss"}}</td>
         <td>
           <div class="btn-group">
             <button type="button" class="btn btn-warning" [routerLink]="[baseUrl,'edit',binek._id]">Düzenle</button>

@@ -1,18 +1,19 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { MuhasebeComponent } from './muhasebe/muhasebe.component';
-import { TirKamyonCalismaFormuComponent } from './tir-kamyon-calisma-formu/tir-kamyon-calisma-formu.component';
-import { IsMakinesiCalismaFormuComponent } from './is-makinesi-calisma-formu/is-makinesi-calisma-formu.component';
-import { YedekParcaFormuComponent } from './yedek-parca-formu/yedek-parca-formu.component';
-import { FirmaCarileriComponent } from './firma-carileri/firma-carileri.component';
-import { TahsilatComponent } from './tahsilat/tahsilat.component';
-import { SerferFisiComponent } from './serfer-fisi/serfer-fisi.component';
-import { TirKamyonCalismaCreateEditComponent } from './tir-kamyon-calisma-create-edit/tir-kamyon-calisma-create-edit.component';
-import { IsMakinesiCalismaCreateEditComponent } from './is-makinesi-calisma-create-edit/is-makinesi-calisma-create-edit.component';
-import { GelenYakitFormuComponent } from './gelen-yakit-formu/gelen-yakit-formu.component';
-import { GelenYakitFormuCreateEditComponent } from './gelen-yakit-formu-create-edit/gelen-yakit-formu-create-edit.component';
-import { GidenYakitFormuComponent } from './giden-yakit-formu/giden-yakit-formu.component';
-import { GidenYakitFormuCreateEditComponent } from './giden-yakit-formu-create-edit/giden-yakit-formu-create-edit.component';
+import { TirKamyonCalismaFormuComponent } from './formlar/tir-kamyon-calisma-formu/tir-kamyon-calisma-formu.component';
+import { IsMakinesiCalismaFormuComponent } from './formlar/is-makinesi-calisma-formu/is-makinesi-calisma-formu.component';
+import { YedekParcaFormuComponent } from './formlar/yedek-parca-formu/yedek-parca-formu.component';
+import { FirmaCarileriComponent } from './raporlar/firma-carileri/firma-carileri.component';
+import { TahsilatComponent } from './raporlar/tahsilat/tahsilat.component';
+import { SerferFisiComponent } from './raporlar/serfer-fisi/serfer-fisi.component';
+import { TirKamyonCalismaCreateEditComponent } from './formlar/tir-kamyon-calisma-create-edit/tir-kamyon-calisma-create-edit.component';
+import { IsMakinesiCalismaCreateEditComponent } from './formlar/is-makinesi-calisma-create-edit/is-makinesi-calisma-create-edit.component';
+import { GelenYakitFormuComponent } from './formlar/gelen-yakit-formu/gelen-yakit-formu.component';
+import { GelenYakitFormuCreateEditComponent } from './formlar/gelen-yakit-formu-create-edit/gelen-yakit-formu-create-edit.component';
+import { GidenYakitFormuComponent } from './formlar/giden-yakit-formu/giden-yakit-formu.component';
+import { GidenYakitFormuCreateEditComponent } from './formlar/giden-yakit-formu-create-edit/giden-yakit-formu-create-edit.component';
+import { GunlukRaporComponent } from './raporlar/gunluk-rapor/gunluk-rapor.component';
 
 
 const routes: Routes = [
@@ -33,7 +34,8 @@ const routes: Routes = [
       { path: 'gidenyakitformu/:mode', component: GidenYakitFormuCreateEditComponent },
       { path: 'firmacarileri', component: FirmaCarileriComponent },
       { path: 'tahsilat', component: TahsilatComponent },
-      { path: 'seferfisi', component: SerferFisiComponent }
+      { path: 'seferfisi', component: SerferFisiComponent },
+      { path: 'gunlukrapor', component: GunlukRaporComponent }
 
     ]
   },

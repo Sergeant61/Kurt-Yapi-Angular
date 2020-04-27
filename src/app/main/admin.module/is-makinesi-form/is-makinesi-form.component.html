@@ -18,27 +18,28 @@
 
   </div>
 
+  <div class="container-fluid">
 
-<form  #form="ngForm" (ngSubmit)="save(form)" *ngIf="isMakinesi">
-  <div class="form-group">
-    <label>Plaka</label>
-    <input  class="form-control" name="plaka" [(ngModel)]=isMakinesi.plaka>
+    <form #form="ngForm" (ngSubmit)="save(form)" *ngIf="isMakinesi">
+      <div class="form-group">
+        <label>Plaka</label>
+        <input class="form-control" name="plaka" [(ngModel)]=isMakinesi.plaka>
+      </div>
+      <div class="form-group">
+        <label>Makine Cinsi</label>
+        <input class="form-control" name="makineCinsi" [(ngModel)]=isMakinesi.makineCinsi>
+      </div>
+      <div class="form-group">
+        <label>Motor Saati</label>
+        <input class="form-control" name="motorSaati" [(ngModel)]=isMakinesi.motorSaati>
+      </div>
+      <div class="btn-group">
+        <button name="addButton" type="submit" class="btn btn-primary" [class.disabled]="isLoading"
+          [disabled]="isLoading">
+          <span name="loadingSpan" class="spinner-border spinner-border-sm" role="status" *ngIf="isLoading"></span>
+          {{ editing ? "Düzenle" : "Oluştur" }}</button>
+        <button [routerLink]="[baseUrl]" class="btn btn-warning">Vazgeç</button>
+      </div>
+    </form>
   </div>
-  <div class="form-group">
-    <label>Makine Cinsi</label>
-    <input class="form-control" name="makineCinsi" [(ngModel)]=isMakinesi.makineCinsi>
-  </div>
-  <div class="form-group">
-    <label>Motor Saati</label>
-    <input class="form-control" name="motorSaati" [(ngModel)]=isMakinesi.motorSaati>
-  </div>
-  <div class="btn-group">
-    <button name="addButton" type="submit" class="btn btn-primary" [class.disabled]="isLoading" [disabled]="isLoading">
-      <span name="loadingSpan" class="spinner-border spinner-border-sm" role="status" *ngIf="isLoading"></span>
-       {{ editing ? "Düzenle" : "Oluştur" }}</button>
-    <button [routerLink]="[baseUrl]" class="btn btn-warning">Vazgeç</button>
-  </div>
-</form>
 </div>
-
-

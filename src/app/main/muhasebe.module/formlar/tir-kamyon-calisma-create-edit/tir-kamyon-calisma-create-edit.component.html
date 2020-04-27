@@ -1,0 +1,237 @@
+<div class="row">
+  <div class="col-md-12 bg-dark p-2">
+    <h5 class="text-white">
+      Tır Kamyon Günlük Çalışma Formu {{ editing ? "Düzenle" : "Oluştur" }}
+    </h5>
+  </div>
+
+  <div class="col-md-12 bg-danger p-2" *ngIf="errorMessage">
+    <h6 class="text-white">{{ errorMessage }}</h6>
+  </div>
+
+  <div class="col-md-12 bg-success p-2" *ngIf="!tirKamyonGunlukCalisma">
+    <div class="spinner-border spinner-border-sm text-light mr-2" role="status"></div>
+    <div class="spinner-grow spinner-grow-sm text-light mr-2" role="status"></div>
+
+    <span class="text-white">Yükleniyor lütfen bekleyin.</span>
+  </div>
+
+  <div class="col-md-12 mt-2">
+    <form #form="ngForm" (ngSubmit)="save(form)" (change)="formChange(form)" *ngIf="tirKamyonGunlukCalisma">
+      <div class="row">
+        <div class="col-6">
+          <div class="card">
+            <div class="card-header">
+              Genel Bilgiler
+            </div>
+            <div class="card-body">
+              <div class="input-group mb-4">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Sıra No</span>
+                </div>
+                <input type="text" class="form-control" name="siraNo" [(ngModel)]="tirKamyonGunlukCalisma.siraNo"
+                  required />
+              </div>
+
+              <div class="input-group mb-4">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Tarih</span>
+                </div>
+                <input type="date" class="form-control" name="formTarihi"
+                  [(ngModel)]="tirKamyonGunlukCalisma.formTarihi" required />
+              </div>
+
+              <div class="input-group mb-4">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect01">Çalışılan Firma Ünvanı</label>
+                </div>
+                <select [(ngModel)]="tirKamyonGunlukCalisma.firmaId" class="form-control" id="inputGroupSelect01"
+                  name="firmaId" required>
+                  <option *ngFor="let item of firmaList" [ngValue]="item._id">{{
+                    item.name
+                  }}</option>
+                </select>
+
+                <a target="_blank" class="btn btn-primary ml-2" [routerLink]="[newFirmaBaseUrl, 'create']">
+                  Yeni Firma Ekle
+                </a>
+              </div>
+
+              <div class="input-group mb-4">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Yükleme ve Kazı yeri</span>
+                </div>
+                <input type="text" class="form-control" name="yuklemeYeri"
+                  [(ngModel)]="tirKamyonGunlukCalisma.yuklemeYeri" required />
+              </div>
+
+              <div class="input-group mb-4">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect02">Boşaltım Yeri</label>
+                </div>
+                <select [(ngModel)]="tirKamyonGunlukCalisma.dokumSahasiId" class="form-control" id="inputGroupSelect02"
+                  name="dokumSahasiId" required>
+                  <option *ngFor="let item of dokumSahasiList" [ngValue]="item._id">{{ item.name }}</option>
+                </select>
+
+                <a target="_blank" class="btn btn-primary ml-2" [routerLink]="[newDokumBaseUrl, 'create']">
+                  Yeni Saha Ekle
+                </a>
+              </div>
+
+              <div class="input-group mb-4">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Malzeme Cinsi</span>
+                </div>
+                <input type="text" class="form-control" name="malzemeCinsi"
+                  [(ngModel)]="tirKamyonGunlukCalisma.malzemeCinsi" required />
+              </div>
+
+              <div class="input-group mb-4">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Sefer Sayısı</span>
+                </div>
+                <input (ngModelChange)="setTonajList($event)" type="number" class="form-control" name="seferSayisi"
+                  [(ngModel)]="tirKamyonGunlukCalisma.seferSayisi" required />
+                <button type="button" class="btn btn-primary ml-2" data-toggle="modal" data-target="#tonajModal">
+                  Tonajları Gir
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="card">
+            <div class="card-header">
+              Araç bilgileri
+            </div>
+            <div class="card-body">
+              <div class="input-group mb-4">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect03">Tır - Kamyon</label>
+                </div>
+                <select [(ngModel)]="tirKamyonGunlukCalisma.plakaId" class="form-control" id="inputGroupSelect03"
+                  name="plakaId" required>
+                  <option *ngFor="let item of tirKamyonList" [ngValue]="item._id">
+                    {{ (item.plaka=== undefined ? "Tanımsız" : item.plaka) + " ---- " +  (item.aracCinsi=== undefined ? "Tanımsız" : item.aracCinsi) }}
+                  </option>
+                </select>
+
+                <a target="_blank" class="btn btn-primary ml-2" [routerLink]="[newTirBaseUrl, 'create']">
+                  Yeni Araç ekle
+                </a>
+              </div>
+
+              <div class="input-group mb-4">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Kilometre</span>
+                </div>
+                <input type="number" class="form-control" name="kilometre"
+                  [(ngModel)]="tirKamyonGunlukCalisma.kilometre" required />
+              </div>
+
+              <div class="input-group mb-4">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect04">Personel Bilgileri</label>
+                </div>
+                <select [(ngModel)]="tirKamyonGunlukCalisma.personelId" class="form-control" id="inputGroupSelect04"
+                  name="personelId" required>
+                  <option *ngFor="let item of personelList" [ngValue]="item._id">{{
+                      item.unvan + " - " + item.name + " " + item.surname
+                    }}</option>
+                </select>
+
+                <a target="_blank" class="btn btn-primary ml-2" [routerLink]="[newPersonelBaseUrl, 'create']">
+                  Yeni Personel ekle
+                </a>
+              </div>
+
+              <div class="input-group mb-4">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Çalışılan Firma Yetkilisi</span>
+                </div>
+                <input type="text" class="form-control" name="firmaYetkilisiAdSoyad"
+                  [(ngModel)]="tirKamyonGunlukCalisma.firmaYetkilisiAdSoyad" required />
+              </div>
+
+              <div class="input-group mb-4">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <input type="checkbox" name="imzalimi" [(ngModel)]="tirKamyonGunlukCalisma.imzalimi"
+                      aria-label="Checkbox for following text input" />
+                  </div>
+                </div>
+                <label type="text" class="form-control" aria-label="Text input with checkbox">
+                  {{ tirKamyonGunlukCalisma.imzalimi ? "İmzalı" : "İmzasız" }}
+                </label>
+              </div>
+
+              <div class="input-group mt-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Notlar</span>
+                </div>
+                <textarea type="text" class="form-control" name="notlar"
+                  [(ngModel)]="tirKamyonGunlukCalisma.notlar"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-group mt-4">
+        <button name="addButton" type="submit" class="btn btn-primary" [class.disabled]="isLoading"
+          [disabled]="isLoading">
+          <span name="loadingSpan" class="spinner-border spinner-border-sm" role="status" *ngIf="isLoading"></span>
+          {{ editing ? "Düzenle" : "Oluştur" }}
+        </button>
+        <button type="button" [routerLink]="[baseUrl]" class="btn btn-warning">
+          Vazgeç
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal dialog penceresi -->
+<div class="modal fade" id="tonajModal" tabindex="-1" role="dialog" aria-labelledby="tonajModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="tonajModalLabel">
+          Lütfen sırasıyla tonajları giriniz.
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered table-condensed">
+          <tbody>
+            <tr *ngFor="let value of seferTonajList; index as i">
+              <td>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-default">{{ i + 1 + ". Tonaj" }}</span>
+                  </div>
+                  <input type="number" name="s" [(ngModel)]="value.tonaj" class="form-control" />
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" #closebutton data-dismiss="modal">
+          Vazgeç
+        </button>
+        <button type="button" class="btn btn-success" (click)="tonajSave()">
+          <span name="loadingSpan" class="spinner-border spinner-border-sm" role="status" *ngIf="isLoading"></span>
+          Kaydet
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

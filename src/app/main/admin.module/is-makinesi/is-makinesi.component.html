@@ -30,7 +30,7 @@
         <td>{{ makine.plaka }}</td>
         <td>{{ makine.makineCinsi }}</td>
         <td>{{ makine.motorSaati }}</td>
-        <td>{{ makine.createdAt }}</td>
+        <td>{{ makine.createdAt | date: "dd/MM/yyyy - hh:mm:ss"}}</td>
         <td>
           <div class="btn-group">
             <button type="button" class="btn btn-warning" [routerLink]="[baseUrl,'edit',makine._id]">Düzenle</button>

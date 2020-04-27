@@ -1,21 +1,21 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { GelenYakitFormu } from '../../models/GelenYakitFormu';
+import { GidenYakitFormu } from '../../../models/GidenYakitFormu';
 import { environment } from 'src/environments/environment';
-import { AuthService } from '../../rest.module/auth.service';
-import { GelenYakitFormuService } from '../../rest.module/gelen-yakit-formu.service';
-import { Mode } from '../../enums/mode.enum';
+import { AuthService } from '../../../rest.module/auth.service';
+import { GidenYakitFormuService } from '../../../rest.module/giden-yakit-formu.service';
+import { Mode } from '../../../enums/mode.enum';
 
 @Component({
-  selector: 'app-gelen-yakit-formu',
-  templateUrl: './gelen-yakit-formu.component.html',
-  styleUrls: ['./gelen-yakit-formu.component.css']
+  selector: 'app-giden-yakit-formu',
+  templateUrl: './giden-yakit-formu.component.html',
+  styleUrls: ['./giden-yakit-formu.component.css']
 })
-export class GelenYakitFormuComponent implements OnInit {
+export class GidenYakitFormuComponent implements OnInit {
 
-  gelenYakitFormuList: GelenYakitFormu[] = null;
-  selectedGelenYakitFormu: GelenYakitFormu = new GelenYakitFormu();
-  onayGelenYakitFormu: GelenYakitFormu = new GelenYakitFormu();
-  baseUrl: string = environment.baseUrlGelenYakitFormu;
+  gidenYakitFormuList: GidenYakitFormu[] = null;
+  selectedGelenYakitFormu: GidenYakitFormu = new GidenYakitFormu();
+  onayGidenYakitFormu: GidenYakitFormu = new GidenYakitFormu();
+  baseUrl: string = environment.baseUrlGidenYakitFormu;
   pageNumbers: Array<number> = new Array();
   @ViewChild('closebutton') closebutton;
   @ViewChild('closebuttonOnay') closebuttonOnay;
@@ -29,12 +29,12 @@ export class GelenYakitFormuComponent implements OnInit {
 
   constructor(
     public authService: AuthService,
-    private gelenYakitFormuService: GelenYakitFormuService
+    private gidenYakitFormuService: GidenYakitFormuService
   ) { }
 
   ngOnInit(): void {
     this.getList();
-    this.gelenYakitFormuService.getLength().subscribe(data => {
+    this.gidenYakitFormuService.getLength().subscribe(data => {
       if (data.success) {
         this.listLength = data.data;
         this.getPageNumbers();
@@ -50,12 +50,12 @@ export class GelenYakitFormuComponent implements OnInit {
   }
 
   getList() {
-    this.gelenYakitFormuList = null;
+    this.gidenYakitFormuList = null;
     this.index = (this.selectedPage - 1) * this.perViewPage;
-    this.gelenYakitFormuService.getSkipAndLimit(this.index + '', this.perViewPage + '')
+    this.gidenYakitFormuService.getSkipAndLimit(this.index + '', this.perViewPage + '')
       .subscribe(data => {
         if (data.success) {
-          this.gelenYakitFormuList = data.data;
+          this.gidenYakitFormuList = data.data;
         }
       });
   }
@@ -71,14 +71,14 @@ export class GelenYakitFormuComponent implements OnInit {
     this.changePage(1);
   }
 
-  setSelected(data: GelenYakitFormu) {
+  setSelected(data: GidenYakitFormu) {
     this.selectedGelenYakitFormu = data;
   }
 
-  async setOnaylaLoading(data: GelenYakitFormu) {
-    await this.gelenYakitFormuService.getDetail(data._id, Mode.GET_ALL_FIELD).subscribe(res => {
+  async setOnaylaLoading(data: GidenYakitFormu) {
+    await this.gidenYakitFormuService.getDetail(data._id, Mode.GET_ALL_FIELD).subscribe(res => {
       if (res.success) {
-        this.onayGelenYakitFormu = res.data;
+        this.onayGidenYakitFormu = res.data;
       }
     }, err => {
 
@@ -87,10 +87,10 @@ export class GelenYakitFormuComponent implements OnInit {
 
   delete() {
     this.isLoading = true;
-    this.gelenYakitFormuService.delete(this.selectedGelenYakitFormu._id).subscribe(data => {
+    this.gidenYakitFormuService.delete(this.selectedGelenYakitFormu._id).subscribe(data => {
       if (data.success) {
-        const index = this.gelenYakitFormuList.findIndex(makine => data.data._id === makine._id);
-        this.gelenYakitFormuList.splice(index, 1);
+        const index = this.gidenYakitFormuList.findIndex(makine => data.data._id === makine._id);
+        this.gidenYakitFormuList.splice(index, 1);
       }
       this.isLoading = false;
       this.listLength = this.listLength - 1;
@@ -103,12 +103,12 @@ export class GelenYakitFormuComponent implements OnInit {
 
   onayla() {
     this.isLoading = true;
-    this.gelenYakitFormuService.put(this.onayGelenYakitFormu._id,
+    this.gidenYakitFormuService.put(this.onayGidenYakitFormu._id,
       { onaylimi: true, onaylayanUserId: this.authService.currentUser._id })
       .subscribe(data => {
         if (data.success) {
-          const index = this.gelenYakitFormuList.findIndex(makine => data.data._id === makine._id);
-          this.gelenYakitFormuList.splice(index, 1);
+          const index = this.gidenYakitFormuList.findIndex(makine => data.data._id === makine._id);
+          this.gidenYakitFormuList.splice(index, 1);
         }
         this.isLoading = false;
         this.listLength = this.listLength - 1;

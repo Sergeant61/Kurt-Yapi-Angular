@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Personel } from '../../models/Personel';
-import { GelenYakitFormu } from '../../models/GelenYakitFormu';
+import { Personel } from '../../../models/Personel';
+import { GelenYakitFormu } from '../../../models/GelenYakitFormu';
 import { environment } from 'src/environments/environment';
 import { Router, ActivatedRoute } from '@angular/router';
-import { PersonelService } from '../../rest.module/personel.service';
-import { AuthService } from '../../rest.module/auth.service';
-import { GelenYakitFormuService } from '../../rest.module/gelen-yakit-formu.service';
+import { PersonelService } from '../../../rest.module/personel.service';
+import { AuthService } from '../../../rest.module/auth.service';
+import { GelenYakitFormuService } from '../../../rest.module/gelen-yakit-formu.service';
 import { NgForm } from '@angular/forms';
 
 @Component({

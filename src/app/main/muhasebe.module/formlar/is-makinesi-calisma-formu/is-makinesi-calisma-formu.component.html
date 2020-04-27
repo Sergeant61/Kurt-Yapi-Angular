@@ -42,7 +42,7 @@
       <tr>
         <th>#</th>
         <th>Sıra No</th>
-        <th>Plaka</th>
+        <th>Plaka / Makina Cinsi</th>
         <th>Firma</th>
         <th>Personel</th>
         <th>Form Tarihi</th>
@@ -55,7 +55,7 @@
       <tr *ngFor="let value of isMakinesiGunlukCalismaFormuList; index as i">
         <th>{{ index + i + 1 }}</th>
         <td>{{ value.siraNo }}</td>
-        <td>{{ value.isMakinesi.plaka }}</td>
+        <td>{{ value.isMakinesi.plaka+ " / " + value.isMakinesi.makineCinsi}}</td>
         <td>{{ value.firma.name }}</td>
         <td>{{ value.personel.name + " " + value.personel.surname }}</td>
         <td>{{ value.formTarihi | date: "dd/MM/yyyy" }}</td>

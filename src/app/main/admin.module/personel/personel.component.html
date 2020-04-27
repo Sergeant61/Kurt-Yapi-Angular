@@ -32,7 +32,7 @@
         <td>{{ value.surname }}</td>
         <td>{{ value.tcNu }}</td>
         <td>{{ value.unvan }}</td>
-        <td>{{ value.createdAt }}</td>
+        <td>{{ value.createdAt | date: "dd/MM/yyyy - hh:mm:ss"}}</td>
         <td>
           <div class="btn-group">
             <button type="button" class="btn btn-warning" [routerLink]="[baseUrl,'edit',value._id]">Düzenle</button>

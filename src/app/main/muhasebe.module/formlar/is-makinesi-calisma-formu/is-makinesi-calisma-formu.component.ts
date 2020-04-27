@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AuthService } from '../../rest.module/auth.service';
-import { IsMakinesiGunlukCalismaFormuService } from '../../rest.module/is-makinesi-gunluk-calisma-formu.service';
-import { Mode } from '../../enums/mode.enum';
-import { IsMakinesiGunlukCalisma } from '../../models/IsMakinesiGunlukCalisma';
+import { AuthService } from '../../../rest.module/auth.service';
+import { IsMakinesiGunlukCalismaFormuService } from '../../../rest.module/is-makinesi-gunluk-calisma-formu.service';
+import { Mode } from '../../../enums/mode.enum';
+import { IsMakinesiGunlukCalisma } from '../../../models/IsMakinesiGunlukCalisma';
 import { environment } from 'src/environments/environment';
 
 @Component({

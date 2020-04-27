@@ -24,41 +24,41 @@ export class TirKamyonGunlukCalismaFormuService {
 
   post(data: TirKamyonGunlukCalisma): Observable<ApiResponse<TirKamyonGunlukCalisma>> {
     return this.http.post<ApiResponse<TirKamyonGunlukCalisma>>(this.path + this.baseUrl, data, { headers: this.headers })
-    .pipe(map(res => {
-      if (!res.success) {
-        if (this.errorService.getErrorParse(res)) {
+      .pipe(map(res => {
+        if (!res.success) {
+          if (this.errorService.getErrorParse(res)) {
+            return res;
+          }
+        } else {
           return res;
         }
-      } else {
-        return res;
-      }
-    }));
+      }));
   }
 
   getAll(): Observable<ApiResponse<TirKamyonGunlukCalisma[]>> {
     return this.http.get<ApiResponse<TirKamyonGunlukCalisma[]>>(this.path + this.baseUrl, { headers: this.headers })
-    .pipe(map(res => {
-      if (!res.success) {
-        if (this.errorService.getErrorParse(res)) {
+      .pipe(map(res => {
+        if (!res.success) {
+          if (this.errorService.getErrorParse(res)) {
+            return res;
+          }
+        } else {
           return res;
         }
-      } else {
-        return res;
-      }
-    }));
+      }));
   }
 
   getLength(): Observable<ApiResponse<number>> {
     return this.http.put<ApiResponse<number>>(this.path + this.baseUrl, {}, { headers: this.headers })
-    .pipe(map(res => {
-      if (!res.success) {
-        if (this.errorService.getErrorParse(res)) {
+      .pipe(map(res => {
+        if (!res.success) {
+          if (this.errorService.getErrorParse(res)) {
+            return res;
+          }
+        } else {
           return res;
         }
-      } else {
-        return res;
-      }
-    }));
+      }));
   }
 
   getSkipAndLimit(start: string, end: string): Observable<ApiResponse<TirKamyonGunlukCalisma[]>> {
@@ -77,55 +77,69 @@ export class TirKamyonGunlukCalismaFormuService {
 
   get(id: string): Observable<ApiResponse<TirKamyonGunlukCalisma>> {
     return this.http.get<ApiResponse<TirKamyonGunlukCalisma>>(this.path + this.baseUrl + '/' + id, { headers: this.headers })
-    .pipe(map(res => {
-      if (!res.success) {
-        if (this.errorService.getErrorParse(res)) {
+      .pipe(map(res => {
+        if (!res.success) {
+          if (this.errorService.getErrorParse(res)) {
+            return res;
+          }
+        } else {
           return res;
         }
-      } else {
-        return res;
-      }
-    }));
+      }));
   }
 
   getDetail(id: string, mode: Mode): Observable<ApiResponse<TirKamyonGunlukCalisma>> {
     return this.http
-    .get<ApiResponse<TirKamyonGunlukCalisma>>(this.path + this.baseUrl + '/detail/' + id + '/' + mode, { headers: this.headers })
-    .pipe(map(res => {
-      if (!res.success) {
-        if (this.errorService.getErrorParse(res)) {
+      .get<ApiResponse<TirKamyonGunlukCalisma>>(this.path + this.baseUrl + '/detail/' + id + '/' + mode, { headers: this.headers })
+      .pipe(map(res => {
+        if (!res.success) {
+          if (this.errorService.getErrorParse(res)) {
+            return res;
+          }
+        } else {
           return res;
         }
-      } else {
-        return res;
-      }
-    }));
+      }));
+  }
+
+  getRaporDetail(data: any): Observable<ApiResponse<Array<TirKamyonGunlukCalisma>>> {
+    return this.http
+      .post<ApiResponse<Array<TirKamyonGunlukCalisma>>>(this.path + this.baseUrl + '/detail', data, { headers: this.headers })
+      .pipe(map(res => {
+        if (!res.success) {
+          if (this.errorService.getErrorParse(res)) {
+            return res;
+          }
+        } else {
+          return res;
+        }
+      }));
   }
 
   put(id: string, data: any): Observable<ApiResponse<TirKamyonGunlukCalisma>> {
     return this.http.put<ApiResponse<TirKamyonGunlukCalisma>>(this.path + this.baseUrl + '/' + id, data, { headers: this.headers })
-    .pipe(map(res => {
-      if (!res.success) {
-        if (this.errorService.getErrorParse(res)) {
+      .pipe(map(res => {
+        if (!res.success) {
+          if (this.errorService.getErrorParse(res)) {
+            return res;
+          }
+        } else {
           return res;
         }
-      } else {
-        return res;
-      }
-    }));
+      }));
   }
 
   delete(id: string): Observable<ApiResponse<TirKamyonGunlukCalisma>> {
     return this.http.delete<ApiResponse<TirKamyonGunlukCalisma>>(this.path + this.baseUrl + '/' + id, { headers: this.headers })
-    .pipe(map(res => {
-      if (!res.success) {
-        if (this.errorService.getErrorParse(res)) {
+      .pipe(map(res => {
+        if (!res.success) {
+          if (this.errorService.getErrorParse(res)) {
+            return res;
+          }
+        } else {
           return res;
         }
-      } else {
-        return res;
-      }
-    }));
+      }));
   }
 
 }

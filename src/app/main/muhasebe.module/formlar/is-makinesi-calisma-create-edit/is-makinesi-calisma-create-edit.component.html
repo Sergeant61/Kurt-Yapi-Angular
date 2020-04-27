@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md-12 bg-dark p-2">
     <h5 class="text-white">
-      Tır Kamyon Günlük Çalışma Formu {{ editing ? "Düzenle" : "Oluştur" }}
+      İş Makinesi Günlük Çalışma Formu {{ editing ? "Düzenle" : "Oluştur" }}
     </h5>
   </div>
 
@@ -9,7 +9,7 @@
     <h6 class="text-white">{{ errorMessage }}</h6>
   </div>
 
-  <div class="col-md-12 bg-success p-2" *ngIf="!tirKamyonGunlukCalisma">
+  <div class="col-md-12 bg-success p-2" *ngIf="!isMakinesiGunlukCalisma">
     <div
       class="spinner-border spinner-border-sm text-light mr-2"
       role="status"
@@ -27,7 +27,7 @@
       #form="ngForm"
       (ngSubmit)="save(form)"
       (change)="formChange(form)"
-      *ngIf="tirKamyonGunlukCalisma"
+      *ngIf="isMakinesiGunlukCalisma"
     >
       <div class="row">
         <div class="col-6">
@@ -46,7 +46,7 @@
                   type="text"
                   class="form-control"
                   name="siraNo"
-                  [(ngModel)]="tirKamyonGunlukCalisma.siraNo"
+                  [(ngModel)]="isMakinesiGunlukCalisma.siraNo"
                   required
                 />
               </div>
@@ -61,7 +61,7 @@
                   type="date"
                   class="form-control"
                   name="formTarihi"
-                  [(ngModel)]="tirKamyonGunlukCalisma.formTarihi"
+                  [(ngModel)]="isMakinesiGunlukCalisma.formTarihi"
                   required
                 />
               </div>
@@ -73,7 +73,7 @@
                   >
                 </div>
                 <select
-                  [(ngModel)]="tirKamyonGunlukCalisma.firmaId"
+                  [(ngModel)]="isMakinesiGunlukCalisma.firmaId"
                   class="form-control"
                   id="inputGroupSelect01"
                   name="firmaId"
@@ -96,84 +96,46 @@
               <div class="input-group mb-4">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="inputGroup-sizing-default"
-                    >Yükleme ve Kazı yeri</span
+                    >Yapılan İşin Tanımı</span
                   >
                 </div>
                 <input
                   type="text"
                   class="form-control"
                   name="yuklemeYeri"
-                  [(ngModel)]="tirKamyonGunlukCalisma.yuklemeYeri"
+                  [(ngModel)]="isMakinesiGunlukCalisma.yapilinIsTanimi"
                   required
                 />
               </div>
 
               <div class="input-group mb-4">
                 <div class="input-group-prepend">
-                  <label class="input-group-text" for="inputGroupSelect02"
-                    >Boşaltım Yeri</label
+                  <span class="input-group-text" id="inputGroup-sizing-default"
+                    >Çalışma Saati</span
                   >
                 </div>
-                <select
-                  [(ngModel)]="tirKamyonGunlukCalisma.dokumSahasiId"
+                <input
+                  type="number"
                   class="form-control"
-                  id="inputGroupSelect02"
-                  name="dokumSahasiId"
+                  name="malzemeCinsi"
+                  [(ngModel)]="isMakinesiGunlukCalisma.calismaSaati"
                   required
-                >
-                  <option
-                    *ngFor="let item of dokumSahasiList"
-                    [ngValue]="item._id"
-                    >{{ item.name }}</option
-                  >
-                </select>
-
-                <a
-                  target="_blank"
-                  class="btn btn-primary ml-2"
-                  [routerLink]="[newDokumBaseUrl, 'create']"
-                >
-                  Yeni Saha Ekle
-                </a>
+                />
               </div>
 
               <div class="input-group mb-4">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="inputGroup-sizing-default"
-                    >Malzeme Cinsi</span
+                    >Çalışma Şekli</span
                   >
                 </div>
                 <input
                   type="text"
                   class="form-control"
                   name="malzemeCinsi"
-                  [(ngModel)]="tirKamyonGunlukCalisma.malzemeCinsi"
+                  [(ngModel)]="isMakinesiGunlukCalisma.calismaSekli"
                   required
                 />
-              </div>
-
-              <div class="input-group mb-4">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="inputGroup-sizing-default"
-                    >Sefer Sayısı</span
-                  >
-                </div>
-                <input
-                  (ngModelChange)="setTonajList($event)"
-                  type="number"
-                  class="form-control"
-                  name="seferSayisi"
-                  [(ngModel)]="tirKamyonGunlukCalisma.seferSayisi"
-                  required
-                />
-                <button
-                  type="button"
-                  class="btn btn-primary ml-2"
-                  data-toggle="modal"
-                  data-target="#tonajModal"
-                >
-                  Tonajları Gir
-                </button>
               </div>
             </div>
           </div>
@@ -187,28 +149,28 @@
             <div class="card-body">
               <div class="input-group mb-4">
                 <div class="input-group-prepend">
-                  <label class="input-group-text" for="inputGroupSelect03"
-                    >Tır - Kamyon</label
+                  <label class="input-group-text" for="inputGroupSelect01"
+                    >İş Makinesi</label
                   >
                 </div>
                 <select
-                  [(ngModel)]="tirKamyonGunlukCalisma.plakaId"
+                  [(ngModel)]="isMakinesiGunlukCalisma.plakaId"
                   class="form-control"
-                  id="inputGroupSelect03"
+                  id="inputGroupSelect01"
                   name="plakaId"
                   required
                 >
                   <option
-                    *ngFor="let item of tirKamyonList"
+                    *ngFor="let item of isMakinesiList"
                     [ngValue]="item._id"
-                    >{{ item.plaka + " ---- " + item.aracCinsi }}</option
+                    >{{ item.plaka + " ---- " + item.makineCinsi }}</option
                   >
                 </select>
 
                 <a
                   target="_blank"
                   class="btn btn-primary ml-2"
-                  [routerLink]="[newTirBaseUrl, 'create']"
+                  [routerLink]="[newIsmakinesiUrl, 'create']"
                 >
                   Yeni Araç ekle
                 </a>
@@ -217,28 +179,28 @@
               <div class="input-group mb-4">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="inputGroup-sizing-default"
-                    >Kilometre</span
+                    >Motor Saati</span
                   >
                 </div>
                 <input
                   type="number"
                   class="form-control"
                   name="kilometre"
-                  [(ngModel)]="tirKamyonGunlukCalisma.kilometre"
+                  [(ngModel)]="isMakinesiGunlukCalisma.motorSaati"
                   required
                 />
               </div>
 
               <div class="input-group mb-4">
                 <div class="input-group-prepend">
-                  <label class="input-group-text" for="inputGroupSelect04"
+                  <label class="input-group-text" for="inputGroupSelect01"
                     >Personel Bilgileri</label
                   >
                 </div>
                 <select
-                  [(ngModel)]="tirKamyonGunlukCalisma.personelId"
+                  [(ngModel)]="isMakinesiGunlukCalisma.personelId"
                   class="form-control"
-                  id="inputGroupSelect04"
+                  id="inputGroupSelect01"
                   name="personelId"
                   required
                 >
@@ -270,7 +232,7 @@
                   type="text"
                   class="form-control"
                   name="firmaYetkilisiAdSoyad"
-                  [(ngModel)]="tirKamyonGunlukCalisma.firmaYetkilisiAdSoyad"
+                  [(ngModel)]="isMakinesiGunlukCalisma.firmaYetkilisiAdSoyad"
                   required
                 />
               </div>
@@ -281,7 +243,7 @@
                     <input
                       type="checkbox"
                       name="imzalimi"
-                      [(ngModel)]="tirKamyonGunlukCalisma.imzalimi"
+                      [(ngModel)]="isMakinesiGunlukCalisma.imzalimi"
                       aria-label="Checkbox for following text input"
                     />
                   </div>
@@ -291,7 +253,7 @@
                   class="form-control"
                   aria-label="Text input with checkbox"
                 >
-                  {{ tirKamyonGunlukCalisma.imzalimi ? "İmzalı" : "İmzasız" }}
+                  {{ isMakinesiGunlukCalisma.imzalimi ? "İmzalı" : "İmzasız" }}
                 </label>
               </div>
 
@@ -305,7 +267,7 @@
                   type="text"
                   class="form-control"
                   name="notlar"
-                  [(ngModel)]="tirKamyonGunlukCalisma.notlar"
+                  [(ngModel)]="isMakinesiGunlukCalisma.notlar"
                 ></textarea>
               </div>
             </div>
@@ -334,78 +296,5 @@
         </button>
       </div>
     </form>
-  </div>
-</div>
-
-<!-- Modal dialog penceresi -->
-<div
-  class="modal fade"
-  id="tonajModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="tonajModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="tonajModalLabel">
-          Silmek istediğinize emin misiniz ?
-        </h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <table class="table table-bordered table-condensed">
-          <tbody>
-            <tr *ngFor="let value of seferTonajList; index as i">
-              <td>
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span
-                      class="input-group-text"
-                      id="inputGroup-sizing-default"
-                      >{{ i + 1 + ". Tonaj" }}</span
-                    >
-                  </div>
-                  <input
-                    type="number"
-                    name="s"
-                    [(ngModel)]="value.tonaj"
-                    class="form-control"
-                  />
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-warning"
-          #closebutton
-          data-dismiss="modal"
-        >
-          Vazgeç
-        </button>
-        <button type="button" class="btn btn-success" (click)="tonajSave()">
-          <span
-            name="loadingSpan"
-            class="spinner-border spinner-border-sm"
-            role="status"
-            *ngIf="isLoading"
-          ></span>
-          Kaydet
-        </button>
-      </div>
-    </div>
   </div>
 </div>

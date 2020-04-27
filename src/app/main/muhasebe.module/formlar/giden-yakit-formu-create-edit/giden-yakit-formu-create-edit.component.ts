@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { IsMakinesi } from '../../models/IsMakinesi';
-import { TirKamyon } from '../../models/TirKamyon';
-import { Personel } from '../../models/Personel';
-import { GidenYakitFormu } from '../../models/GidenYakitFormu';
+import { IsMakinesi } from '../../../models/IsMakinesi';
+import { TirKamyon } from '../../../models/TirKamyon';
+import { Personel } from '../../../models/Personel';
+import { GidenYakitFormu } from '../../../models/GidenYakitFormu';
 import { environment } from 'src/environments/environment';
-import { PersonelService } from '../../rest.module/personel.service';
+import { PersonelService } from '../../../rest.module/personel.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../../rest.module/auth.service';
-import { GidenYakitFormuService } from '../../rest.module/giden-yakit-formu.service';
+import { AuthService } from '../../../rest.module/auth.service';
+import { GidenYakitFormuService } from '../../../rest.module/giden-yakit-formu.service';
 import { NgForm } from '@angular/forms';
-import { IsMakinesiService } from '../../rest.module/is-makinesi.service';
-import { TirKamyonService } from '../../rest.module/tir-kamyon.service';
+import { IsMakinesiService } from '../../../rest.module/is-makinesi.service';
+import { TirKamyonService } from '../../../rest.module/tir-kamyon.service';
 
 @Component({
   selector: 'app-giden-yakit-formu-create-edit',

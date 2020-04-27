@@ -102,6 +102,20 @@ export class IsMakinesiGunlukCalismaFormuService {
     }));
   }
 
+  getRaporDetail(data: any): Observable<ApiResponse<Array<IsMakinesiGunlukCalisma>>> {
+    return this.http
+      .post<ApiResponse<Array<IsMakinesiGunlukCalisma>>>(this.path + this.baseUrl + '/detail', data, { headers: this.headers })
+      .pipe(map(res => {
+        if (!res.success) {
+          if (this.errorService.getErrorParse(res)) {
+            return res;
+          }
+        } else {
+          return res;
+        }
+      }));
+  }
+
   put(id: string, data: any): Observable<ApiResponse<IsMakinesiGunlukCalisma>> {
     return this.http.put<ApiResponse<IsMakinesiGunlukCalisma>>(this.path + this.baseUrl + '/' + id, data, { headers: this.headers })
     .pipe(map(res => {

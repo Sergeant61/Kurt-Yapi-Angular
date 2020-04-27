@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { IsMakinesi } from '../../models/IsMakinesi';
-import { Firma } from '../../models/Firma';
-import { Personel } from '../../models/Personel';
+import { IsMakinesi } from '../../../models/IsMakinesi';
+import { Firma } from '../../../models/Firma';
+import { Personel } from '../../../models/Personel';
 import { environment } from 'src/environments/environment';
-import { IsMakinesiGunlukCalisma } from '../../models/IsMakinesiGunlukCalisma';
-import { IsMakinesiService } from '../../rest.module/is-makinesi.service';
+import { IsMakinesiGunlukCalisma } from '../../../models/IsMakinesiGunlukCalisma';
+import { IsMakinesiService } from '../../../rest.module/is-makinesi.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PersonelService } from '../../rest.module/personel.service';
-import { FirmaService } from '../../rest.module/firma.service';
-import { AuthService } from '../../rest.module/auth.service';
-import { IsMakinesiGunlukCalismaFormuService } from '../../rest.module/is-makinesi-gunluk-calisma-formu.service';
+import { PersonelService } from '../../../rest.module/personel.service';
+import { FirmaService } from '../../../rest.module/firma.service';
+import { AuthService } from '../../../rest.module/auth.service';
+import { IsMakinesiGunlukCalismaFormuService } from '../../../rest.module/is-makinesi-gunluk-calisma-formu.service';
 import { NgForm } from '@angular/forms';
 
 @Component({
@@ -47,6 +47,7 @@ export class IsMakinesiCalismaCreateEditComponent implements OnInit {
       isMakinesiGunlukCalismaFormuService.get(activeRoute.snapshot.params.id).subscribe(data => {
         if (data.success) {
           this.isMakinesiGunlukCalisma = data.data;
+          localStorage.removeItem('isMakinesiGunlukCalisma');
         } else {
 
         }
@@ -54,7 +55,18 @@ export class IsMakinesiCalismaCreateEditComponent implements OnInit {
 
       });
     } else {
-      this.isMakinesiGunlukCalisma = new IsMakinesiGunlukCalisma();
+      const gunlukCalisma: IsMakinesiGunlukCalisma = JSON.parse(localStorage.getItem('isMakinesiGunlukCalisma'));
+
+      if (gunlukCalisma !== undefined && gunlukCalisma !== null) {
+        if (gunlukCalisma._id !== undefined && gunlukCalisma._id !== null) {
+          localStorage.removeItem('isMakinesiGunlukCalisma');
+          this.isMakinesiGunlukCalisma = new IsMakinesiGunlukCalisma();
+        } else {
+          this.isMakinesiGunlukCalisma = gunlukCalisma;
+        }
+      } else {
+        this.isMakinesiGunlukCalisma = new IsMakinesiGunlukCalisma();
+      }
     }
   }
 
@@ -88,6 +100,7 @@ export class IsMakinesiCalismaCreateEditComponent implements OnInit {
         this.isMakinesiGunlukCalismaFormuService.put(this.isMakinesiGunlukCalisma._id, this.isMakinesiGunlukCalisma).subscribe(data => {
           if (data.success) {
             this.router.navigateByUrl(this.baseUrl);
+            localStorage.removeItem('isMakinesiGunlukCalisma');
           } else {
             this.errorMessage = data.message;
           }
@@ -100,6 +113,7 @@ export class IsMakinesiCalismaCreateEditComponent implements OnInit {
         this.isMakinesiGunlukCalismaFormuService.post(this.isMakinesiGunlukCalisma).subscribe(data => {
           if (data.success) {
             this.router.navigateByUrl(this.baseUrl);
+            localStorage.removeItem('isMakinesiGunlukCalisma');
           } else {
             this.errorMessage = data.message;
           }
@@ -109,6 +123,10 @@ export class IsMakinesiCalismaCreateEditComponent implements OnInit {
     } else {
       this.errorMessage = 'Formu doğru şekilde doldurunuz.';
     }
+  }
+
+  formChange(form: NgForm) {
+    localStorage.setItem('isMakinesiGunlukCalisma', JSON.stringify(this.isMakinesiGunlukCalisma));
   }
 
 }

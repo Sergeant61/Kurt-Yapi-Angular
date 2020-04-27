@@ -1,44 +1,42 @@
 <div class="row">
   <div class="col-md-12 bg-dark p-2">
-    <h5 class="text-white">İş Makinesi {{ editing ? "Düzenle" : "Oluştur" }}</h5>
+    <h5 class="text-white">Tır Kamyon {{ editing ? "Düzenle" : "Oluştur" }}</h5>
   </div>
 
   <div class="col-md-12 bg-danger p-2" *ngIf="errorMessage">
-    <h6 class="text-white">{{errorMessage}}</h6>
+    <h6 class="text-white">{{ errorMessage }}</h6>
   </div>
 
   <div class="col-md-12 bg-success p-2" *ngIf="!tirKamyon">
-
-    <div class="spinner-border spinner-border-sm text-light mr-2" role="status">
-    </div>
-    <div class="spinner-grow spinner-grow-sm text-light mr-2" role="status">
-    </div>
+    <div class="spinner-border spinner-border-sm text-light mr-2" role="status"></div>
+    <div class="spinner-grow spinner-grow-sm text-light mr-2" role="status"></div>
 
     <span class="text-white">Yükleniyor lütfen bekleyin.</span>
-
   </div>
 
-
-<form  #form="ngForm" (ngSubmit)="save(form)" *ngIf="tirKamyon">
-  <div class="form-group">
-    <label>Plaka</label>
-    <input  class="form-control" name="plaka" [(ngModel)]=tirKamyon.plaka>
+  <div class="container-fluid">
+    <form #form="ngForm" (ngSubmit)="save(form)" *ngIf="tirKamyon">
+      <div class="form-group">
+        <label>Plaka</label>
+        <input class="form-control" name="plaka" [(ngModel)]="tirKamyon.plaka" />
+      </div>
+      <div class="form-group">
+        <label>Araç Cinsi</label>
+        <input class="form-control" name="makineCinsi" [(ngModel)]="tirKamyon.aracCinsi" />
+      </div>
+      <div class="form-group">
+        <label>Kilometre</label>
+        <input class="form-control" name="motorSaati" [(ngModel)]="tirKamyon.kilometre" />
+      </div>
+      <div class="btn-group">
+        <button name="addButton" type="submit" class="btn btn-primary" [class.disabled]="isLoading"
+          [disabled]="isLoading">
+          <span name="loadingSpan" class="spinner-border spinner-border-sm" role="status" *ngIf="isLoading"></span>
+          {{ editing ? "Düzenle" : "Oluştur" }}
+        </button>
+        <button [routerLink]="[baseUrl]" class="btn btn-warning">Vazgeç</button>
+      </div>
+    </form>
   </div>
-  <div class="form-group">
-    <label>Araç Cinsi</label>
-    <input class="form-control" name="makineCinsi" [(ngModel)]=tirKamyon.aracCinsi>
-  </div>
-  <div class="form-group">
-    <label>Kilometre</label>
-    <input class="form-control" name="motorSaati" [(ngModel)]=tirKamyon.kilometre>
-  </div>
-  <div class="btn-group">
-    <button name="addButton" type="submit" class="btn btn-primary" [class.disabled]="isLoading" [disabled]="isLoading">
-      <span name="loadingSpan" class="spinner-border spinner-border-sm" role="status" *ngIf="isLoading"></span>
-       {{ editing ? "Düzenle" : "Oluştur" }}</button>
-    <button [routerLink]="[baseUrl]" class="btn btn-warning">Vazgeç</button>
-  </div>
-</form>
+  
 </div>
-
-

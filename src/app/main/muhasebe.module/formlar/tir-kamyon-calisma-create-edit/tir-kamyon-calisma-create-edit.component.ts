@@ -1,20 +1,19 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { TirKamyonService } from '../../rest.module/tir-kamyon.service';
-import { TirKamyon } from '../../models/TirKamyon';
-import { FirmaService } from '../../rest.module/firma.service';
-import { Firma } from '../../models/Firma';
-import { DokumSahasi } from '../../models/DokumSahasi';
-import { DokumSahasiService } from '../../rest.module/dokum-sahasi.service';
-import { PersonelService } from '../../rest.module/personel.service';
-import { Personel } from '../../models/Personel';
+import { TirKamyonService } from '../../../rest.module/tir-kamyon.service';
+import { TirKamyon } from '../../../models/TirKamyon';
+import { FirmaService } from '../../../rest.module/firma.service';
+import { Firma } from '../../../models/Firma';
+import { DokumSahasi } from '../../../models/DokumSahasi';
+import { DokumSahasiService } from '../../../rest.module/dokum-sahasi.service';
+import { PersonelService } from '../../../rest.module/personel.service';
+import { Personel } from '../../../models/Personel';
 import { environment } from 'src/environments/environment';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TirKamyonGunlukCalismaFormuService } from '../../rest.module/tir-kamyon-gunluk-calisma-formu.service';
-import { TirKamyonGunlukCalisma } from '../../models/TirKamyonGunlukCalisma';
+import { TirKamyonGunlukCalismaFormuService } from '../../../rest.module/tir-kamyon-gunluk-calisma-formu.service';
+import { TirKamyonGunlukCalisma } from '../../../models/TirKamyonGunlukCalisma';
 import { NgForm } from '@angular/forms';
-import { AuthService } from '../../rest.module/auth.service';
-import { Mode } from '../../enums/mode.enum';
-import { SeferTonaj } from '../../models/SeferTonaj';
+import { AuthService } from '../../../rest.module/auth.service';
+import { SeferTonaj } from '../../../models/SeferTonaj';
 
 @Component({
   selector: 'app-tir-kamyon-calisma-create-edit',

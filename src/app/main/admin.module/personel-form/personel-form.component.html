@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-md-12 bg-dark p-2">
-    <h5 class="text-white">İş Makinesi {{ editing ? "Düzenle" : "Oluştur" }}</h5>
+    <h5 class="text-white">Personel {{ editing ? "Düzenle" : "Oluştur" }}</h5>
   </div>
 
   <div class="col-md-12 bg-danger p-2" *ngIf="errorMessage">
@@ -18,31 +18,32 @@
 
   </div>
 
+  <div class="container-fluid">
 
-<form  #form="ngForm" (ngSubmit)="save(form)" *ngIf="personel">
-  <div class="form-group">
-    <label>Adı</label>
-    <input  class="form-control" name="name" [(ngModel)]=personel.name>
+    <form #form="ngForm" (ngSubmit)="save(form)" *ngIf="personel">
+      <div class="form-group">
+        <label>Adı</label>
+        <input class="form-control" name="name" [(ngModel)]=personel.name>
+      </div>
+      <div class="form-group">
+        <label>Soyadı</label>
+        <input class="form-control" name="surname" [(ngModel)]=personel.surname>
+      </div>
+      <div class="form-group">
+        <label>Tc Nu</label>
+        <input class="form-control" name="tcnu" [(ngModel)]=personel.tcNu>
+      </div>
+      <div class="form-group">
+        <label>Unvan</label>
+        <input class="form-control" name="unvan" [(ngModel)]=personel.unvan>
+      </div>
+      <div class="btn-group">
+        <button name="addButton" type="submit" class="btn btn-primary" [class.disabled]="isLoading"
+          [disabled]="isLoading">
+          <span name="loadingSpan" class="spinner-border spinner-border-sm" role="status" *ngIf="isLoading"></span>
+          {{ editing ? "Düzenle" : "Oluştur" }}</button>
+        <button [routerLink]="[baseUrl]" class="btn btn-warning">Vazgeç</button>
+      </div>
+    </form>
   </div>
-  <div class="form-group">
-    <label>Soyadı</label>
-    <input  class="form-control" name="surname" [(ngModel)]=personel.surname>
-  </div>
-  <div class="form-group">
-    <label>Tc Nu</label>
-    <input  class="form-control" name="tcnu" [(ngModel)]=personel.tcNu>
-  </div>
-  <div class="form-group">
-    <label>Unvan</label>
-    <input  class="form-control" name="unvan" [(ngModel)]=personel.unvan>
-  </div>
-  <div class="btn-group">
-    <button name="addButton" type="submit" class="btn btn-primary" [class.disabled]="isLoading" [disabled]="isLoading">
-      <span name="loadingSpan" class="spinner-border spinner-border-sm" role="status" *ngIf="isLoading"></span>
-       {{ editing ? "Düzenle" : "Oluştur" }}</button>
-    <button [routerLink]="[baseUrl]" class="btn btn-warning">Vazgeç</button>
-  </div>
-</form>
 </div>
-
-

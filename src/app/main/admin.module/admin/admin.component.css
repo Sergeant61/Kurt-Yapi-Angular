@@ -112,17 +112,17 @@ font-size: 0.9em !important;
 padding-left: 40px !important;
 }
 
-ul a.active {
+#sidebar ul a.active {
   color: #fff;
   background: #074ea2;
 }
 
-ul ul a.active {
+#sidebar ul ul a.active {
   color: #fff;
   background: #074ea2;
 }
 
-ul ul ul a.active {
+#sidebar ul ul ul a.active {
   color: #fff;
   background: #074ea2;
 }

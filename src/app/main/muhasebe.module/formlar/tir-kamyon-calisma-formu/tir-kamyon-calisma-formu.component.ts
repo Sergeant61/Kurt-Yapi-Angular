@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { TirKamyonGunlukCalismaFormuService } from '../../rest.module/tir-kamyon-gunluk-calisma-formu.service';
-import { TirKamyonGunlukCalisma } from '../../models/TirKamyonGunlukCalisma';
+import { TirKamyonGunlukCalismaFormuService } from '../../../rest.module/tir-kamyon-gunluk-calisma-formu.service';
+import { TirKamyonGunlukCalisma } from '../../../models/TirKamyonGunlukCalisma';
 import { environment } from 'src/environments/environment';
-import { AuthService } from '../../rest.module/auth.service';
-import { Mode } from '../../enums/mode.enum';
+import { AuthService } from '../../../rest.module/auth.service';
+import { Mode } from '../../../enums/mode.enum';
 
 
 @Component({

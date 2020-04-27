@@ -31,6 +31,7 @@ export class ErrorService {
         this.authService.logout();
         return false;
       default:
+        console.log(apiResponse);
         return true;
 
     }
