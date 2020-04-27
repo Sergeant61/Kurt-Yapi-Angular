@@ -14,10 +14,12 @@
 
   <br />
 
+  <div class="container-fluid p-0" *ngIf="gunlukRapor.isMakinesiRapor.length>0">
+    <div class="col-md-12 bg-secondary p-2 text-center" >
+      <h5 class="text-white">İş Makinaları</h5>
+    </div>
 
-  <div class="container-fluid">
-
-    <table *ngIf="gunlukRapor.isMakinesiRapor.length>0" class="table  table-sm">
+    <table #excelTable1 class="table  table-sm">
       <thead class="thead-dark">
         <tr>
           <th>#</th>
@@ -28,8 +30,9 @@
           <th>Çalışma Miktarı</th>
           <th>İmza</th>
           <th>
-            <button class="btn btn-primary btn-sm mr-2"
-              (click)="excelExport(gunlukRapor.isMakinesiRapor)">Excel</button>
+            <button class="btn btn-primary btn-sm mr-2" (click)="excelExport(excelTable1)">Excel</button>
+              <button class="btn btn-primary btn-sm" (click)="generatePDF(excelTable1)">Pdf</button>
+
           </th>
 
         </tr>
@@ -44,8 +47,6 @@
           <td>{{ value.calismaSaati + "/" + value.calismaSekli }}</td>
           <td>{{ value.imza  }}</td>
           <td>
-            <div class="btn-group">
-            </div>
           </td>
         </tr>
       </tbody>
@@ -53,27 +54,60 @@
 
   </div>
 
-  <div class="container-fluid">
+  <div class="container-fluid p-0" *ngIf="gunlukRapor.tirKamyonRapor.length>0">
+    <div class="col-md-12 bg-secondary p-2 text-center" >
+      <h5 class="text-white">Tır Kamyon</h5>
+    </div>
 
-    <table id="excel-table" *ngIf="gunlukRapor.tirKamyonRapor.length>0" class="table table-bordered table-sm">
+    <table #excelTable2 class="table table-bordered table-sm">
       <thead class="thead-dark">
         <tr>
           <th>#</th>
           <th class="text-center" *ngFor="let item of tirKamyonThead"> {{item}} </th>
           <th>
-            <button class="btn btn-primary btn-sm mr-2" (click)="excelExport(gunlukRapor.tirKamyonRapor)">Excel</button>
-            <button class="btn btn-primary btn-sm" (click)="generatePDF()">Pdf</button>
+            <button class="btn btn-primary btn-sm mr-2" (click)="excelExport(excelTable2)">Excel</button>
+            <button class="btn btn-primary btn-sm" (click)="generatePDF(excelTable2)">Pdf</button>
           </th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let value of tablo;index as i">
-          <th>{{ i + 1 }}</th>
-          <th class="text-center" *ngFor="let item of value">{{item}}</th>
-
+          <td>{{ i + 1 }}</td>
+          <td class="text-center" *ngFor="let item of value">{{item}}</td>
+          <td>
+          </td>
         </tr>
       </tbody>
     </table>
 
   </div>
+</div>
+
+<div class="container-fluid p-0" *ngIf="gunlukRapor.tirKamyonRapor.length>0">
+  <div class="col-md-12 bg-secondary p-2 text-center" >
+    <h5 class="text-white">Tır Kamyon Tonaj List</h5>
+  </div>
+
+  <table #excelTable3 class="table table-bordered table-sm">
+    <thead class="thead-dark">
+      <tr>
+        <th>#</th>
+        <th>Plaka</th>
+        <th>Toplam Tonaj</th>
+        <th>
+          <button class="btn btn-primary btn-sm mr-2" (click)="excelExport(excelTable3)">Excel</button>
+          <button class="btn btn-primary btn-sm" (click)="generatePDF(excelTable3)">Pdf</button>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let value of gunlukRapor.tirKamyonRapor;index as i">
+        <td>{{ i + 1 }}</td>
+        <td>{{value.tirKamyon}}</td>
+        <td>{{value.toplamTonaj}}</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
 </div>

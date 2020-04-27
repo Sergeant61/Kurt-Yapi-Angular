@@ -5,6 +5,7 @@ export class TirKamyonRapor {
   personel: string;
   yuklemeYeriList: YuklemeYeri[] = [];
   dokumYeriList: DokumYeri[] = [];
+  toplamTonaj: number = 0;
   imza: string;
   createdAt: Date;
 
@@ -12,13 +13,14 @@ export class TirKamyonRapor {
     raporDate: string,
     tirKamyon: string,
     personel: string,
-    firma: string,
     imza: string,
+    toplamTonaj: number,
   ) {
     this.raporDate = raporDate;
     this.tirKamyon = tirKamyon;
     this.personel = personel;
     this.imza = imza;
+    this.toplamTonaj = toplamTonaj;
 
   }
 }

@@ -32,13 +32,13 @@ export class GunlukRaporComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
     this.dateChange();
-
   }
 
   dateChange() {
     this.getValues().then(rapor => {
+
+      console.log(rapor);
 
       // Yük listesi düzenleme
       rapor.tirKamyonRapor.forEach(data => {
@@ -121,17 +121,17 @@ export class GunlukRaporComponent implements OnInit {
         this.tablo.push(satir);
       });
 
-      const satir: string[] = [];
+      const satirr: string[] = [];
 
       this.tablo.forEach(satirList => {
 
         for (let index = 3; index < this.tirKamyonThead.length; index++) {
           const s = satirList[index];
-          satir[index] = '' + (+(satir[index] === undefined ? 0 : satir[index]) + +(s === undefined ? 0 : s));
+          satirr[index] = '' + (+(satirr[index] === undefined ? 0 : satirr[index]) + +(s === undefined ? 0 : s));
         }
 
       });
-      this.tablo.push(satir);
+      this.tablo.push(satirr);
 
     });
   }
@@ -144,7 +144,6 @@ export class GunlukRaporComponent implements OnInit {
 
     return this.gunlukRapor;
   }
-
 
   getIsmakinesi() {
     return this.isMakinesiGunlukCalismaFormuService.getRaporDetail({ mode: 1, todayDate: this.todayDate })
@@ -176,8 +175,8 @@ export class GunlukRaporComponent implements OnInit {
           data.data.forEach(form => {
             let tirKamyonRapor: TirKamyonRapor;
 
-            const index = this.gunlukRapor.tirKamyonRapor.findIndex((data) => {
-              return data.tirKamyon === form.tirKamyon.plaka;
+            const index = this.gunlukRapor.tirKamyonRapor.findIndex(d => {
+              return d.tirKamyon === form.tirKamyon.plaka;
             });
 
             if (index === -1) {
@@ -189,8 +188,8 @@ export class GunlukRaporComponent implements OnInit {
                 this.todayDate,
                 form.tirKamyon.plaka,
                 form.personel.name + ' ' + form.personel.surname,
-                form.firma.name,
-                form.imzalimi ? 'İmzalı' : 'İmzasız'
+                form.imzalimi ? 'İmzalı' : 'İmzasız',
+                this.getToplamTonaj(form.tonajList)
               );
 
               tirKamyonRapor.yuklemeYeriList.push(yuklemeYeri);
@@ -201,12 +200,14 @@ export class GunlukRaporComponent implements OnInit {
 
               tirKamyonRapor = this.gunlukRapor.tirKamyonRapor[index];
 
-              const yuklemeYeriListIndex = tirKamyonRapor.yuklemeYeriList.findIndex((data) => {
-                return data.name === form.yuklemeYeri;
+              tirKamyonRapor.toplamTonaj = tirKamyonRapor.toplamTonaj + this.getToplamTonaj(form.tonajList);
+
+              const yuklemeYeriListIndex = tirKamyonRapor.yuklemeYeriList.findIndex(d => {
+                return d.name === form.yuklemeYeri;
               });
 
-              const dokumYeriListIndex = tirKamyonRapor.dokumYeriList.findIndex((data) => {
-                return data.name === form.dokumsahasi.name;
+              const dokumYeriListIndex = tirKamyonRapor.dokumYeriList.findIndex(d => {
+                return d.name === form.dokumsahasi.name;
               });
 
               if (yuklemeYeriListIndex === -1) {
@@ -234,12 +235,25 @@ export class GunlukRaporComponent implements OnInit {
 
   }
 
+  getToplamTonaj(tonajList: string[]): number {
+    let tonajTop = 0;
+
+    if (tonajList !== undefined) {
+      tonajList.forEach(tonaj => {
+        console.log(parseFloat(tonaj));
+
+        tonajTop = tonajTop + (parseFloat(tonaj) ? +tonaj : 0);
+      });
+    }
+
+    return tonajTop;
+  }
+
   excelExport(data) {
 
     /* generate worksheet */
-    let element = document.getElementById('excel-table');
 
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(data);
 
     /* generate workbook and add the worksheet */
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
@@ -249,21 +263,19 @@ export class GunlukRaporComponent implements OnInit {
     XLSX.writeFile(wb, 'gunluk-rapor-' + this.todayDate + '.xlsx');
   }
 
-
-
-  generatePDF() {
-    var data = document.getElementById('excel-table');
+  generatePDF(data) {
+    // var data = document.getElementById('excel-table');
     html2canvas(data).then(canvas => {
       // Few necessary setting options
-      var imgWidth = 208;
-      var pageHeight = 295;
-      var imgHeight = canvas.height * imgWidth / canvas.width;
-      var heightLeft = imgHeight;
+      const imgWidth = 208;
+      const pageHeight = 295;
+      const imgHeight = canvas.height * imgWidth / canvas.width;
+      const heightLeft = imgHeight;
 
-      const contentDataURL = canvas.toDataURL('image/png')
-      let pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
-      var position = 0;
-      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
+      const contentDataURL = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
+      const position = 0;
+      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
       pdf.save('MYPdf.pdf'); // Generated PDF
     });
   }
