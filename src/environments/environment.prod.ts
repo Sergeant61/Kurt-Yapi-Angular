@@ -13,5 +13,9 @@ export const environment = {
   baseUrlIsMakinesiCalisma: '/muhasebe/ismakinesi',
   baseUrlYakitFormu: '/muhasebe/yakitformu',
   baseUrlGelenYakitFormu: '/muhasebe/gelenyakitformu',
-  baseUrlGidenYakitFormu: '/muhasebe/gidenyakitformu'
+  baseUrlGidenYakitFormu: '/muhasebe/gidenyakitformu',
+
+  // --Raporlar
+  baseUrlGunlukRapor : '/muhasebe/gunlukrapor'
+
 };
