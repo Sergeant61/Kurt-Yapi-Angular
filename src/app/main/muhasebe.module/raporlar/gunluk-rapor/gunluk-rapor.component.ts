@@ -19,8 +19,7 @@ export class GunlukRaporComponent implements OnInit {
 
   gunlukRapor: GunlukRapor = new GunlukRapor();
   baseUrl: string = environment.baseUrlGunlukRapor;
-  tirKamyonThead: string[] = ['Plaka', 'Personel', 'İmza'];
-  multiAray: [][] = [];
+  tirKamyonThead: string[] = [];
   todayDate: string = new Date().toISOString().slice(0, 10);
 
   tablo: Array<string[]> = [];
@@ -38,7 +37,9 @@ export class GunlukRaporComponent implements OnInit {
   dateChange() {
     this.getValues().then(rapor => {
 
-      console.log(rapor);
+      // console.log(rapor);
+      this.tablo = [];
+      this.tirKamyonThead = ['Plaka', 'Personel', 'İmza'];
 
       // Yük listesi düzenleme
       rapor.tirKamyonRapor.forEach(data => {
@@ -172,6 +173,8 @@ export class GunlukRaporComponent implements OnInit {
     return this.tirKamyonGunlukCalismaFormuService.getRaporDetail({ mode: 1, todayDate: this.todayDate })
       .toPromise().then(data => {
         if (data.success) {
+          console.log(data.data);
+
           data.data.forEach(form => {
             let tirKamyonRapor: TirKamyonRapor;
 

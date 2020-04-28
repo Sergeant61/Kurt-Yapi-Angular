@@ -81,33 +81,35 @@
     </table>
 
   </div>
-</div>
 
-<div class="container-fluid p-0" *ngIf="gunlukRapor.tirKamyonRapor.length>0">
-  <div class="col-md-12 bg-secondary p-2 text-center" >
-    <h5 class="text-white">Tır Kamyon Tonaj List</h5>
+  <div class="container-fluid p-0" *ngIf="gunlukRapor.tirKamyonRapor.length>0">
+    <div class="col-md-12 bg-secondary p-2 text-center" >
+      <h5 class="text-white">Tır Kamyon Tonaj List</h5>
+    </div>
+
+    <table #excelTable3 class="table table-bordered table-sm">
+      <thead class="thead-dark">
+        <tr>
+          <th>#</th>
+          <th>Plaka</th>
+          <th>Toplam Tonaj</th>
+          <th>
+            <button class="btn btn-primary btn-sm mr-2" (click)="excelExport(excelTable3)">Excel</button>
+            <button class="btn btn-primary btn-sm" (click)="generatePDF(excelTable3)">Pdf</button>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let value of gunlukRapor.tirKamyonRapor;index as i">
+          <td>{{ i + 1 }}</td>
+          <td>{{value.tirKamyon}}</td>
+          <td>{{value.toplamTonaj}}</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+
   </div>
-
-  <table #excelTable3 class="table table-bordered table-sm">
-    <thead class="thead-dark">
-      <tr>
-        <th>#</th>
-        <th>Plaka</th>
-        <th>Toplam Tonaj</th>
-        <th>
-          <button class="btn btn-primary btn-sm mr-2" (click)="excelExport(excelTable3)">Excel</button>
-          <button class="btn btn-primary btn-sm" (click)="generatePDF(excelTable3)">Pdf</button>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let value of gunlukRapor.tirKamyonRapor;index as i">
-        <td>{{ i + 1 }}</td>
-        <td>{{value.tirKamyon}}</td>
-        <td>{{value.toplamTonaj}}</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-
 </div>
+
+
