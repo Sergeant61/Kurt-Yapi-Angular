@@ -3,7 +3,7 @@
   <nav id="sidebar">
 
     <div class="sidebar-header">
-      <img src="assets/logo.png" routerLink="/main/home"  height="60" class="ml-2" />
+      <img src="assets/logo.png" routerLink="/main/home" height="60" class="ml-2" />
 
       <!-- <h3>Kurt Yapı Muhasebe</h3> -->
     </div>
@@ -11,84 +11,59 @@
     <ul class="list-unstyled components">
       <!-- Araç Formları -->
       <li>
-        <a
-          href="#homeSubmenu"
-          data-toggle="collapse"
-          aria-expanded="false"
-          class="dropdown-toggle"
-          >Çalışma Formları</a
-        >
+        <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Çalışma Formları</a>
         <ul class="collapse list-unstyled" id="homeSubmenu">
           <li>
-            <a routerLink="/muhasebe/tirkamyon" routerLinkActive="active"
-              >Tır Kamyon Günlük Çalışma Formu</a
-            >
+            <a routerLink="/muhasebe/tirkamyon" routerLinkActive="active">Tır Kamyon Günlük Çalışma Formu</a>
           </li>
           <li>
-            <a routerLink="/muhasebe/ismakinesi" routerLinkActive="active"
-              >İş Makinesi Günlük Çalışma Formu</a
-            >
+            <a routerLink="/muhasebe/ismakinesi" routerLinkActive="active">İş Makinesi Günlük Çalışma Formu</a>
           </li>
 
           <!-- Yakıt Formları -->
           <li>
-            <a
-              href="#homeSubmenu1"
-              data-toggle="collapse"
-              aria-expanded="false"
-              class="dropdown-toggle"
-              >Yakıt Formları</a
-            >
+            <a href="#homeSubmenu1" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Yakıt
+              Formları</a>
             <ul class="collapse list-unstyled" id="homeSubmenu1">
               <li>
-                <a
-                  routerLink="/muhasebe/gelenyakitformu"
-                  routerLinkActive="active"
-                  >Gelen Yakıt Formu</a
-                >
+                <a routerLink="/muhasebe/gelenyakitformu" routerLinkActive="active">Gelen Yakıt Formu</a>
               </li>
               <li>
-                <a
-                  routerLink="/muhasebe/gidenyakitformu"
-                  routerLinkActive="active"
-                  >Giden Yakıt Formu</a
-                >
+                <a routerLink="/muhasebe/gidenyakitformu" routerLinkActive="active">Giden Yakıt Formu</a>
               </li>
             </ul>
           </li>
         </ul>
+      </li>
 
-        <!-- Raporlar Formları -->
+      <!-- Raporlar Formları -->
+
+      <li>
+        <a href="#homeSubmenu2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Genel Raporlar</a>
+        <ul class="collapse list-unstyled" id="homeSubmenu2">
+          <li>
+            <a routerLink="/muhasebe/gunlukrapor" routerLinkActive="active">Günlük Raporlar</a>
+          </li>
+          <li>
+            <a routerLink="/muhasebe/firmacarileri" routerLinkActive="active">Firma Carileri</a>
+          </li>
+          <li>
+            <a routerLink="/muhasebe/tahsilat" routerLinkActive="active">Tahsilat</a>
+          </li>
+          <li>
+            <a routerLink="/muhasebe/seferfisi" routerLinkActive="active">Sefer Fişi</a>
+          </li>
+        </ul>
       </li>
 
       <li>
-        <a
-          href="#homeSubmenu2"
-          data-toggle="collapse"
-          aria-expanded="false"
-          class="dropdown-toggle"
-          >Genel Raporlar</a
-        >
-        <ul class="collapse list-unstyled" id="homeSubmenu2">
+        <a href="#homeSubmenu3" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Personel</a>
+        <ul class="collapse list-unstyled" id="homeSubmenu3">
           <li>
-            <a routerLink="/muhasebe/gunlukrapor" routerLinkActive="active"
-              >Günlük Raporlar</a
-            >
+            <a routerLink="/muhasebe/mesaipuantaji" routerLinkActive="active">Mesai Puantajı</a>
           </li>
           <li>
-            <a routerLink="/muhasebe/firmacarileri" routerLinkActive="active"
-              >Firma Carileri</a
-            >
-          </li>
-          <li>
-            <a routerLink="/muhasebe/tahsilat" routerLinkActive="active"
-              >Tahsilat</a
-            >
-          </li>
-          <li>
-            <a routerLink="/muhasebe/seferfisi" routerLinkActive="active"
-              >Sefer Fişi</a
-            >
+            <a routerLink="/muhasebe/mesaiodemesi" routerLinkActive="active">Mesai Ödemesi</a>
           </li>
         </ul>
       </li>
@@ -106,35 +81,22 @@
           <span></span>
         </button>
 
-        <button
-          class="navbar-toggler"
-          style="color: aliceblue;"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
+        <button class="navbar-toggler" style="color: aliceblue;" type="button" data-toggle="collapse"
+          data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+          aria-label="Toggle navigation">
           <i class="fas fa-align-justify"></i>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item" *ngIf="authService.isTokenValid">
-              <a class="nav-link" routerLink="/main/home" routerLinkActive="active"
-                >Ana Sayfa</a
-              >
+              <a class="nav-link" routerLink="/main/home" routerLinkActive="active">Ana Sayfa</a>
             </li>
             <li class="nav-item" *ngIf="authService.isTokenValid">
-              <a class="nav-link" routerLink="/muhasebe" routerLinkActive="active"
-                >Muhasebe</a
-              >
+              <a class="nav-link" routerLink="/muhasebe" routerLinkActive="active">Muhasebe</a>
             </li>
             <li class="nav-item" *ngIf="authService.isTokenValid">
-              <a class="nav-link" routerLink="/admin" routerLinkActive="active"
-                >Admin</a
-              >
+              <a class="nav-link" routerLink="/admin" routerLinkActive="active">Admin</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" routerLink="/main/login" routerLinkActive="active">
@@ -142,17 +104,11 @@
                   authService.isTokenValid
                     ? authService.currentUser.name + " " + authService.currentUser.surname
                     : "Giriş Yap"
-                }}</a
-              >
+                }}</a>
             </li>
             <li class="nav-item">
-              <a
-                class="nav-link"
-                routerLinkActive="active"
-                (click)="authService.logout()"
-                *ngIf="authService.isTokenValid"
-                >Çıkış Yap</a
-              >
+              <a class="nav-link" routerLinkActive="active" (click)="authService.logout()"
+                *ngIf="authService.isTokenValid">Çıkış Yap</a>
             </li>
           </ul>
         </div>

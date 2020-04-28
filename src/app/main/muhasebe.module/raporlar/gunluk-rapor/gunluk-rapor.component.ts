@@ -37,7 +37,6 @@ export class GunlukRaporComponent implements OnInit {
   dateChange() {
     this.getValues().then(rapor => {
 
-      // console.log(rapor);
       this.tablo = [];
       this.tirKamyonThead = ['Plaka', 'Personel', 'İmza'];
 
@@ -173,7 +172,6 @@ export class GunlukRaporComponent implements OnInit {
     return this.tirKamyonGunlukCalismaFormuService.getRaporDetail({ mode: 1, todayDate: this.todayDate })
       .toPromise().then(data => {
         if (data.success) {
-          console.log(data.data);
 
           data.data.forEach(form => {
             let tirKamyonRapor: TirKamyonRapor;
@@ -243,8 +241,6 @@ export class GunlukRaporComponent implements OnInit {
 
     if (tonajList !== undefined) {
       tonajList.forEach(tonaj => {
-        console.log(parseFloat(tonaj));
-
         tonajTop = tonajTop + (parseFloat(tonaj) ? +tonaj : 0);
       });
     }

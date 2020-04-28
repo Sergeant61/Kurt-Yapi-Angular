@@ -37,90 +37,111 @@
     <span class="text-white">Yükleniyor lütfen bekleyin.</span>
   </div>
 
-  <table class="table table-sm" *ngIf="gidenYakitFormuList">
-    <thead class="thead-dark">
-      <tr>
-        <th>#</th>
-        <th>Fiş No</th>
-        <th>Plaka</th>
-        <th>Verilen Yakıt</th>
-        <th>Yakıtı Alan Personel</th>
-        <th>Yakıtı Veren Personel</th>
-        <th>Form Tarihi</th>
-        <th>İlk Kayıt Tarihi</th>
-        <th>Son Güncelleme Tarihi</th>
-        <th>#</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let value of gidenYakitFormuList; index as i">
-        <th>{{ index + i + 1 }}</th>
-        <td>{{ value.fisNo }}</td>
-        <td *ngIf="value.isMakinesi">{{ value.isMakinesi.plaka }}</td>
-        <td *ngIf="value.tirKamyon">{{ value.tirKamyon.plaka }}</td>
-        <td>{{ value.verilenYakitLitre + " Litre" }}</td>
-        <td>
-          {{
-            value.yakitiAlanPersonel.name +
-              " " +
-              value.yakitiAlanPersonel.surname
-          }}
-        </td>
-        <td>
-          {{
-            value.yakitiVerenPersonel.name +
-              " " +
-              value.yakitiVerenPersonel.surname
-          }}
-        </td>
-        <td>{{ value.formTarihi | date: "dd/MM/yyyy" }}</td>
-        <td>{{ value.createdAt | date: "dd/MM/yyyy - hh:mm:ss" }}</td>
-        <td>{{ value.lastEditAt | date: "dd/MM/yyyy - hh:mm:ss" }}</td>
-        <td>
-          <div class="btn-group">
-            <button
-              type="button"
-              class="btn btn-warning"
-              [routerLink]="[baseUrl, 'edit', value._id]"
-            >
-              Düzenle
-            </button>
-            <button
-              type="button"
-              class="btn btn-danger"
-              *ngIf="authService.currentUser.isAdmin"
-              data-toggle="modal"
-              data-target="#exampleModal"
-              (click)="setSelected(value)"
-            >
-              Sil
-            </button>
-            <button
-              type="button"
-              class="btn btn-success"
-              *ngIf="authService.currentUser.isAdmin && !value.onaylimi"
-              data-toggle="modal"
-              data-target="#largeModal"
-              (click)="setOnaylaLoading(value)"
-            >
-              Onayla
-            </button>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <div class="col-md-12">
-    <ngb-pagination
-      class="d-flex justify-content-center"
-      [collectionSize]="listLength"
-      [(page)]="selectedPage"
-      [pageSize]="perViewPage"
-      [maxSize]="5"
-      [boundaryLinks]="true"
-      (pageChange)="changePage($event)"
-    ></ngb-pagination>
+  <div class="container-fluid" *ngIf="gidenYakitFormuList">
+    <div class="card shadow mb-4 mt-4">
+      <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
+
+        <h6 class="m-0 font-weight-bold text-dark">Giden Yakıt Formları (Onaysız)</h6>
+        <div class="btn-group">
+
+        </div>
+      </div>
+
+      <div class="card-body p-2">
+        <div class="table-responsive">
+
+          <table class="table table-sm">
+            <thead class="thead-dark">
+              <tr>
+                <th>#</th>
+                <th>Fiş No</th>
+                <th>Plaka</th>
+                <th>Verilen Yakıt</th>
+                <th>Yakıtı Alan Personel</th>
+                <th>Yakıtı Veren Personel</th>
+                <th>Form Tarihi</th>
+                <th>İlk Kayıt Tarihi</th>
+                <th>Son Güncelleme Tarihi</th>
+                <th>#</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let value of gidenYakitFormuList; index as i">
+                <th>{{ index + i + 1 }}</th>
+                <td>{{ value.fisNo }}</td>
+                <td *ngIf="value.isMakinesi">{{ value.isMakinesi.plaka }}</td>
+                <td *ngIf="value.tirKamyon">{{ value.tirKamyon.plaka }}</td>
+                <td>{{ value.verilenYakitLitre + " Litre" }}</td>
+                <td>
+                  {{
+                    value.yakitiAlanPersonel.name +
+                      " " +
+                      value.yakitiAlanPersonel.surname
+                  }}
+                </td>
+                <td>
+                  {{
+                    value.yakitiVerenPersonel.name +
+                      " " +
+                      value.yakitiVerenPersonel.surname
+                  }}
+                </td>
+                <td>{{ value.formTarihi | date: "dd/MM/yyyy" }}</td>
+                <td>{{ value.createdAt | date: "dd/MM/yyyy - hh:mm:ss" }}</td>
+                <td>{{ value.lastEditAt | date: "dd/MM/yyyy - hh:mm:ss" }}</td>
+                <td>
+                  <div class="btn-group">
+                    <button
+                      type="button"
+                      class="btn btn-warning"
+                      [routerLink]="[baseUrl, 'edit', value._id]"
+                    >
+                      Düzenle
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-danger"
+                      *ngIf="authService.currentUser.isAdmin"
+                      data-toggle="modal"
+                      data-target="#exampleModal"
+                      (click)="setSelected(value)"
+                    >
+                      Sil
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-success"
+                      *ngIf="authService.currentUser.isAdmin && !value.onaylimi"
+                      data-toggle="modal"
+                      data-target="#largeModal"
+                      (click)="setOnaylaLoading(value)"
+                    >
+                      Onayla
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <ngb-pagination
+        class="d-flex justify-content-center"
+        [collectionSize]="listLength"
+        [(page)]="selectedPage"
+        [pageSize]="perViewPage"
+        [maxSize]="5"
+        [boundaryLinks]="true"
+        (pageChange)="changePage($event)"
+      ></ngb-pagination>
+
+      </div>
+    </div>
   </div>
+
 </div>
 
 <!-- Modal dialog penceresi -->
