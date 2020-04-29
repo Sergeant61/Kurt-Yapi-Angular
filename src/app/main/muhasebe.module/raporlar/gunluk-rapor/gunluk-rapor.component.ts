@@ -5,9 +5,9 @@ import { IsMakinesiGunlukCalismaFormuService } from 'src/app/main/rest.module/is
 import { GunlukRapor } from 'src/app/main/models/raporlar/GunlukRapor';
 import { IsMakinesiRapor } from 'src/app/main/models/raporlar/IsMakinesiRapor';
 import { TirKamyonRapor, YuklemeYeri, DokumYeri } from 'src/app/main/models/raporlar/TirKamyonRapor';
-import * as XLSX from 'xlsx';
 import { environment } from 'src/environments/environment';
 import html2canvas from 'html2canvas';
+import * as XLSX from 'xlsx';
 import * as jsPDF from 'jspdf';
 
 @Component({
@@ -17,12 +17,12 @@ import * as jsPDF from 'jspdf';
 })
 export class GunlukRaporComponent implements OnInit {
 
+  isLoading = true;
   gunlukRapor: GunlukRapor = new GunlukRapor();
   baseUrl: string = environment.baseUrlGunlukRapor;
-  tirKamyonThead: string[] = [];
   todayDate: string = new Date().toISOString().slice(0, 10);
-
   tablo: Array<string[]> = [];
+  tirKamyonThead: string[] = [];
 
   constructor(
     public authService: AuthService,
@@ -38,7 +38,7 @@ export class GunlukRaporComponent implements OnInit {
     this.getValues().then(rapor => {
 
       this.tablo = [];
-      this.tirKamyonThead = ['Plaka', 'Personel', 'İmza'];
+      this.tirKamyonThead = ['Plaka', 'Personel'];
 
       // Yük listesi düzenleme
       rapor.tirKamyonRapor.forEach(data => {
@@ -84,8 +84,6 @@ export class GunlukRaporComponent implements OnInit {
 
         satir.push(data.tirKamyon);
         satir.push(data.personel);
-        satir.push(data.imza);
-
 
         let yukT = 0;
         data.yuklemeYeriList.forEach(yuk => {
@@ -123,24 +121,28 @@ export class GunlukRaporComponent implements OnInit {
 
       const satirr: string[] = [];
 
+      satirr.push('Toplam');
       this.tablo.forEach(satirList => {
 
-        for (let index = 3; index < this.tirKamyonThead.length; index++) {
+        for (let index = 2; index < this.tirKamyonThead.length; index++) {
           const s = satirList[index];
           satirr[index] = '' + (+(satirr[index] === undefined ? 0 : satirr[index]) + +(s === undefined ? 0 : s));
         }
 
       });
-      this.tablo.push(satirr);
+      if (this.tablo.length !== 0) {
+        this.tablo.push(satirr);
+      }
 
     });
   }
 
   async getValues() {
     this.gunlukRapor = new GunlukRapor();
-
+    this.isLoading = true;
     await this.getIsmakinesi();
     await this.getTirKamyon();
+    this.isLoading = false;
 
     return this.gunlukRapor;
   }
@@ -189,7 +191,6 @@ export class GunlukRaporComponent implements OnInit {
                 this.todayDate,
                 form.tirKamyon.plaka,
                 form.personel.name + ' ' + form.personel.surname,
-                form.imzalimi ? 'İmzalı' : 'İmzasız',
                 this.getToplamTonaj(form.tonajList)
               );
 
@@ -275,7 +276,7 @@ export class GunlukRaporComponent implements OnInit {
       const pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
       const position = 0;
       pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
-      pdf.save('MYPdf.pdf'); // Generated PDF
+      pdf.save('gunluk-rapor-' + this.todayDate + '.pdf'); // Generated PDF
     });
   }
 

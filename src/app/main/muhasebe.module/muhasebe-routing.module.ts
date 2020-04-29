@@ -14,6 +14,9 @@ import { GelenYakitFormuCreateEditComponent } from './formlar/gelen-yakit-formu-
 import { GidenYakitFormuComponent } from './formlar/giden-yakit-formu/giden-yakit-formu.component';
 import { GidenYakitFormuCreateEditComponent } from './formlar/giden-yakit-formu-create-edit/giden-yakit-formu-create-edit.component';
 import { GunlukRaporComponent } from './raporlar/gunluk-rapor/gunluk-rapor.component';
+import { PerMesaiPuantajiComponent } from './raporlar/per-mesai-puantaji/per-mesai-puantaji.component';
+import { PerMesaiOdemesiComponent } from './raporlar/per-mesai-odemesi/per-mesai-odemesi.component';
+import { FirmaRaporComponent } from './raporlar/firma-rapor/firma-rapor.component';
 
 
 const routes: Routes = [
@@ -33,9 +36,12 @@ const routes: Routes = [
       { path: 'gidenyakitformu/:mode/:id', component: GidenYakitFormuCreateEditComponent },
       { path: 'gidenyakitformu/:mode', component: GidenYakitFormuCreateEditComponent },
       { path: 'firmacarileri', component: FirmaCarileriComponent },
+      { path: 'firmarapor', component: FirmaRaporComponent },
       { path: 'tahsilat', component: TahsilatComponent },
       { path: 'seferfisi', component: SerferFisiComponent },
-      { path: 'gunlukrapor', component: GunlukRaporComponent }
+      { path: 'gunlukrapor', component: GunlukRaporComponent },
+      { path: 'mesaipuantaji', component: PerMesaiPuantajiComponent },
+      { path: 'mesaiodemesi', component: PerMesaiOdemesiComponent }
 
     ]
   },

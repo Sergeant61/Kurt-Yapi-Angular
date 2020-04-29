@@ -6,7 +6,7 @@
     </div>
   </div>
 
-  <div class="col-md-12 bg-success p-2" *ngIf="gunlukRapor.isMakinesiRapor.length<=0">
+  <div class="col-md-12 bg-success p-2" *ngIf="isLoading">
     <div class="spinner-border spinner-border-sm text-light mr-2" role="status"></div>
     <div class="spinner-grow spinner-grow-sm text-light mr-2" role="status"></div>
     <span class="text-white">Yükleniyor lütfen bekleyin.</span>
@@ -14,7 +14,7 @@
 
   <br />
 
-  <div class="container-fluid" *ngIf="gunlukRapor.isMakinesiRapor.length>0">
+  <div class="container-fluid" *ngIf="!isLoading">
 
     <div class="card shadow mb-4 mt-4">
       <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
@@ -62,7 +62,7 @@
 
   </div>
 
-  <div class="container-fluid" *ngIf="gunlukRapor.tirKamyonRapor.length>0">
+  <div class="container-fluid" *ngIf="!isLoading">
 
     <div class="card shadow mb-4 mt-4">
       <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">

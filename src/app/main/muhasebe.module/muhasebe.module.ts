@@ -19,6 +19,9 @@ import { GidenYakitFormuComponent } from './formlar/giden-yakit-formu/giden-yaki
 import { GidenYakitFormuCreateEditComponent } from './formlar/giden-yakit-formu-create-edit/giden-yakit-formu-create-edit.component';
 import { MalihuScrollbarService } from 'ngx-malihu-scrollbar';
 import { GunlukRaporComponent } from './raporlar/gunluk-rapor/gunluk-rapor.component';
+import { FirmaRaporComponent } from './raporlar/firma-rapor/firma-rapor.component';
+import { PerMesaiPuantajiComponent } from './raporlar/per-mesai-puantaji/per-mesai-puantaji.component';
+import { PerMesaiOdemesiComponent } from './raporlar/per-mesai-odemesi/per-mesai-odemesi.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +38,10 @@ import { GunlukRaporComponent } from './raporlar/gunluk-rapor/gunluk-rapor.compo
     GelenYakitFormuCreateEditComponent,
     GidenYakitFormuComponent,
     GidenYakitFormuCreateEditComponent,
-    GunlukRaporComponent
+    GunlukRaporComponent,
+    FirmaRaporComponent,
+    PerMesaiPuantajiComponent,
+    PerMesaiOdemesiComponent
   ],
   imports: [
     MuhasebeRoutingModule,
