@@ -40,6 +40,8 @@ export class FirmaRaporComponent implements OnInit {
   }
 
   dateChange() {
+    console.log(this.startDate, this.lastDate);
+
     this.getValues().then(rapor => {
       console.log(rapor);
 
@@ -131,6 +133,9 @@ export class FirmaRaporComponent implements OnInit {
       .toPromise().then(data => {
 
         if (data.success) {
+          console.log(data);
+          this.firmaRaporList = [];
+
           data.data.forEach(form => {
             let firmaRapor: FirmaRapor;
 
