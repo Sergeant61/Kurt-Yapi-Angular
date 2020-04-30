@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
@@ -11,6 +11,12 @@ import { AuthService } from './main/rest.module/auth.service';
 import { AlertifyService } from './main/services/alertify.service';
 import { ErrorService } from './main/services/error.service';
 import { AuthGuard } from './main/rest.module/auth.guard';
+
+
+import { registerLocaleData } from '@angular/common';
+import localeTR from '@angular/common/locales/tr';
+
+registerLocaleData(localeTR);
 
 @NgModule({
   declarations: [
@@ -36,7 +42,7 @@ import { AuthGuard } from './main/rest.module/auth.guard';
       { path: '**', redirectTo: '/main/home' }
     ])
   ],
-  providers: [AuthService, AlertifyService, ErrorService],
+  providers: [AuthService, AlertifyService, ErrorService,{provide: LOCALE_ID, useValue: 'tr'}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

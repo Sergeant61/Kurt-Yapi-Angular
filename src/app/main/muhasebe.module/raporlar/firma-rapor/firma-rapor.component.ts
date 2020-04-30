@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/main/rest.module/auth.service';
 import { IsMakinesiGunlukCalismaFormuService } from 'src/app/main/rest.module/is-makinesi-gunluk-calisma-formu.service';
 import { TirKamyonGunlukCalismaFormuService } from 'src/app/main/rest.module/tir-kamyon-gunluk-calisma-formu.service';
@@ -6,6 +6,8 @@ import html2canvas from 'html2canvas';
 import * as XLSX from 'xlsx';
 import * as jsPDF from 'jspdf';
 import { FirmaRapor, AracRapor } from 'src/app/main/models/raporlar/FirmaRapor';
+import { FirmaService } from 'src/app/main/rest.module/firma.service';
+import { Firma } from 'src/app/main/models/Firma';
 
 @Component({
   selector: 'app-firma-rapor',
@@ -19,31 +21,34 @@ export class FirmaRaporComponent implements OnInit {
 
   sDate = new Date(this.date.getFullYear(), this.date.getMonth(), 1);
   lDate = new Date(this.date.getFullYear(), this.date.getMonth() + 1, 0);
+  firmaId = '1';
 
   startDate: string = this.sDate.toISOString().slice(0, 10);
   lastDate: string = this.lDate.toISOString().slice(0, 10);
 
   firmaRaporList: FirmaRapor[] = [];
+  firmaList: Firma[] = [];
 
   tablo: Array<string[]> = [];
+  tablo2: Array<string[]> = [];
   tabloThead: string[] = [];
 
 
   constructor(
     public authService: AuthService,
+    private firmaService: FirmaService,
     private tirKamyonGunlukCalismaFormuService: TirKamyonGunlukCalismaFormuService,
     private isMakinesiGunlukCalismaFormuService: IsMakinesiGunlukCalismaFormuService
   ) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    await this.getFirmaList();
     this.dateChange();
   }
 
   dateChange() {
-    console.log(this.startDate, this.lastDate);
 
     this.getValues().then(rapor => {
-      console.log(rapor);
 
       this.tablo = [];
       this.tabloThead = ['Form Tarihi'];
@@ -61,8 +66,6 @@ export class FirmaRaporComponent implements OnInit {
       });
 
       this.tabloThead.push('Toplam');
-
-      console.log(this.tabloThead);
 
       rapor.forEach(r => {
         const satir: string[] = [];
@@ -86,54 +89,72 @@ export class FirmaRaporComponent implements OnInit {
           return t === 'Toplam';
         });
         satir[k] = top + '';
-
         this.tablo.push(satir);
       });
 
-      console.log(this.tablo);
-
-      const satirr: string[] = [];
-      satirr.push('Toplam');
+      const tablo1SonSatir: string[] = [];
+      tablo1SonSatir.push('Toplam');
 
       this.tablo.forEach(satirList => {
 
-        for (let index = 2; index < this.tabloThead.length; index++) {
+        for (let index = 1; index < this.tabloThead.length; index++) {
           const s = satirList[index];
-          satirr[index] = '' + (+(satirr[index] === undefined ? 0 : satirr[index]) + +(s === undefined ? 0 : s));
+          tablo1SonSatir[index] = '' + (+(tablo1SonSatir[index] === undefined ? 0 : tablo1SonSatir[index]) + +(s === undefined ? 0 : s));
         }
 
       });
       if (this.tablo.length !== 0) {
-        this.tablo.push(satirr);
+        this.tablo.push(tablo1SonSatir);
       }
+
+      // Taoplo 2
+
+      for (let index = 1; index < this.tabloThead.length; index++) {
+        const satir3: string[] = [];
+
+        satir3.push(this.tabloThead[index]);
+        satir3.push(tablo1SonSatir[index]);
+
+        this.tablo2.push(satir3);
+      }
+
+
+
+
 
     }).catch(err => { });
   }
 
-  gfg_Run(date): string {
-    const sdate = date.toJSON().slice(0, 10);
-    const nDate = sdate.slice(8, 10) + '/'
-      + sdate.slice(5, 7) + '/'
-      + sdate.slice(0, 4);
-    return nDate;
-  }
-
   async getValues() {
     this.isLoading = true;
-
     await this.getIsmakinesi();
     this.isLoading = false;
-
-
     return this.firmaRaporList;
   }
 
+  getSonuc(input, td) {
+    console.log(input.value, td);
+
+
+
+    return +(input.value) * +(td);
+  }
+
+  getFirmaList() {
+    return this.firmaService.getAll().toPromise().then(data => {
+      if (data.success) {
+        this.firmaList = data.data;
+        this.firmaList.splice(0, 0, new Firma('1', 'Hepsi'));
+      }
+    }).catch(err => { });
+  }
+
   getIsmakinesi() {
-    return this.isMakinesiGunlukCalismaFormuService.getRaporDetail({ mode: 2, startDate: this.startDate, lastDate: this.lastDate })
+    return this.isMakinesiGunlukCalismaFormuService.getRaporDetail(
+      { mode: 2, startDate: this.startDate, lastDate: this.lastDate, firmaId: this.firmaId })
       .toPromise().then(data => {
 
         if (data.success) {
-          console.log(data);
           this.firmaRaporList = [];
 
           data.data.forEach(form => {
@@ -173,6 +194,14 @@ export class FirmaRaporComponent implements OnInit {
         }
       }).catch(err => { });
 
+  }
+
+  gfg_Run(date): string {
+    const sdate = date.toJSON().slice(0, 10);
+    const nDate = sdate.slice(8, 10) + '/'
+      + sdate.slice(5, 7) + '/'
+      + sdate.slice(0, 4);
+    return nDate;
   }
 
   excelExport(data) {
