@@ -11,7 +11,9 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "private": true,
   "dependencies": {
@@ -31,7 +33,7 @@
     "bootstrap": "^4.4.1",
     "express": "^4.17.1",
     "html2canvas": "^1.0.0-rc.5",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "jspdf": "^1.5.3",
     "ng-recaptcha": "^5.0.0",
     "ngx-bootstrap": "^5.6.1",
@@ -40,7 +42,8 @@
     "rxjs": "^6.5.5",
     "tslib": "^1.10.0",
     "xlsx": "^0.15.6",
-    "zone.js": "~0.10.2"
+    "zone.js": "~0.10.2",
+    "snyk": "^1.316.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.900.7",
@@ -67,5 +70,6 @@
   "engines": {
     "node": "10.16.3",
     "npm": "6.9.0"
-  }
+  },
+  "snyk": true
 }
