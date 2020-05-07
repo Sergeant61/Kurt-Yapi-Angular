@@ -11,7 +11,9 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "private": true,
   "dependencies": {
@@ -44,7 +46,8 @@
     "rxjs": "^6.5.5",
     "tslib": "^1.10.0",
     "xlsx": "^0.15.6",
-    "zone.js": "~0.10.2"
+    "zone.js": "~0.10.2",
+    "snyk": "^1.319.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.900.7",
@@ -71,5 +74,6 @@
   "engines": {
     "node": "10.16.3",
     "npm": "6.9.0"
-  }
+  },
+  "snyk": true
 }
