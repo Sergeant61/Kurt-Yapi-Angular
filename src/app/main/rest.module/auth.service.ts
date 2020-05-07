@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { AlertifyService } from '../services/alertify.service';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,7 @@ export class AuthService {
 
   path = environment.path;
   token: string = null;
+  browser: string = null;
   currentUser: User = new User();
   isTokenValid: boolean = false;
 
@@ -24,7 +26,22 @@ export class AuthService {
     private http: HttpClient,
     private router: Router,
     public jwtHelper: JwtHelperService,
-    private alertifyService: AlertifyService) {
+    private alertifyService: AlertifyService,
+    private deviceService: DeviceDetectorService) {
+    this.browser = JSON.stringify(this.epicFunction());
+    console.log(this.browser);
+  }
+
+  epicFunction(): any {
+    const deviceInfo = this.deviceService.getDeviceInfo();
+    const isMobile = this.deviceService.isMobile();
+    const isTablet = this.deviceService.isTablet();
+    const isDesktopDevice = this.deviceService.isDesktop();
+
+
+    let isWhat = 0;
+    if (isMobile) { isWhat = 0; } else if (isTablet) { isWhat = 1; } else if (isDesktopDevice) { isWhat = 2; }
+    return { deviceInfo, isWhat };
   }
 
   async isAuthenticated(): Promise<boolean> {
@@ -67,26 +84,22 @@ export class AuthService {
 
   logout() {
     this.http.post<ApiResponse<void>>(this.path + '/api/users/logout', {},
-    { headers: new HttpHeaders({ 'x-access-token': this.token }) })
-    .subscribe(res => {
-      localStorage.removeItem('token');
-      this.token = null;
-      this.currentUser = new User();
-      this.isTokenValid = false;
-      this.router.navigateByUrl('/main/login');
-      this.alertifyService.error('Çıkış başarılı.');
-    }, err => {
+      { headers: new HttpHeaders({ 'x-access-token': this.token }) })
+      .subscribe(res => {
+        localStorage.removeItem('token');
+        this.token = null;
+        this.currentUser = new User();
+        this.isTokenValid = false;
+        this.router.navigateByUrl('/main/login');
+        this.alertifyService.error('Çıkış başarılı.');
+      }, err => {
 
-    });
-
-
-
-
+      });
   }
 
   getUser() {
     return this.http.get<ApiResponse<User>>(this.path + '/api/users',
-      { headers: new HttpHeaders({ 'x-access-token': this.token }) }).toPromise().then(res => {
+      { headers: new HttpHeaders({ 'x-access-token': this.token, 'x-browser': this.browser }) }).toPromise().then(res => {
         if (res.success) {
           this.currentUser = res.data;
           this.isTokenValid = res.success;
@@ -102,7 +115,7 @@ export class AuthService {
 
   getUserSingle(): Observable<ApiResponse<User>> {
     return this.http.get<ApiResponse<User>>(this.path + '/api/users',
-      { headers: new HttpHeaders({ 'x-access-token': this.token }) });
+      { headers: new HttpHeaders({ 'x-access-token': this.token, browser: this.browser }) });
   }
 
   register(body: User): Observable<ApiResponse<any>> {

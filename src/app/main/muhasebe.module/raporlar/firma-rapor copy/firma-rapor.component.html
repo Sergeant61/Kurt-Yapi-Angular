@@ -82,8 +82,7 @@
         <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
 
           <h6 class="m-0 font-weight-bold text-dark">
-            {{firmaList[firmaIdT.selectedIndex].name}} {{startDate | date: "dd MMMM yyyy"}} -
-            {{lastDate | date: "dd MMMM yyyy"}} Çalışma (Pauntaj) Çizelgesi
+            Fiyatlandırma
           </h6>
           <div class="btn-group">
             <button type="button" class="btn btn-primary btn-sm" (click)="excelExport(excelTable2)">Excel</button>
@@ -95,46 +94,6 @@
         <div class="card-body p-2">
           <div class="table-responsive">
             <table id="excelTable2" #excelTable2 class="table table-sm table-bordered" width="100%" cellspacing="0">
-              <thead class="thead-dark">
-                <tr>
-                  <th>#</th>
-                  <th class="text-center" *ngFor="let item of tabloThead3"> {{item}} </th>
-
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let value of tablo3;index as i">
-                  <td>{{ i + 1 }}</td>
-                  <td class="text-center" *ngFor="let item of value">{{item}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-        </div>
-      </div>
-
-
-    </div>
-
-    <div class="container-fluid" *ngIf="!isLoading">
-
-      <div class="card shadow mb-4 mt-4">
-        <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
-
-          <h6 class="m-0 font-weight-bold text-dark">
-            Fiyatlandırma
-          </h6>
-          <div class="btn-group">
-            <button type="button" class="btn btn-primary btn-sm" (click)="excelExport(excelTable3)">Excel</button>
-            <button type="button" class="btn btn-success btn-sm" (click)="pdfExport(excelTable3)">Pdf</button>
-          </div>
-
-        </div>
-
-        <div class="card-body p-2">
-          <div class="table-responsive">
-            <table id="excelTable3" #excelTable3 class="table table-sm table-bordered" width="100%" cellspacing="0">
               <thead class="thead-dark">
                 <tr>
                   <th>#</th>

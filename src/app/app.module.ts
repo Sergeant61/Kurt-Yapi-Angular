@@ -12,9 +12,9 @@ import { AlertifyService } from './main/services/alertify.service';
 import { ErrorService } from './main/services/error.service';
 import { AuthGuard } from './main/rest.module/auth.guard';
 
-
 import { registerLocaleData } from '@angular/common';
 import localeTR from '@angular/common/locales/tr';
+
 
 registerLocaleData(localeTR);
 
@@ -39,10 +39,10 @@ registerLocaleData(localeTR);
         path: 'admin', loadChildren: () => import('./main/admin.module/admin.module').then(m => m.AdminModule),
         canActivate: [AuthGuard]
       },
-      { path: '**', redirectTo: '/main/home' }
-    ])
+      { path: '**', redirectTo: '/main/home' },
+    ]),
   ],
-  providers: [AuthService, AlertifyService, ErrorService,{provide: LOCALE_ID, useValue: 'tr'}],
+  providers: [AuthService, AlertifyService, ErrorService, { provide: LOCALE_ID, useValue: 'tr' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

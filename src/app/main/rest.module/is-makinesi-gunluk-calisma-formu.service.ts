@@ -19,7 +19,7 @@ export class IsMakinesiGunlukCalismaFormuService {
   headers: HttpHeaders;
 
   constructor(private http: HttpClient, private authService: AuthService, private errorService: ErrorService) {
-    this.headers = new HttpHeaders({ 'x-access-token': authService.token });
+    this.headers = new HttpHeaders({ 'x-access-token': authService.token, 'x-browser': authService.browser });
   }
 
   post(data: IsMakinesiGunlukCalisma): Observable<ApiResponse<IsMakinesiGunlukCalisma>> {

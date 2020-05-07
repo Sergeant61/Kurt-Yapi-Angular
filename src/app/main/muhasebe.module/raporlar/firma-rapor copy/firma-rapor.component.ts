@@ -31,9 +31,7 @@ export class FirmaRaporComponent implements OnInit {
 
   tablo: Array<string[]> = [];
   tablo2: Array<any[]> = [];
-  tablo3: Array<any[]> = [];
   tabloThead: string[] = [];
-  tabloThead3: string[] = [];
 
 
   constructor(
@@ -113,7 +111,7 @@ export class FirmaRaporComponent implements OnInit {
         this.tablo.push(tablo1SonSatir);
       }
 
-      // Taplo 2
+      // Taoplo 2
       if (rapor.length !== 0) {
 
         for (let index = 1; index < this.tabloThead.length; index++) {
@@ -126,9 +124,6 @@ export class FirmaRaporComponent implements OnInit {
           this.tablo2.push(satir3);
         }
       }
-
-
-
 
     }).catch(err => { });
   }
@@ -154,29 +149,8 @@ export class FirmaRaporComponent implements OnInit {
       { mode: 2, startDate: this.startDate, lastDate: this.lastDate, firmaId: this.firmaId })
       .toPromise().then(data => {
 
-        this.tablo3 = [];
-        this.tabloThead3 = ['Form Tarihi', 'Makina Cinsi', 'Yapılan İşin Tanımı', 'Çalışma Şekli', 'Çalışma Birimi', 'İmzalı/İmzasız'];
-
         if (data.success) {
           this.firmaRaporList = [];
-
-          // Taplo 3
-          console.log(data.data);
-
-          data.data.forEach(r => {
-
-            const satir: any[] = [];
-
-            satir.push(this.gfg_Run(new Date(r.formTarihi)));
-            satir.push(r.isMakinesi.makineCinsi);
-            satir.push(r.yapilinIsTanimi);
-            satir.push(r.calismaSekli);
-            satir.push(r.calismaSaati);
-            satir.push(r.imzalimi ? 'İmzalı' : 'İmzasız');
-
-            this.tablo3.push(satir);
-
-          });
 
           data.data.forEach(form => {
             let firmaRapor: FirmaRapor;
@@ -258,12 +232,11 @@ export class FirmaRaporComponent implements OnInit {
     /* generate worksheet */
     const d1 = document.getElementById('excelTable1');
     const d2 = document.getElementById('excelTable2');
-    const d3 = document.getElementById('excelTable3');
+    // const d3 = document.getElementById('excelTable3');
 
     const tableAll = document.createElement('table');
     tableAll.innerHTML = '<table>' + d1.innerHTML + '<tr><th></th></tr></table>' +
-      '<table>' + d2.innerHTML + '<tr><th></th></tr></table>' +
-      '<table>' + d3.innerHTML + '<tr><th></th></tr></table>';
+      '<table>' + d2.innerHTML + '<tr><th></th></tr></table>';
 
     const ws1: XLSX.WorkSheet = XLSX.utils.table_to_sheet(tableAll);
 

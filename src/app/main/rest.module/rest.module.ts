@@ -16,13 +16,17 @@ import { HomeGuard } from './home.guard';
 import { GidenYakitFormuService } from './giden-yakit-formu.service';
 import { GelenYakitFormuService } from './gelen-yakit-formu.service';
 import { IsMakinesiGunlukCalismaFormuService } from './is-makinesi-gunluk-calisma-formu.service';
+import { DeviceDetectorModule, DeviceDetectorService } from 'ngx-device-detector';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
-    HttpClientModule
+    FormsModule,
+    HttpClientModule,
+    DeviceDetectorModule.forRoot()
   ],
   providers: [
     AuthGuard,
@@ -40,7 +44,8 @@ import { IsMakinesiGunlukCalismaFormuService } from './is-makinesi-gunluk-calism
     GelenYakitFormuService,
     GidenYakitFormuService,
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
-    JwtHelperService
+    JwtHelperService,
+    DeviceDetectorService
   ]
 })
 export class RestModule { }

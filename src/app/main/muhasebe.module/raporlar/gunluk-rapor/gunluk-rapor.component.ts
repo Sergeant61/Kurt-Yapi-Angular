@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/main/rest.module/auth.service';
 import { TirKamyonGunlukCalismaFormuService } from 'src/app/main/rest.module/tir-kamyon-gunluk-calisma-formu.service';
 import { IsMakinesiGunlukCalismaFormuService } from 'src/app/main/rest.module/is-makinesi-gunluk-calisma-formu.service';
 import { GunlukRapor } from 'src/app/main/models/raporlar/GunlukRapor';
 import { IsMakinesiRapor } from 'src/app/main/models/raporlar/IsMakinesiRapor';
-import { TirKamyonRapor, YuklemeYeri, DokumYeri } from 'src/app/main/models/raporlar/TirKamyonRapor';
+import { TirKamyonRapor, SeferBilgileri } from 'src/app/main/models/raporlar/TirKamyonRapor';
 import { environment } from 'src/environments/environment';
 import html2canvas from 'html2canvas';
 import * as XLSX from 'xlsx';
 import * as jsPDF from 'jspdf';
+import 'jspdf-autotable';
+
 
 @Component({
   selector: 'app-gunluk-rapor',
@@ -22,7 +24,8 @@ export class GunlukRaporComponent implements OnInit {
   baseUrl: string = environment.baseUrlGunlukRapor;
   todayDate: string = new Date().toISOString().slice(0, 10);
   tablo: Array<string[]> = [];
-  tirKamyonThead: string[] = [];
+  tablo2: Array<string[]> = [];
+  tirKamyonThead: any[] = [];
 
   constructor(
     public authService: AuthService,
@@ -38,102 +41,114 @@ export class GunlukRaporComponent implements OnInit {
     this.getValues().then(rapor => {
 
       this.tablo = [];
-      this.tirKamyonThead = ['Plaka', 'Personel'];
+      this.tablo2 = [];
+      this.tirKamyonThead = [];
+      const fark = 2; // satir ile başlık arasında ki kayma yani başlık satırdan fark kadar sonra başlıyor
 
-      // Yük listesi düzenleme
+      // Başlık1 oluşturma
       rapor.tirKamyonRapor.forEach(data => {
 
-        data.yuklemeYeriList.forEach(yuk => {
-
+        data.seferBilgileri.forEach(yuk => {
           const i = this.tirKamyonThead.findIndex(t => {
-            return t === yuk.name;
+            return t.calisilanFirma === yuk.calisilanFirma
+              && t.yuklemeYeri === yuk.yuklemeYeri
+              && t.dokumYeri === yuk.dokumYeri
+              && t.malzeme === yuk.malzeme;
           });
 
           if (i === -1) {
-            this.tirKamyonThead.push(yuk.name);
-
+            this.tirKamyonThead.push(yuk);
           }
         });
 
-
-      });
-      this.tirKamyonThead.push('Yük. Toplam');
-
-      // Döküm listesi düzenleme
-      rapor.tirKamyonRapor.forEach(data => {
-
-        data.dokumYeriList.forEach(dok => {
-
-          const i = this.tirKamyonThead.findIndex(t => {
-            return t === dok.name;
-          });
-
-          if (i === -1) {
-            this.tirKamyonThead.push(dok.name);
-          }
-        });
-
-
       });
 
-      this.tirKamyonThead.push('Dok. Toplam');
+      this.tirKamyonThead.push('Toplam Sefer');
+      this.tirKamyonThead.push('Toplam Tonaj');
 
-      // tablo Create
+      // tablo1 oluşturma
+
+      const satirToplamSefer: string[] = [];
+      satirToplamSefer.push('Toplam Sefer');
+
+      const satirToplamTonaj: string[] = [];
+      satirToplamTonaj.push('Toplam Tonaj');
+
       rapor.tirKamyonRapor.forEach(data => {
         const satir: string[] = [];
 
-        satir.push(data.tirKamyon);
         satir.push(data.personel);
+        satir.push(data.tirKamyon);
 
         let yukT = 0;
-        data.yuklemeYeriList.forEach(yuk => {
-
+        let tonajT = 0;
+        data.seferBilgileri.forEach(yuk => {
           const i = this.tirKamyonThead.findIndex(t => {
-            return t === yuk.name;
+            return t.calisilanFirma === yuk.calisilanFirma
+              && t.yuklemeYeri === yuk.yuklemeYeri
+              && t.dokumYeri === yuk.dokumYeri
+              && t.malzeme === yuk.malzeme;
           });
-          satir[i] = yuk.value + '';
-          yukT = yukT + yuk.value;
+          yukT = yukT + yuk.sefer;
+          satir[i + fark] = yuk.sefer + '';
+
+          tonajT = tonajT + yuk.toplamTonaj;
+          satirToplamTonaj[i + fark] = yuk.toplamTonaj + '';
+
         });
 
         const k = this.tirKamyonThead.findIndex(t => {
-          return t === 'Yük. Toplam';
+          return t === 'Toplam Sefer';
         });
-        satir[k] = yukT + '';
+        satir[k + fark] = yukT + '';
 
-
-        let dokT = 0;
-        data.dokumYeriList.forEach(dok => {
-
-          const i = this.tirKamyonThead.findIndex(t => {
-            return t === dok.name;
-          });
-          satir[i] = dok.value + '';
-          dokT = dokT + dok.value;
+        const j = this.tirKamyonThead.findIndex(t => {
+          return t === 'Toplam Tonaj';
         });
-
-        const l = this.tirKamyonThead.findIndex(t => {
-          return t === 'Dok. Toplam';
-        });
-        satir[l] = dokT + '';
+        satir[j + fark] = tonajT.toFixed(2); // Tonaj oplamı küsüratlı sayı olduğundan basamak 2 ili sınırlandırdım.
 
         this.tablo.push(satir);
+
       });
 
-      const satirr: string[] = [];
+      // son satirToplamSefer
 
-      satirr.push('Toplam');
       this.tablo.forEach(satirList => {
 
-        for (let index = 2; index < this.tirKamyonThead.length; index++) {
-          const s = satirList[index];
-          satirr[index] = '' + (+(satirr[index] === undefined ? 0 : satirr[index]) + +(s === undefined ? 0 : s));
+        for (let index = 0; index < this.tirKamyonThead.length - 2; index++) {
+          const s = satirList[index + fark];
+          satirToplamSefer[index + fark] =
+            '' + (+(satirToplamSefer[index + fark] === undefined ? 0 : satirToplamSefer[index + fark]) + +(s === undefined ? 0 : s));
         }
-
       });
-      if (this.tablo.length !== 0) {
-        this.tablo.push(satirr);
-      }
 
+      // tablo 2 create
+
+      this.tablo.forEach(satirL => {
+        let tablo2Satir = [];
+
+        const i = this.tablo2.findIndex(t2 => {
+          return t2[0] === satirL[1];
+        });
+
+        if (i === -1) {
+          tablo2Satir.push(satirL[1]);
+          tablo2Satir.push(satirL[satirL.length - 1]);
+          this.tablo2.push(tablo2Satir);
+
+        } else {
+          tablo2Satir = this.tablo2[i];
+          tablo2Satir[i + 1] = +tablo2Satir[i + 1] + +satirL[satirL.length - 1];
+          this.tablo2.splice(i, 1, tablo2Satir);
+
+        }
+      });
+
+      // tablo1 son satirlar
+      if (this.tablo.length !== 0) {
+        this.tablo.push(satirToplamSefer);
+        this.tablo.push(satirToplamTonaj);
+      }
     });
   }
 
@@ -179,54 +194,54 @@ export class GunlukRaporComponent implements OnInit {
             let tirKamyonRapor: TirKamyonRapor;
 
             const index = this.gunlukRapor.tirKamyonRapor.findIndex(d => {
-              return d.tirKamyon === form.tirKamyon.plaka;
+              return d.tirKamyon === form.tirKamyon.plaka && d.personel === form.personel.name + ' ' + form.personel.surname;
+
+              // this.gunlukRapor.tirKamyonRapor listesin eklenmiş veri var ise kontrol sağlıyorum
             });
 
             if (index === -1) {
+              // listede yok ise ekliyorum
 
-              const yuklemeYeri = new YuklemeYeri(form.yuklemeYeri, +form.seferSayisi);
-              const dokumYeri = new DokumYeri(form.dokumsahasi.name, +form.seferSayisi);
+              const seferBilgileri = new SeferBilgileri(
+                form.firma.name, form.yuklemeYeri,
+                form.dokumsahasi.name, form.malzemeCinsi, +form.seferSayisi, this.getToplamTonaj(form.tonajList)
+              );
 
               tirKamyonRapor = new TirKamyonRapor(
                 this.todayDate,
                 form.tirKamyon.plaka,
                 form.personel.name + ' ' + form.personel.surname,
-                this.getToplamTonaj(form.tonajList)
               );
 
-              tirKamyonRapor.yuklemeYeriList.push(yuklemeYeri);
-              tirKamyonRapor.dokumYeriList.push(dokumYeri);
+              tirKamyonRapor.seferBilgileri.push(seferBilgileri);
 
               this.gunlukRapor.tirKamyonRapor.push(tirKamyonRapor);
             } else {
+              /* listede var ise tirKamyonRapor.seferBilgileri listesini
+              aynı şekilde kontrol ederek tekrar üzerlerine ekleme işlemi yapıyorum*/
 
               tirKamyonRapor = this.gunlukRapor.tirKamyonRapor[index];
 
-              tirKamyonRapor.toplamTonaj = tirKamyonRapor.toplamTonaj + this.getToplamTonaj(form.tonajList);
-
-              const yuklemeYeriListIndex = tirKamyonRapor.yuklemeYeriList.findIndex(d => {
-                return d.name === form.yuklemeYeri;
+              const seferBilgileriListIndex = tirKamyonRapor.seferBilgileri.findIndex(s => {
+                return s.calisilanFirma === form.firma.name
+                  && s.yuklemeYeri === form.yuklemeYeri
+                  && s.dokumYeri === form.dokumsahasi.name
+                  && s.malzeme === form.malzemeCinsi;
               });
 
-              const dokumYeriListIndex = tirKamyonRapor.dokumYeriList.findIndex(d => {
-                return d.name === form.dokumsahasi.name;
-              });
-
-              if (yuklemeYeriListIndex === -1) {
-                tirKamyonRapor.yuklemeYeriList.push(new YuklemeYeri(form.yuklemeYeri, +form.seferSayisi));
+              if (seferBilgileriListIndex === -1) {
+                tirKamyonRapor.seferBilgileri.push(new SeferBilgileri(
+                  form.firma.name, form.yuklemeYeri,
+                  form.dokumsahasi.name, form.malzemeCinsi, +form.seferSayisi, this.getToplamTonaj(form.tonajList)));
               } else {
-                const yuk = tirKamyonRapor.yuklemeYeriList[yuklemeYeriListIndex];
-                yuk.value = yuk.value + (+form.seferSayisi);
-                tirKamyonRapor.yuklemeYeriList.splice(yuklemeYeriListIndex, 1, yuk);
-              }
+                const sefer = tirKamyonRapor.seferBilgileri[seferBilgileriListIndex];
 
-              if (dokumYeriListIndex === -1) {
-                tirKamyonRapor.dokumYeriList.push(new DokumYeri(form.dokumsahasi.name, +form.seferSayisi));
-              } else {
-                const dok = tirKamyonRapor.dokumYeriList[dokumYeriListIndex];
-                dok.value = dok.value + (+form.seferSayisi);
-                tirKamyonRapor.dokumYeriList.splice(dokumYeriListIndex, 1, dok);
+                sefer.toplamTonaj = sefer.toplamTonaj + this.getToplamTonaj(form.tonajList);
+                sefer.sefer = sefer.sefer + (+form.seferSayisi);
+
+                tirKamyonRapor.seferBilgileri.splice(seferBilgileriListIndex, 1, sefer);
               }
+              // splice methodu ile listedeki seçilen indexten dahil olmak üzere 1 öğe sil yeni öğeyi ekle yani update et
               this.gunlukRapor.tirKamyonRapor.splice(index, 1, tirKamyonRapor);
             }
 
@@ -246,7 +261,7 @@ export class GunlukRaporComponent implements OnInit {
       });
     }
 
-    return tonajTop;
+    return +tonajTop.toFixed(2); // Tonaj oplamı küsüratlı sayı olduğundan basamak 2 ili sınırlandırdım.
   }
 
   excelExport(data) {
@@ -263,20 +278,86 @@ export class GunlukRaporComponent implements OnInit {
     XLSX.writeFile(wb, 'gunluk-rapor-' + this.todayDate + '.xlsx');
   }
 
-  generatePDF(data) {
-    // var data = document.getElementById('excel-table');
-    html2canvas(data).then(canvas => {
+  excelExportAll() {
+
+    /* generate worksheet */
+    const d1 = document.getElementById('excelTable1');
+    const d2 = document.getElementById('excelTable2');
+    const d3 = document.getElementById('excelTable3');
+
+    const tableAll = document.createElement('table');
+    tableAll.innerHTML = '<table>' + d1.innerHTML + '<tr><th></th></tr></table>' +
+      '<table>' + d2.innerHTML + '<tr><th></th></tr></table>' +
+      '<table>' + d3.innerHTML + '<tr><th></th></tr></table>';
+
+    const ws1: XLSX.WorkSheet = XLSX.utils.table_to_sheet(tableAll);
+
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws1, this.todayDate + '_1');
+
+    /* save to file */
+    XLSX.writeFile(wb, 'gunluk-rapor-' + this.todayDate + '.xlsx');
+  }
+
+  pdfExport(data) {
+    html2canvas(data, {
+      allowTaint: true,
+      useCORS: true,
+      logging: false,
+      height: window.outerHeight + window.innerHeight,
+      windowHeight: window.outerHeight + window.innerHeight
+    }).then(canvas => {
+      const imgData = canvas.toDataURL('image/png');
       // Few necessary setting options
       const imgWidth = 208;
       const pageHeight = 295;
       const imgHeight = canvas.height * imgWidth / canvas.width;
-      const heightLeft = imgHeight;
+      const doc = new jsPDF('p', 'mm');
+      let heightLeft = imgHeight;
+      let position = 0;
 
-      const contentDataURL = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
-      const position = 0;
-      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
-      pdf.save('gunluk-rapor-' + this.todayDate + '.pdf'); // Generated PDF
+      doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        doc.addPage();
+        doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+      // Generated PDF
+      doc.save('gunluk-rapor-' + this.todayDate + '.pdf');
+    });
+  }
+
+  pdfAllExport() {
+    const data = document.getElementById('allTable');
+    html2canvas(data, {
+      allowTaint: true,
+      useCORS: true,
+      logging: false,
+      height: window.outerHeight + window.innerHeight,
+      windowHeight: window.outerHeight + window.innerHeight
+    }).then(canvas => {
+      const imgData = canvas.toDataURL('image/png');
+      // Few necessary setting options
+      const imgWidth = 208;
+      const pageHeight = 295;
+      const imgHeight = canvas.height * imgWidth / canvas.width;
+      const doc = new jsPDF('p', 'mm');
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        doc.addPage();
+        doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+      // Generated PDF
+      doc.save('gunluk-rapor-' + this.todayDate + '.pdf');
     });
   }
 

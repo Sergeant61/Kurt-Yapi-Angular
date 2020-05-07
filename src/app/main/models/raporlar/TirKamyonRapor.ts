@@ -3,39 +3,42 @@ export class TirKamyonRapor {
   raporDate: string;
   tirKamyon: string;
   personel: string;
-  yuklemeYeriList: YuklemeYeri[] = [];
-  dokumYeriList: DokumYeri[] = [];
-  toplamTonaj: number = 0;
+  seferBilgileri: SeferBilgileri[] = [];
   createdAt: Date;
 
   constructor(
     raporDate: string,
     tirKamyon: string,
     personel: string,
-    toplamTonaj: number,
   ) {
     this.raporDate = raporDate;
     this.tirKamyon = tirKamyon;
     this.personel = personel;
+  }
+}
+
+export class SeferBilgileri {
+  calisilanFirma: string;
+  yuklemeYeri: string;
+  dokumYeri: string;
+  malzeme: string;
+  sefer: number;
+  toplamTonaj: number = 0;
+
+  constructor(
+    calisilanFirma: string,
+    yuklemeYeri: string,
+    dokumYeri: string,
+    malzeme: string,
+    sefer: number,
+    toplamTonaj: number,
+  ) {
+    this.calisilanFirma = calisilanFirma;
+    this.yuklemeYeri = yuklemeYeri;
+    this.dokumYeri = dokumYeri;
+    this.malzeme = malzeme;
+    this.sefer = sefer;
     this.toplamTonaj = toplamTonaj;
-
   }
 }
 
-export class YuklemeYeri {
-  name: string;
-  value: number;
-  constructor(name: string, value: number) {
-    this.name = name;
-    this.value = value;
-  }
-}
-
-export class DokumYeri {
-  name: string;
-  value: number;
-  constructor(name: string, value: number) {
-    this.name = name;
-    this.value = value;
-  }
-}
