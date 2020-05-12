@@ -15,7 +15,7 @@ export class LoginGuard implements CanActivate {
     await this.authSevice.isAuthenticated();
 
     if (this.authSevice.isTokenValid) {
-      this.router.navigateByUrl('home');
+      this.router.navigateByUrl('user');
       return false;
     }
     return true;

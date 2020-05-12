@@ -7,7 +7,6 @@ import { FormsModule } from '@angular/forms';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { FooterComponent } from './footer/footer.component';
 import { RecaptchaModule, RecaptchaFormsModule, RECAPTCHA_SETTINGS, RecaptchaSettings } from 'ng-recaptcha';
-import { BrowserModule } from '@angular/platform-browser';
 import { MainRoutingModule } from './main-routing.module';
 import { HomePageComponent } from './home-page/home-page.component';
 

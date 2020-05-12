@@ -1,0 +1,59 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card shadow mb-4 mt-4">
+        <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
+          <h6>
+            {{authService.currentUser.name +" " + authService.currentUser.surname}}
+          </h6>
+
+          <div class="btn-group">
+            <button type="button" class="btn btn-warning btn-sm"
+              [routerLink]="['/user/profile', 'edit', authService.currentUser._id]">Düzenle</button>
+          </div>
+
+        </div>
+        <div class="card-body">
+
+          <div class="row">
+            <div class="col-6">
+              <span class="badge badge-primary mr-1">Kullanıcı Adı :</span>
+              <label>
+                {{ authService.currentUser.username }}
+              </label>
+              <br />
+
+              <span class="badge badge-primary mr-1">Kullanıcı Tipi :</span>
+              <label>
+                {{ authService.currentUser.isAdmin ? 'Admin':'Kullanıcı' }}
+              </label>
+              <br />
+
+              <span class="badge badge-primary mr-1">Role :</span>
+              <label>
+                {{ authService.currentUser.authority }}
+              </label>
+              <br />
+
+
+              <span class="badge badge-primary mr-1">Doğum Tarihi :</span>
+              <label>
+                {{ authService.currentUser.birthDate | date: "dd/MM/yyyy" }}
+              </label>
+              <br />
+
+              <span class="badge badge-primary mr-1">Oluşturma Tarihi :</span>
+              <label>
+                {{ authService.currentUser.createdAt | date: "dd/MM/yyyy" }}
+              </label>
+              <br />
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>

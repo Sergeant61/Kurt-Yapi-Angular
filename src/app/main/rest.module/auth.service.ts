@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { AlertifyService } from '../services/alertify.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { ErrorService } from '../services/error.service';
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +38,6 @@ export class AuthService {
     const isMobile = this.deviceService.isMobile();
     const isTablet = this.deviceService.isTablet();
     const isDesktopDevice = this.deviceService.isDesktop();
-
 
     let isWhat = 0;
     if (isMobile) { isWhat = 0; } else if (isTablet) { isWhat = 1; } else if (isDesktopDevice) { isWhat = 2; }
@@ -108,18 +108,7 @@ export class AuthService {
           this.logout();
         }
       }).catch(err => {
-
       });
-
-  }
-
-  getUserSingle(): Observable<ApiResponse<User>> {
-    return this.http.get<ApiResponse<User>>(this.path + '/api/users',
-      { headers: new HttpHeaders({ 'x-access-token': this.token, browser: this.browser }) });
-  }
-
-  register(body: User): Observable<ApiResponse<any>> {
-    return this.http.post<ApiResponse<any>>(this.path + '/register', body);
   }
 
   sendCaptchaToken(token): Observable<any> {

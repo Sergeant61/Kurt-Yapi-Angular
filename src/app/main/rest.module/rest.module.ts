@@ -18,6 +18,7 @@ import { GelenYakitFormuService } from './gelen-yakit-formu.service';
 import { IsMakinesiGunlukCalismaFormuService } from './is-makinesi-gunluk-calisma-formu.service';
 import { DeviceDetectorModule, DeviceDetectorService } from 'ngx-device-detector';
 import { FormsModule } from '@angular/forms';
+import { UserService } from './user.service';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import { FormsModule } from '@angular/forms';
     LoginGuard,
     AdminGuard,
     HomeGuard,
+    UserService,
     IsMakinesiService,
     OzelBinekAracService,
     TirKamyonService,

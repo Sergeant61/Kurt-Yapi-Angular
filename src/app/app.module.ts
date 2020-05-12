@@ -3,7 +3,6 @@ import { NgModule, LOCALE_ID } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { MainModule } from './main/main.module/main.module';
 import { RestModule } from './main/rest.module/rest.module';
 import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -37,6 +36,10 @@ registerLocaleData(localeTR);
       },
       {
         path: 'admin', loadChildren: () => import('./main/admin.module/admin.module').then(m => m.AdminModule),
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'user', loadChildren: () => import('./main/user.module/user.module').then(m => m.UserModule),
         canActivate: [AuthGuard]
       },
       { path: '**', redirectTo: '/main/home' },

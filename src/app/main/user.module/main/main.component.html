@@ -11,65 +11,21 @@
     <ul class="list-unstyled components">
       <!-- Araç Formları -->
       <li>
-        <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Çalışma Formları</a>
-        <ul class="collapse list-unstyled" id="homeSubmenu">
-          <li>
-            <a routerLink="/muhasebe/tirkamyon" routerLinkActive="active">Tır Kamyon Günlük Çalışma Formu</a>
-          </li>
-          <li>
-            <a routerLink="/muhasebe/ismakinesi" routerLinkActive="active">İş Makinesi Günlük Çalışma Formu</a>
-          </li>
+        <a routerLink="/user/profile" routerLinkActive="active">Bilgilerim</a>
 
-          <!-- Yakıt Formları -->
-          <li>
-            <a href="#homeSubmenu1" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Yakıt
-              Formları</a>
-            <ul class="collapse list-unstyled" id="homeSubmenu1">
-              <li>
-                <a routerLink="/muhasebe/gelenyakitformu" routerLinkActive="active">Gelen Yakıt Formu</a>
-              </li>
-              <li>
-                <a routerLink="/muhasebe/gidenyakitformu" routerLinkActive="active">Giden Yakıt Formu</a>
-              </li>
-            </ul>
-          </li>
-        </ul>
       </li>
 
       <!-- Raporlar Formları -->
 
-      <li>
-        <a href="#homeSubmenu2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Genel Raporlar</a>
+      <li *ngIf="authService.currentUser.isAdmin">
+        <a href="#homeSubmenu2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Admin</a>
         <ul class="collapse list-unstyled" id="homeSubmenu2">
           <li>
-            <a routerLink="/muhasebe/gunlukrapor" routerLinkActive="active">Günlük Raporlar</a>
-          </li>
-          <li>
-            <a routerLink="/muhasebe/firmarapor" routerLinkActive="active">Firma Rapor</a>
-          </li>
-          <li>
-            <a routerLink="/muhasebe/firmacarileri" routerLinkActive="active">Firma Carileri</a>
-          </li>
-          <li>
-            <a routerLink="/muhasebe/tahsilat" routerLinkActive="active">Tahsilat</a>
-          </li>
-          <li>
-            <a routerLink="/muhasebe/seferfisi" routerLinkActive="active">Sefer Fişi</a>
+            <a routerLink="/user/users" routerLinkActive="active">Kullanıcı İşlemleri</a>
           </li>
         </ul>
       </li>
 
-      <li>
-        <a href="#homeSubmenu3" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Personel</a>
-        <ul class="collapse list-unstyled" id="homeSubmenu3">
-          <li>
-            <a routerLink="/muhasebe/mesaipuantaji" routerLinkActive="active">Mesai Puantajı</a>
-          </li>
-          <li>
-            <a routerLink="/muhasebe/mesaiodemesi" routerLinkActive="active">Mesai Ödemesi</a>
-          </li>
-        </ul>
-      </li>
     </ul>
 
   </nav>
@@ -95,7 +51,6 @@
             <li class="nav-item" *ngIf="authService.isTokenValid">
               <a class="nav-link" routerLink="/main/home" routerLinkActive="active">Ana Sayfa</a>
             </li>
-
             <li class="nav-item" *ngIf="authService.isTokenValid">
               <a class="nav-link" routerLink="/muhasebe" routerLinkActive="active">Formlar ve Raporlar</a>
             </li>
@@ -103,7 +58,8 @@
               <a class="nav-link" routerLink="/admin" routerLinkActive="active">Veri Tabanı</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" [routerLink]="[ authService.isTokenValid ? '/user/profile' :'/main/login']" routerLinkActive="active">
+              <a class="nav-link" [routerLink]="[ authService.isTokenValid ? '/user/profile' :'/main/login']"
+                routerLinkActive="active">
                 {{
                   authService.isTokenValid
                     ? authService.currentUser.name + " " + authService.currentUser.surname

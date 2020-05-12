@@ -1,0 +1,187 @@
+<div class="row">
+  <div class="col-md-12 bg-dark p-2">
+
+    <span class="text-light">
+      Profile "{{authService.currentUser.name +" " + authService.currentUser.surname}}"
+      {{ editing ? "Düzenle" : "Oluştur" }}
+    </span>
+    <div class="form-inline float-right m-0 p-0">
+
+
+      <div class="btn-group">
+        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#passwordModal">Şifre
+          Değiştir</button>
+        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#usernameModal">Kullanıcı
+          Adı Değiştir</button>
+
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="col-md-12 bg-danger p-2" *ngIf="errorMessage">
+    <h6 class="text-white">{{ errorMessage }}</h6>
+  </div>
+
+  <div class="col-md-12 bg-success p-2" *ngIf="!user">
+    <div class="spinner-border spinner-border-sm text-light mr-2" role="status"></div>
+    <div class="spinner-grow spinner-grow-sm text-light mr-2" role="status"></div>
+
+    <span class="text-white">Yükleniyor lütfen bekleyin.</span>
+  </div>
+
+  <div class="col-md-12 mt-2">
+    <form #form="ngForm" (ngSubmit)="save(form)" *ngIf="user">
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <div class="card">
+            <div class="card-header">
+              Genel Bilgiler
+            </div>
+            <div class="card-body">
+              <div class="input-group mb-4">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Ad</span>
+                </div>
+                <input type="text" class="form-control" name="name" [(ngModel)]="user.name" required />
+              </div>
+
+              <div class="input-group mb-4">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Soyad</span>
+                </div>
+                <input type="text" class="form-control" name="surname" [(ngModel)]="user.surname" required />
+              </div>
+
+              <div class="input-group mb-4">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Doğum tarihi</span>
+                </div>
+                <input type="date" class="form-control" name="dogumTarihi" [(ngModel)]="user.birthDate" required />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-group mt-4">
+        <button name="addButton" type="submit" class="btn btn-primary" [class.disabled]="isLoading"
+          [disabled]="isLoading">
+          <span name="loadingSpan" class="spinner-border spinner-border-sm" role="status" *ngIf="isLoading"></span>
+          {{ editing ? "Düzenle" : "Oluştur" }}
+        </button>
+        <button type="button" [routerLink]="[baseUrl]" class="btn btn-warning">
+          Vazgeç
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal dialog PassChange penceresi -->
+<div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          Lütfen adımları sırasıyla doldurunuz.
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="col-md-12 bg-danger p-2" *ngIf="errorMessage1">
+          <h6 class="text-white">{{ errorMessage1 }}</h6>
+        </div>
+        <form>
+
+          <div class="input-group mb-4">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroup-sizing-default">Eski şifreniz</span>
+            </div>
+            <input type="password" class="form-control" name="passwordOld" [(ngModel)]="passOld" required />
+          </div>
+
+          <div class="input-group mb-4">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroup-sizing-default">Yeni şifreniz</span>
+            </div>
+            <input type="password" class="form-control" name="passwordNew1" [(ngModel)]="passNew1" required />
+          </div>
+
+          <div class="input-group mb-4">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroup-sizing-default">Yeni şifreniz (Tekrar)</span>
+            </div>
+            <input type="password" class="form-control" name="passwordNew2" [(ngModel)]="passNew2" required />
+          </div>
+
+        </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" #closebutton1 (click)="clear()" data-dismiss="modal">
+          Vazgeç
+        </button>
+        <button type="button" class="btn btn-danger" (click)="sendPassChange()" [class.disabled]="isLoading1"
+          [disabled]="isLoading1">
+          <span name="loadingSpan" class="spinner-border spinner-border-sm" role="status" *ngIf="isLoading1"></span>
+          Tamam
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal dialog PassChange penceresi -->
+<div class="modal fade" id="usernameModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          Lütfen adımları sırasıyla doldurunuz.
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="col-md-12 bg-danger p-2" *ngIf="errorMessage2">
+          <h6 class="text-white">{{ errorMessage2 }}</h6>
+        </div>
+        <form>
+
+          <div class="input-group mb-4">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroup-sizing-default">Şifreniz</span>
+            </div>
+            <input type="password" class="form-control" name="password1" [(ngModel)]="passOld" required />
+          </div>
+
+          <div class="input-group mb-4">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroup-sizing-default">Yeni Kullanıcı adı</span>
+            </div>
+            <input type="text" class="form-control" name="username1" [(ngModel)]="usernameNew" required />
+          </div>
+
+        </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" #closebutton2 (click)="clear()" data-dismiss="modal">
+          Vazgeç
+        </button>
+        <button type="button" class="btn btn-danger" (click)="sendPassMail()" [class.disabled]="isLoading2"
+          [disabled]="isLoading2">
+          <span name="loadingSpan" class="spinner-border spinner-border-sm" role="status" *ngIf="isLoading2"></span>
+          Tamam
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

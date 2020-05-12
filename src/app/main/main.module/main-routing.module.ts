@@ -12,12 +12,8 @@ import { HomePageComponent } from './home-page/home-page.component';
 const routes: Routes = [
   {
     path: '', component: MainPageComponent, children: [
-      {
-        path: 'home', component: HomePageComponent, canActivate: [HomeGuard]
-      },
-      {
-        path: 'login', component: LoginPageComponent, canActivate: [LoginGuard]
-      },
+      { path: 'home', component: HomePageComponent, canActivate: [HomeGuard] },
+      { path: 'login', component: LoginPageComponent, canActivate: [LoginGuard] },
     ]
   },
   { path: '**', redirectTo: '/home' }

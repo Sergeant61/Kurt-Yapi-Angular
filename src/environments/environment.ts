@@ -20,7 +20,11 @@ export const environment = {
   baseUrlGidenYakitFormu: '/muhasebe/gidenyakitformu',
 
   // --Raporlar
-  baseUrlGunlukRapor : '/muhasebe/gunlukrapor'
+  baseUrlGunlukRapor : '/muhasebe/gunlukrapor',
+
+  // User
+  baseUrlProfile : '/user/profile',
+  baseUrlUsers : '/user/users'
 
 
 };

@@ -2,12 +2,7 @@
   <!-- Sidebar  -->
   <nav id="sidebar">
     <div class="sidebar-header">
-      <img
-        src="assets/logo.png"
-        routerLink="/main/home"
-        height="60"
-        class="ml-2"
-      />
+      <img src="assets/logo.png" routerLink="/main/home" height="60" class="ml-2" />
 
       <!-- <h3>Kurt Yapı Muhasebe</h3> -->
     </div>
@@ -15,25 +10,21 @@
     <ul class="list-unstyled components" id="homeSubmenu">
       <li>
         <a routerLink="/admin/ismakinesi" routerLinkActive="active">
-          İş Makinaları</a
-        >
+          İş Makinaları</a>
       </li>
       <li>
-        <a routerLink="/admin/ozelbinekarac" routerLinkActive="active"
-          >Özel Binek Araçlar</a
-        >
+        <a routerLink="/admin/ozelbinekarac" routerLinkActive="active">Özel Binek Araçlar</a>
       </li>
       <li>
-        <a routerLink="/admin/tirkamyon" routerLinkActive="active"
-          >Tır Kamyonlar</a
-        >
+        <a routerLink="/admin/tirkamyon" routerLinkActive="active">Tır Kamyonlar</a>
       </li>
       <li>
         <a routerLink="/admin/firma" routerLinkActive="active">Firmalar</a>
       </li>
       <li>
         <a routerLink="/admin/personel" routerLinkActive="active">Personel</a>
-      </li>      <li>
+      </li>
+      <li>
         <a routerLink="/admin/dokumsahasi" routerLinkActive="active">Döküm Sahaları</a>
       </li>
     </ul>
@@ -48,65 +39,37 @@
           <span></span>
         </button>
 
-        <button
-          class="navbar-toggler"
-          style="color: aliceblue;"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
+        <button class="navbar-toggler" style="color: aliceblue;" type="button" data-toggle="collapse"
+          data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+          aria-label="Toggle navigation">
           <i class="fas fa-align-justify"></i>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item" *ngIf="authService.isTokenValid">
-              <a
-                class="nav-link"
-                routerLink="/main/home"
-                routerLinkActive="active"
-                >Ana Sayfa</a
-              >
+              <a class="nav-link" routerLink="/main/home" routerLinkActive="active">Ana Sayfa</a>
             </li>
             <li class="nav-item" *ngIf="authService.isTokenValid">
-              <a
-                class="nav-link"
-                routerLink="/muhasebe"
-                routerLinkActive="active"
-                >Muhasebe</a
-              >
+              <a class="nav-link" routerLink="/muhasebe" routerLinkActive="active">Formlar ve Raporlar</a>
             </li>
             <li class="nav-item" *ngIf="authService.isTokenValid">
-              <a class="nav-link" routerLink="/admin" routerLinkActive="active"
-                >Admin</a
-              >
+              <a class="nav-link" routerLink="/admin" routerLinkActive="active">Veri Tabanı</a>
             </li>
             <li class="nav-item">
-              <a
-                class="nav-link"
-                routerLink="/main/login"
-                routerLinkActive="active"
-              >
+              <a class="nav-link" [routerLink]="[ authService.isTokenValid ? '/user/profile' :'/main/login']"
+                routerLinkActive="active">
                 {{
                   authService.isTokenValid
                     ? authService.currentUser.name +
                       " " +
                       authService.currentUser.surname
                     : "Giriş Yap"
-                }}</a
-              >
+                }}</a>
             </li>
             <li class="nav-item">
-              <a
-                class="nav-link"
-                routerLinkActive="active"
-                (click)="authService.logout()"
-                *ngIf="authService.isTokenValid"
-                >Çıkış Yap</a
-              >
+              <a class="nav-link" routerLinkActive="active" (click)="authService.logout()"
+                *ngIf="authService.isTokenValid">Çıkış Yap</a>
             </li>
           </ul>
         </div>
