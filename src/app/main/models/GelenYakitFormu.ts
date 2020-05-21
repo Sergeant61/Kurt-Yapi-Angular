@@ -1,6 +1,7 @@
 import { Firma } from './Firma';
 import { Personel } from './Personel';
 import { User } from './User';
+import { Santiye } from './Santiye';
 
 export class GelenYakitFormu {
   _id: string;
@@ -11,6 +12,7 @@ export class GelenYakitFormu {
   birimFiyati: string;
   yakitiAlanPersonelId: string;
   notlar: string;
+  santiyeId: string;
   onaylimi: boolean;
   createdAt: Date;
   createdUserId: string;
@@ -23,4 +25,6 @@ export class GelenYakitFormu {
   createdUser: User = new User();
   lastEditUser: User = new User();
   onaylayanUser: User = new User();
+  santiye: Santiye = new Santiye();
+
 }

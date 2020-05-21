@@ -1,14 +1,25 @@
 import { IsMakinesi } from '../IsMakinesi';
+import { SahaOlcumFormu } from '../SahaOlcumFormu';
+import { FormTuru } from '../FormTuru';
 
-export class FirmaRapor {
+export class PauntajAllRapor {
+  _id: string;
+  formTuru: FormTuru;
+  pauntajRaporList: PauntajRapor[] = [];
+  constructor(formTuru?: FormTuru) {
+    this.formTuru = formTuru;
+  }
+}
+
+export class PauntajRapor {
   _id: string;
   formTarihi: string;
+  sahaOlcumList: SahaOlcumFormu[] = [];
   isMakinesiList: AracRapor[] = [];
 
   constructor(formTarihi: string) {
     this.formTarihi = formTarihi;
   }
-
 }
 
 export class AracRapor {

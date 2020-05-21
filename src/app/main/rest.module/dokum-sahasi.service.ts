@@ -15,14 +15,12 @@ export class DokumSahasiService {
 
   path = environment.path;
   baseUrl = '/api/dokumSahasi';
-  headers: HttpHeaders;
 
   constructor(private http: HttpClient, private authService: AuthService, private errorService: ErrorService) {
-    this.headers = new HttpHeaders({ 'x-access-token': authService.token, 'x-browser': authService.browser });
   }
 
   post(data: DokumSahasi): Observable<ApiResponse<DokumSahasi>> {
-    return this.http.post<ApiResponse<DokumSahasi>>(this.path + this.baseUrl, data, { headers: this.headers })
+    return this.http.post<ApiResponse<DokumSahasi>>(this.path + this.baseUrl, data, { headers: this.authService.getHeaders() })
       .pipe(map(res => {
         if (!res.success) {
           if (this.errorService.getErrorParse(res)) {
@@ -35,7 +33,7 @@ export class DokumSahasiService {
   }
 
   getAll(): Observable<ApiResponse<DokumSahasi[]>> {
-    return this.http.get<ApiResponse<DokumSahasi[]>>(this.path + this.baseUrl, { headers: this.headers })
+    return this.http.get<ApiResponse<DokumSahasi[]>>(this.path + this.baseUrl, { headers: this.authService.getHeaders() })
       .pipe(map(res => {
         if (!res.success) {
           if (this.errorService.getErrorParse(res)) {
@@ -48,7 +46,7 @@ export class DokumSahasiService {
   }
 
   get(id: string): Observable<ApiResponse<DokumSahasi>> {
-    return this.http.get<ApiResponse<DokumSahasi>>(this.path + this.baseUrl + '/' + id, { headers: this.headers })
+    return this.http.get<ApiResponse<DokumSahasi>>(this.path + this.baseUrl + '/' + id, { headers: this.authService.getHeaders() })
       .pipe(map(res => {
         if (!res.success) {
           if (this.errorService.getErrorParse(res)) {
@@ -61,7 +59,7 @@ export class DokumSahasiService {
   }
 
   put(id: string, data: DokumSahasi): Observable<ApiResponse<DokumSahasi>> {
-    return this.http.put<ApiResponse<DokumSahasi>>(this.path + this.baseUrl + '/' + id, data, { headers: this.headers })
+    return this.http.put<ApiResponse<DokumSahasi>>(this.path + this.baseUrl + '/' + id, data, { headers: this.authService.getHeaders() })
       .pipe(map(res => {
         if (!res.success) {
           if (this.errorService.getErrorParse(res)) {
@@ -74,7 +72,7 @@ export class DokumSahasiService {
   }
 
   delete(id: string): Observable<ApiResponse<DokumSahasi>> {
-    return this.http.delete<ApiResponse<DokumSahasi>>(this.path + this.baseUrl + '/' + id, { headers: this.headers })
+    return this.http.delete<ApiResponse<DokumSahasi>>(this.path + this.baseUrl + '/' + id, { headers: this.authService.getHeaders() })
       .pipe(map(res => {
         if (!res.success) {
           if (this.errorService.getErrorParse(res)) {

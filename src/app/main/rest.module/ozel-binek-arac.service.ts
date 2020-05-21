@@ -15,14 +15,12 @@ export class OzelBinekAracService {
 
   path = environment.path;
   baseUrl = '/api/binek';
-  headers: HttpHeaders;
 
   constructor(private http: HttpClient, private authService: AuthService, private errorService: ErrorService) {
-    this.headers = new HttpHeaders({ 'x-access-token': authService.token, 'x-browser': authService.browser });
   }
 
   post(data: OzelBinekArac): Observable<ApiResponse<OzelBinekArac>> {
-    return this.http.post<ApiResponse<OzelBinekArac>>(this.path + this.baseUrl, data, { headers: this.headers })
+    return this.http.post<ApiResponse<OzelBinekArac>>(this.path + this.baseUrl, data, { headers: this.authService.getHeaders() })
     .pipe(map(res => {
       if (!res.success) {
         if (this.errorService.getErrorParse(res)) {
@@ -35,7 +33,7 @@ export class OzelBinekAracService {
   }
 
   getAll(): Observable<ApiResponse<OzelBinekArac[]>> {
-    return this.http.get<ApiResponse<OzelBinekArac[]>>(this.path + this.baseUrl, { headers: this.headers })
+    return this.http.get<ApiResponse<OzelBinekArac[]>>(this.path + this.baseUrl, { headers: this.authService.getHeaders() })
     .pipe(map(res => {
       if (!res.success) {
         if (this.errorService.getErrorParse(res)) {
@@ -48,7 +46,7 @@ export class OzelBinekAracService {
   }
 
   get(id: string): Observable<ApiResponse<OzelBinekArac>> {
-    return this.http.get<ApiResponse<OzelBinekArac>>(this.path + this.baseUrl + '/' + id, { headers: this.headers })
+    return this.http.get<ApiResponse<OzelBinekArac>>(this.path + this.baseUrl + '/' + id, { headers: this.authService.getHeaders() })
     .pipe(map(res => {
       if (!res.success) {
         if (this.errorService.getErrorParse(res)) {
@@ -61,7 +59,7 @@ export class OzelBinekAracService {
   }
 
   put(id: string, data: OzelBinekArac): Observable<ApiResponse<OzelBinekArac>> {
-    return this.http.put<ApiResponse<OzelBinekArac>>(this.path + this.baseUrl + '/' + id, data, { headers: this.headers })
+    return this.http.put<ApiResponse<OzelBinekArac>>(this.path + this.baseUrl + '/' + id, data, { headers: this.authService.getHeaders() })
     .pipe(map(res => {
       if (!res.success) {
         if (this.errorService.getErrorParse(res)) {
@@ -74,7 +72,7 @@ export class OzelBinekAracService {
   }
 
   delete(id: string): Observable<ApiResponse<OzelBinekArac>> {
-    return this.http.delete<ApiResponse<OzelBinekArac>>(this.path + this.baseUrl + '/' + id, { headers: this.headers })
+    return this.http.delete<ApiResponse<OzelBinekArac>>(this.path + this.baseUrl + '/' + id, { headers: this.authService.getHeaders() })
     .pipe(map(res => {
       if (!res.success) {
         if (this.errorService.getErrorParse(res)) {

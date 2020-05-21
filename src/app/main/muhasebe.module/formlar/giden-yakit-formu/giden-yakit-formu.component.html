@@ -59,9 +59,10 @@
                 <th>Verilen Yakıt</th>
                 <th>Yakıtı Alan Personel</th>
                 <th>Yakıtı Veren Personel</th>
+                <th>Şantiye</th>
                 <th>Form Tarihi</th>
                 <th>İlk Kayıt Tarihi</th>
-                <th>Son Güncelleme Tarihi</th>
+                <th>Son Gün. Tarihi</th>
                 <th>#</th>
               </tr>
             </thead>
@@ -86,6 +87,7 @@
                       value.yakitiVerenPersonel.surname
                   }}
                 </td>
+                <td>{{ value.santiye.name}} </td>
                 <td>{{ value.formTarihi | date: "dd/MM/yyyy" }}</td>
                 <td>{{ value.createdAt | date: "dd/MM/yyyy - hh:mm:ss" }}</td>
                 <td>{{ value.lastEditAt | date: "dd/MM/yyyy - hh:mm:ss" }}</td>

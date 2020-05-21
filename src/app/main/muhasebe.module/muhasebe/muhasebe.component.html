@@ -19,6 +19,9 @@
           <li>
             <a routerLink="/muhasebe/ismakinesi" routerLinkActive="active">İş Makinesi Günlük Çalışma Formu</a>
           </li>
+          <li>
+            <a routerLink="/muhasebe/sahaolcumformu" routerLinkActive="active">Saha Ölçüm Formu</a>
+          </li>
 
           <!-- Yakıt Formları -->
           <li>
@@ -104,11 +107,7 @@
             </li>
             <li class="nav-item">
               <a class="nav-link" [routerLink]="[ authService.isTokenValid ? '/user/profile' :'/main/login']" routerLinkActive="active">
-                {{
-                  authService.isTokenValid
-                    ? authService.currentUser.name + " " + authService.currentUser.surname
-                    : "Giriş Yap"
-                }}</a>
+                {{authService.isTokenValid ? authService.currentUser.name !==undefined?  authService.currentUser.name + " " + authService.currentUser.surname :"Yükleniyor..." : "Giriş Yap"}}</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" routerLinkActive="active" (click)="authService.logout()"

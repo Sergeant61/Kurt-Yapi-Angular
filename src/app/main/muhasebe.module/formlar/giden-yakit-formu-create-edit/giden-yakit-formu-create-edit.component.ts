@@ -11,6 +11,8 @@ import { GidenYakitFormuService } from '../../../rest.module/giden-yakit-formu.s
 import { NgForm } from '@angular/forms';
 import { IsMakinesiService } from '../../../rest.module/is-makinesi.service';
 import { TirKamyonService } from '../../../rest.module/tir-kamyon.service';
+import { Santiye } from 'src/app/main/models/Santiye';
+import { SantiyeService } from 'src/app/main/rest.module/santiye.service';
 
 @Component({
   selector: 'app-giden-yakit-formu-create-edit',
@@ -22,6 +24,7 @@ export class GidenYakitFormuCreateEditComponent implements OnInit {
   personelList: Personel[] = [];
   tirKamyonList: TirKamyon[] = [];
   isMakinesiList: IsMakinesi[] = [];
+  santiyeList: Santiye[] = [];
 
   gidenYakitFormu: GidenYakitFormu = null;
   editing: boolean = false;
@@ -30,12 +33,11 @@ export class GidenYakitFormuCreateEditComponent implements OnInit {
   isTirMi: boolean = false;
 
   baseUrl: string = environment.baseUrlGidenYakitFormu;
-  newPersonelBaseUrl: string = environment.baseUrlPersonel;
-  newTirBaseUrl: string = environment.baseUrlTirKamyon;
-  newIsmakinesiUrl: string = environment.baseUrlIsmakinesi;
+  urls = environment;
 
   constructor(
     private personelService: PersonelService,
+    private santiyeService: SantiyeService,
     private activeRoute: ActivatedRoute,
     private router: Router,
     public authService: AuthService,
@@ -82,6 +84,12 @@ export class GidenYakitFormuCreateEditComponent implements OnInit {
     this.personelService.getAll().subscribe(data => {
       if (data.success) {
         this.personelList = data.data;
+      }
+    });
+
+    this.santiyeService.getAll().subscribe(data => {
+      if (data.success) {
+        this.santiyeList = data.data;
       }
     });
 

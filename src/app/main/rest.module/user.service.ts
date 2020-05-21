@@ -15,14 +15,12 @@ export class UserService {
 
   path = environment.path;
   baseUrl = '/api/users';
-  headers: HttpHeaders;
 
   constructor(private http: HttpClient, private authService: AuthService, private errorService: ErrorService) {
-    this.headers = new HttpHeaders({ 'x-access-token': authService.token, 'x-browser': authService.browser });
   }
 
   put(data: User): Observable<ApiResponse<User>> {
-    return this.http.put<ApiResponse<User>>(this.path + this.baseUrl, data, { headers: this.headers })
+    return this.http.put<ApiResponse<User>>(this.path + this.baseUrl, data, { headers: this.authService.getHeaders() })
       .pipe(map(res => {
         if (!res.success) {
           if (this.errorService.getErrorParse(res)) {
@@ -35,9 +33,7 @@ export class UserService {
   }
 
   putPassword(data: any): Observable<ApiResponse<void>> {
-    console.log(data);
-
-    return this.http.put<ApiResponse<void>>(this.path + this.baseUrl + '/password', data, { headers: this.headers })
+    return this.http.put<ApiResponse<void>>(this.path + this.baseUrl + '/password', data, { headers: this.authService.getHeaders() })
       .pipe(map(res => {
         if (!res.success) {
           if (this.errorService.getErrorParse(res)) {
@@ -50,9 +46,7 @@ export class UserService {
   }
 
   putUsername(data: any): Observable<ApiResponse<void>> {
-    console.log(data);
-
-    return this.http.put<ApiResponse<void>>(this.path + this.baseUrl + '/username', data, { headers: this.headers })
+    return this.http.put<ApiResponse<void>>(this.path + this.baseUrl + '/username', data, { headers: this.authService.getHeaders() })
       .pipe(map(res => {
         if (!res.success) {
           if (this.errorService.getErrorParse(res)) {
@@ -65,7 +59,7 @@ export class UserService {
   }
 
   forgotPass(): Observable<ApiResponse<void>> {
-    return this.http.get<ApiResponse<void>>(this.path + this.baseUrl + '/forgotPass', { headers: this.headers })
+    return this.http.get<ApiResponse<void>>(this.path + this.baseUrl + '/forgotPass', { headers: this.authService.getHeaders() })
       .pipe(map(res => {
         if (!res.success) {
           if (this.errorService.getErrorParse(res)) {
@@ -78,7 +72,7 @@ export class UserService {
   }
 
   get(): Observable<ApiResponse<User>> {
-    return this.http.get<ApiResponse<User>>(this.path + this.baseUrl, { headers: this.headers })
+    return this.http.get<ApiResponse<User>>(this.path + this.baseUrl, { headers: this.authService.getHeaders() })
       .pipe(map(res => {
         if (!res.success) {
           if (this.errorService.getErrorParse(res)) {
@@ -91,7 +85,7 @@ export class UserService {
   }
 
   getAll(): Observable<ApiResponse<User[]>> {
-    return this.http.get<ApiResponse<User[]>>(this.path + this.baseUrl + '/all', { headers: this.headers })
+    return this.http.get<ApiResponse<User[]>>(this.path + this.baseUrl + '/all', { headers: this.authService.getHeaders() })
       .pipe(map(res => {
         if (!res.success) {
           if (this.errorService.getErrorParse(res)) {
@@ -104,7 +98,7 @@ export class UserService {
   }
 
   delete(id): Observable<ApiResponse<void>> {
-    return this.http.delete<ApiResponse<void>>(this.path + this.baseUrl + '/' + id, { headers: this.headers })
+    return this.http.delete<ApiResponse<void>>(this.path + this.baseUrl + '/' + id, { headers: this.authService.getHeaders() })
       .pipe(map(res => {
         if (!res.success) {
           if (this.errorService.getErrorParse(res)) {
@@ -117,7 +111,7 @@ export class UserService {
   }
 
   register(data: User): Observable<ApiResponse<any>> {
-    return this.http.post<ApiResponse<any>>(this.path + '/api/register', data, { headers: this.headers })
+    return this.http.post<ApiResponse<any>>(this.path + '/api/register', data, { headers: this.authService.getHeaders() })
       .pipe(map(res => {
         if (!res.success) {
           if (this.errorService.getErrorParse(res)) {

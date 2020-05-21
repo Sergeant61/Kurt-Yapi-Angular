@@ -16,54 +16,52 @@ export class GelenYakitFormuService {
 
   path = environment.path;
   baseUrl = '/api/gelenYakit';
-  headers: HttpHeaders;
 
   constructor(private http: HttpClient, private authService: AuthService, private errorService: ErrorService) {
-    this.headers = new HttpHeaders({ 'x-access-token': authService.token, 'x-browser': authService.browser });
   }
 
   post(data: GelenYakitFormu): Observable<ApiResponse<GelenYakitFormu>> {
-    return this.http.post<ApiResponse<GelenYakitFormu>>(this.path + this.baseUrl, data, { headers: this.headers })
-    .pipe(map(res => {
-      if (!res.success) {
-        if (this.errorService.getErrorParse(res)) {
+    return this.http.post<ApiResponse<GelenYakitFormu>>(this.path + this.baseUrl, data, { headers: this.authService.getHeaders() })
+      .pipe(map(res => {
+        if (!res.success) {
+          if (this.errorService.getErrorParse(res)) {
+            return res;
+          }
+        } else {
           return res;
         }
-      } else {
-        return res;
-      }
-    }));
+      }));
   }
 
   getAll(): Observable<ApiResponse<GelenYakitFormu[]>> {
-    return this.http.get<ApiResponse<GelenYakitFormu[]>>(this.path + this.baseUrl, { headers: this.headers })
-    .pipe(map(res => {
-      if (!res.success) {
-        if (this.errorService.getErrorParse(res)) {
+    return this.http.get<ApiResponse<GelenYakitFormu[]>>(this.path + this.baseUrl, { headers: this.authService.getHeaders() })
+      .pipe(map(res => {
+        if (!res.success) {
+          if (this.errorService.getErrorParse(res)) {
+            return res;
+          }
+        } else {
           return res;
         }
-      } else {
-        return res;
-      }
-    }));
+      }));
   }
 
   getLength(): Observable<ApiResponse<number>> {
-    return this.http.put<ApiResponse<number>>(this.path + this.baseUrl, {}, { headers: this.headers })
-    .pipe(map(res => {
-      if (!res.success) {
-        if (this.errorService.getErrorParse(res)) {
+    return this.http.put<ApiResponse<number>>(this.path + this.baseUrl, {}, { headers: this.authService.getHeaders() })
+      .pipe(map(res => {
+        if (!res.success) {
+          if (this.errorService.getErrorParse(res)) {
+            return res;
+          }
+        } else {
           return res;
         }
-      } else {
-        return res;
-      }
-    }));
+      }));
   }
 
   getSkipAndLimit(start: string, end: string): Observable<ApiResponse<GelenYakitFormu[]>> {
     return this.http.get<ApiResponse<GelenYakitFormu[]>>(
-      this.path + this.baseUrl + '/' + start + '/' + end, { headers: this.headers })
+      this.path + this.baseUrl + '/' + start + '/' + end, { headers: this.authService.getHeaders() })
       .pipe(map(res => {
         if (!res.success) {
           if (this.errorService.getErrorParse(res)) {
@@ -76,56 +74,58 @@ export class GelenYakitFormuService {
   }
 
   get(id: string): Observable<ApiResponse<GelenYakitFormu>> {
-    return this.http.get<ApiResponse<GelenYakitFormu>>(this.path + this.baseUrl + '/' + id, { headers: this.headers })
-    .pipe(map(res => {
-      if (!res.success) {
-        if (this.errorService.getErrorParse(res)) {
+    return this.http.get<ApiResponse<GelenYakitFormu>>(this.path + this.baseUrl + '/' + id, { headers: this.authService.getHeaders() })
+      .pipe(map(res => {
+        if (!res.success) {
+          if (this.errorService.getErrorParse(res)) {
+            return res;
+          }
+        } else {
           return res;
         }
-      } else {
-        return res;
-      }
-    }));
+      }));
   }
 
   getDetail(id: string, mode: Mode): Observable<ApiResponse<GelenYakitFormu>> {
     return this.http
-    .get<ApiResponse<GelenYakitFormu>>(this.path + this.baseUrl + '/detail/' + id + '/' + mode, { headers: this.headers })
-    .pipe(map(res => {
-      if (!res.success) {
-        if (this.errorService.getErrorParse(res)) {
+      .get<ApiResponse<GelenYakitFormu>>(this.path + this.baseUrl + '/detail/' + id + '/' + mode,
+        { headers: this.authService.getHeaders() })
+      .pipe(map(res => {
+        if (!res.success) {
+          if (this.errorService.getErrorParse(res)) {
+            return res;
+          }
+        } else {
           return res;
         }
-      } else {
-        return res;
-      }
-    }));
+      }));
   }
 
   put(id: string, data: any): Observable<ApiResponse<GelenYakitFormu>> {
-    return this.http.put<ApiResponse<GelenYakitFormu>>(this.path + this.baseUrl + '/' + id, data, { headers: this.headers })
-    .pipe(map(res => {
-      if (!res.success) {
-        if (this.errorService.getErrorParse(res)) {
+    return this.http.put<ApiResponse<GelenYakitFormu>>(this.path + this.baseUrl + '/' + id, data,
+      { headers: this.authService.getHeaders() })
+      .pipe(map(res => {
+        if (!res.success) {
+          if (this.errorService.getErrorParse(res)) {
+            return res;
+          }
+        } else {
           return res;
         }
-      } else {
-        return res;
-      }
-    }));
+      }));
   }
 
   delete(id: string): Observable<ApiResponse<GelenYakitFormu>> {
-    return this.http.delete<ApiResponse<GelenYakitFormu>>(this.path + this.baseUrl + '/' + id, { headers: this.headers })
-    .pipe(map(res => {
-      if (!res.success) {
-        if (this.errorService.getErrorParse(res)) {
+    return this.http.delete<ApiResponse<GelenYakitFormu>>(this.path + this.baseUrl + '/' + id, { headers: this.authService.getHeaders() })
+      .pipe(map(res => {
+        if (!res.success) {
+          if (this.errorService.getErrorParse(res)) {
+            return res;
+          }
+        } else {
           return res;
         }
-      } else {
-        return res;
-      }
-    }));
+      }));
   }
 
 }

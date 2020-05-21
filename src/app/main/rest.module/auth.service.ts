@@ -10,7 +10,6 @@ import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { AlertifyService } from '../services/alertify.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { ErrorService } from '../services/error.service';
 
 @Injectable({
   providedIn: 'root'
@@ -68,7 +67,6 @@ export class AuthService {
   }
 
   login(body: any): Observable<boolean> {
-
     return this.http.post<ApiResponse<Token>>(this.path + '/login', body)
       .pipe(map(response => {
         this.token = null;
@@ -84,7 +82,7 @@ export class AuthService {
 
   logout() {
     this.http.post<ApiResponse<void>>(this.path + '/api/users/logout', {},
-      { headers: new HttpHeaders({ 'x-access-token': this.token }) })
+      { headers: this.getHeaders() })
       .subscribe(res => {
         localStorage.removeItem('token');
         this.token = null;
@@ -97,12 +95,18 @@ export class AuthService {
       });
   }
 
+  getHeaders(): HttpHeaders {
+    // console.log(this);
+    return new HttpHeaders({ 'x-access-token': this.token, 'x-browser': this.browser });
+  }
+
   getUser() {
     return this.http.get<ApiResponse<User>>(this.path + '/api/users',
-      { headers: new HttpHeaders({ 'x-access-token': this.token, 'x-browser': this.browser }) }).toPromise().then(res => {
+      { headers: this.getHeaders() }).toPromise().then(res => {
         if (res.success) {
           this.currentUser = res.data;
           this.isTokenValid = res.success;
+
         } else {
           this.alertifyService.error('Geçersiz oturum anahtarı. Lütfen tekrar giriş yapın.');
           this.logout();

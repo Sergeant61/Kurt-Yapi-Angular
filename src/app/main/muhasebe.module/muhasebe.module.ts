@@ -22,6 +22,8 @@ import { GunlukRaporComponent } from './raporlar/gunluk-rapor/gunluk-rapor.compo
 import { FirmaRaporComponent } from './raporlar/firma-rapor/firma-rapor.component';
 import { PerMesaiPuantajiComponent } from './raporlar/per-mesai-puantaji/per-mesai-puantaji.component';
 import { PerMesaiOdemesiComponent } from './raporlar/per-mesai-odemesi/per-mesai-odemesi.component';
+import { SahaOlcumFormuComponent } from './formlar/saha-olcum-formu/saha-olcum-formu.component';
+import { SahaOlcumFormuCreateEditComponent } from './formlar/saha-olcum-formu-create-edit/saha-olcum-formu-create-edit.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,9 @@ import { PerMesaiOdemesiComponent } from './raporlar/per-mesai-odemesi/per-mesai
     GunlukRaporComponent,
     FirmaRaporComponent,
     PerMesaiPuantajiComponent,
-    PerMesaiOdemesiComponent
+    PerMesaiOdemesiComponent,
+    SahaOlcumFormuComponent,
+    SahaOlcumFormuCreateEditComponent
   ],
   imports: [
     MuhasebeRoutingModule,

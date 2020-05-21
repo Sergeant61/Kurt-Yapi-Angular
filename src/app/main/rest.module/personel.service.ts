@@ -15,14 +15,12 @@ export class PersonelService {
 
   path = environment.path;
   baseUrl = '/api/personel';
-  headers: HttpHeaders;
 
   constructor(private http: HttpClient, private authService: AuthService, private errorService: ErrorService) {
-    this.headers = new HttpHeaders({ 'x-access-token': authService.token, 'x-browser': authService.browser });
   }
 
   post(data: Personel): Observable<ApiResponse<Personel>> {
-    return this.http.post<ApiResponse<Personel>>(this.path + this.baseUrl, data, { headers: this.headers })
+    return this.http.post<ApiResponse<Personel>>(this.path + this.baseUrl, data, { headers: this.authService.getHeaders() })
     .pipe(map(res => {
       if (!res.success) {
         if (this.errorService.getErrorParse(res)) {
@@ -35,7 +33,7 @@ export class PersonelService {
   }
 
   getAll(): Observable<ApiResponse<Personel[]>> {
-    return this.http.get<ApiResponse<Personel[]>>(this.path + this.baseUrl, { headers: this.headers })
+    return this.http.get<ApiResponse<Personel[]>>(this.path + this.baseUrl, { headers: this.authService.getHeaders() })
     .pipe(map(res => {
       if (!res.success) {
         if (this.errorService.getErrorParse(res)) {
@@ -48,7 +46,7 @@ export class PersonelService {
   }
 
   get(id: string): Observable<ApiResponse<Personel>> {
-    return this.http.get<ApiResponse<Personel>>(this.path + this.baseUrl + '/' + id, { headers: this.headers })
+    return this.http.get<ApiResponse<Personel>>(this.path + this.baseUrl + '/' + id, { headers: this.authService.getHeaders() })
     .pipe(map(res => {
       if (!res.success) {
         if (this.errorService.getErrorParse(res)) {
@@ -61,7 +59,7 @@ export class PersonelService {
   }
 
   put(id: string, data: Personel): Observable<ApiResponse<Personel>> {
-    return this.http.put<ApiResponse<Personel>>(this.path + this.baseUrl + '/' + id, data, { headers: this.headers })
+    return this.http.put<ApiResponse<Personel>>(this.path + this.baseUrl + '/' + id, data, { headers: this.authService.getHeaders() })
     .pipe(map(res => {
       if (!res.success) {
         if (this.errorService.getErrorParse(res)) {
@@ -74,7 +72,7 @@ export class PersonelService {
   }
 
   delete(id: string): Observable<ApiResponse<Personel>> {
-    return this.http.delete<ApiResponse<Personel>>(this.path + this.baseUrl + '/' + id, { headers: this.headers })
+    return this.http.delete<ApiResponse<Personel>>(this.path + this.baseUrl + '/' + id, { headers: this.authService.getHeaders() })
     .pipe(map(res => {
       if (!res.success) {
         if (this.errorService.getErrorParse(res)) {

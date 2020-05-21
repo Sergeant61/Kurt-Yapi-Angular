@@ -1,0 +1,84 @@
+<div class="row">
+  <div class="col-md-12 bg-dark p-2">
+    <button class="btn btn-outline-light"  [routerLink]="[baseUrl,'create']" >Yeni Kayıt Ekle</button>
+  </div>
+
+  <div class="col-md-12 bg-success p-2" *ngIf="!isBirimiList">
+
+    <div class="spinner-border spinner-border-sm text-light mr-2" role="status">
+    </div>
+    <div class="spinner-grow spinner-grow-sm text-light mr-2" role="status">
+    </div>
+    <span class="text-white">Yükleniyor lütfen bekleyin.</span>
+
+  </div>
+
+
+  <div class="container-fluid" *ngIf="isBirimiList">
+    <div class="card shadow mb-4 mt-4">
+      <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
+
+        <h6 class="m-0 font-weight-bold text-dark">İş Birimi Listesi</h6>
+        <div class="btn-group">
+
+        </div>
+      </div>
+
+      <div class="card-body p-2">
+        <div class="table-responsive">
+          <table class="table table-sm" >
+            <thead class="thead-dark">
+              <tr>
+                <th>#</th>
+                <th>Adı</th>
+                <th>İlk Kayıt Tarihi</th>
+                <th>#</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let value of isBirimiList; index as i">
+                <th>{{ i + 1 }}</th>
+                <td>{{ value.name }}</td>
+                <td>{{ value.createdAt | date: "dd/MM/yyyy - hh:mm:ss"}}</td>
+                <td>
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-warning" [routerLink]="[baseUrl,'edit',value._id]">Düzenle</button>
+                    <button type="button" class="btn btn-danger" *ngIf="authService.currentUser.isAdmin" data-toggle="modal" data-target="#exampleModal" (click)="setSelected(value)">Sil</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+
+</div>
+
+<!-- Modal dialog penceresi -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Silmek istediğinize emin misiniz ?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Seçtiğiniz veri kalıcı olarak silinecektir.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" #closebutton data-dismiss="modal">Vazgeç</button>
+        <button type="button" class="btn btn-danger" (click)="delete()"  [class.disabled]="isLoading" [disabled]="isLoading">
+          <span name="loadingSpan" class="spinner-border spinner-border-sm" role="status" *ngIf="isLoading"></span>
+          Evet</button>
+      </div>
+    </div>
+  </div>
+</div>

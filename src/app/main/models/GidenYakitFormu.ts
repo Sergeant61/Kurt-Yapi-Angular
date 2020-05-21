@@ -3,6 +3,7 @@ import { Personel } from './Personel';
 import { TirKamyon } from './TirKamyon';
 import { IsMakinesi } from './IsMakinesi';
 import { User } from './User';
+import { Santiye } from './Santiye';
 
 export class GidenYakitFormu {
   _id: string;
@@ -14,6 +15,7 @@ export class GidenYakitFormu {
   yakitiAlanPersonelId: string;
   yakitiVerenPersonelId: string;
   notlar: string;
+  santiyeId: string;
   onaylimi: boolean;
   createdAt: Date;
   createdUserId: string;
@@ -29,4 +31,5 @@ export class GidenYakitFormu {
   createdUser: User = new User();
   lastEditUser: User = new User();
   onaylayanUser: User = new User();
+  santiye: Santiye = new Santiye();
 }

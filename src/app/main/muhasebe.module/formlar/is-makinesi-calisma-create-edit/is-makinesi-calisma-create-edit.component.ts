@@ -11,6 +11,10 @@ import { FirmaService } from '../../../rest.module/firma.service';
 import { AuthService } from '../../../rest.module/auth.service';
 import { IsMakinesiGunlukCalismaFormuService } from '../../../rest.module/is-makinesi-gunluk-calisma-formu.service';
 import { NgForm } from '@angular/forms';
+import { Santiye } from 'src/app/main/models/Santiye';
+import { SantiyeService } from 'src/app/main/rest.module/santiye.service';
+import { FormTuruService } from 'src/app/main/rest.module/form-turu.service';
+import { FormTuru } from 'src/app/main/models/FormTuru';
 
 @Component({
   selector: 'app-is-makinesi-calisma-create-edit',
@@ -22,21 +26,25 @@ export class IsMakinesiCalismaCreateEditComponent implements OnInit {
   isMakinesiList: IsMakinesi[] = [];
   firmaList: Firma[] = [];
   personelList: Personel[] = [];
+  formTuruList: FormTuru[] = [];
+  santiyeList: Santiye[] = [];
 
   isMakinesiGunlukCalisma: IsMakinesiGunlukCalisma = null;
   editing: boolean = false;
   errorMessage: string;
   isLoading: boolean = false;
 
+  tag = 'isMakinesiGunlukCalisma';
+
+  urls = environment;
   baseUrl: string = environment.baseUrlIsMakinesiCalisma;
-  newIsmakinesiUrl: string = environment.baseUrlIsmakinesi;
-  newFirmaBaseUrl: string = environment.baseUrlFirma;
-  newPersonelBaseUrl: string = environment.baseUrlPersonel;
 
   constructor(
     private isMakinesiService: IsMakinesiService,
     private firmaService: FirmaService,
     private personelService: PersonelService,
+    private formTuruService: FormTuruService,
+    private santiyeService: SantiyeService,
     private activeRoute: ActivatedRoute,
     private router: Router,
     public authService: AuthService,
@@ -47,7 +55,7 @@ export class IsMakinesiCalismaCreateEditComponent implements OnInit {
       isMakinesiGunlukCalismaFormuService.get(activeRoute.snapshot.params.id).subscribe(data => {
         if (data.success) {
           this.isMakinesiGunlukCalisma = data.data;
-          localStorage.removeItem('isMakinesiGunlukCalisma');
+          localStorage.removeItem(this.tag);
         } else {
 
         }
@@ -55,11 +63,11 @@ export class IsMakinesiCalismaCreateEditComponent implements OnInit {
 
       });
     } else {
-      const gunlukCalisma: IsMakinesiGunlukCalisma = JSON.parse(localStorage.getItem('isMakinesiGunlukCalisma'));
+      const gunlukCalisma: IsMakinesiGunlukCalisma = JSON.parse(localStorage.getItem(this.tag));
 
       if (gunlukCalisma !== undefined && gunlukCalisma !== null) {
         if (gunlukCalisma._id !== undefined && gunlukCalisma._id !== null) {
-          localStorage.removeItem('isMakinesiGunlukCalisma');
+          localStorage.removeItem(this.tag);
           this.isMakinesiGunlukCalisma = new IsMakinesiGunlukCalisma();
         } else {
           this.isMakinesiGunlukCalisma = gunlukCalisma;
@@ -89,6 +97,18 @@ export class IsMakinesiCalismaCreateEditComponent implements OnInit {
       }
     });
 
+    this.formTuruService.getAll().subscribe(data => {
+      if (data.success) {
+        this.formTuruList = data.data;
+      }
+    });
+
+    this.santiyeService.getAll().subscribe(data => {
+      if (data.success) {
+        this.santiyeList = data.data;
+      }
+    });
+
   }
 
   save(form: NgForm) {
@@ -100,7 +120,7 @@ export class IsMakinesiCalismaCreateEditComponent implements OnInit {
         this.isMakinesiGunlukCalismaFormuService.put(this.isMakinesiGunlukCalisma._id, this.isMakinesiGunlukCalisma).subscribe(data => {
           if (data.success) {
             this.router.navigateByUrl(this.baseUrl);
-            localStorage.removeItem('isMakinesiGunlukCalisma');
+            localStorage.removeItem(this.tag);
           } else {
             this.errorMessage = data.message;
           }
@@ -113,7 +133,7 @@ export class IsMakinesiCalismaCreateEditComponent implements OnInit {
         this.isMakinesiGunlukCalismaFormuService.post(this.isMakinesiGunlukCalisma).subscribe(data => {
           if (data.success) {
             this.router.navigateByUrl(this.baseUrl);
-            localStorage.removeItem('isMakinesiGunlukCalisma');
+            localStorage.removeItem(this.tag);
           } else {
             this.errorMessage = data.message;
           }
@@ -126,7 +146,7 @@ export class IsMakinesiCalismaCreateEditComponent implements OnInit {
   }
 
   formChange(form: NgForm) {
-    localStorage.setItem('isMakinesiGunlukCalisma', JSON.stringify(this.isMakinesiGunlukCalisma));
+    localStorage.setItem(this.tag, JSON.stringify(this.isMakinesiGunlukCalisma));
   }
 
 }

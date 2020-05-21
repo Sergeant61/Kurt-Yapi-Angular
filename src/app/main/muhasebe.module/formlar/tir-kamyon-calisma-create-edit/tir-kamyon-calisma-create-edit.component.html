@@ -16,16 +16,16 @@
     <span class="text-white">Yükleniyor lütfen bekleyin.</span>
   </div>
 
-  <div class="col-md-12 mt-2">
+  <div class="col-md-12">
     <form #form="ngForm" (ngSubmit)="save(form)" (change)="formChange(form)" *ngIf="tirKamyonGunlukCalisma">
       <div class="row">
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-6 mt-2">
           <div class="card">
             <div class="card-header">
               Genel Bilgiler
             </div>
             <div class="card-body">
-              <div class="input-group mb-4">
+              <div class="input-group input-group-sm mb-2">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="inputGroup-sizing-default">Sıra No</span>
                 </div>
@@ -33,7 +33,7 @@
                   required />
               </div>
 
-              <div class="input-group mb-4">
+              <div class="input-group mb-2">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="inputGroup-sizing-default">Tarih</span>
                 </div>
@@ -41,7 +41,102 @@
                   [(ngModel)]="tirKamyonGunlukCalisma.formTarihi" required />
               </div>
 
-              <div class="input-group mb-4">
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect04">Şantiye</label>
+                </div>
+                <select [(ngModel)]="tirKamyonGunlukCalisma.santiyeId" class="form-control" id="inputGroupSelect04"
+                  name="santiyeId" required>
+                  <option *ngFor="let item of santiyeList" [ngValue]="item._id">{{ item.name }}</option>
+                </select>
+
+                <a target="_blank" class="btn btn-primary ml-2" [routerLink]="[urls.baseUrlSantiye, 'create']">
+                  Yeni Şantiye ekle
+                </a>
+              </div>
+
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect04">Form Türü</label>
+                </div>
+                <select [(ngModel)]="tirKamyonGunlukCalisma.formTuruId" class="form-control" id="inputGroupSelect04"
+                  name="formTuruId" required>
+                  <option *ngFor="let item of formTuruList" [ngValue]="item._id">{{ item.name }}</option>
+                </select>
+
+                <a target="_blank" class="btn btn-primary ml-2" [routerLink]="[urls.baseUrlFormTuru, 'create']">
+                  Yeni Form Türü ekle
+                </a>
+              </div>
+
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Notlar</span>
+                </div>
+                <textarea type="text" class="form-control" name="notlar"
+                  [(ngModel)]="tirKamyonGunlukCalisma.notlar"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6 mt-2">
+          <div class="card">
+            <div class="card-header">
+              Araç bilgileri
+            </div>
+            <div class="card-body">
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect03">Tır - Kamyon</label>
+                </div>
+                <select [(ngModel)]="tirKamyonGunlukCalisma.plakaId" class="form-control" id="inputGroupSelect03"
+                  name="plakaId" required>
+                  <option *ngFor="let item of tirKamyonList" [ngValue]="item._id">
+                    {{ (item.plaka=== undefined ? "Tanımsız" : item.plaka) + " ---- " +  (item.aracCinsi=== undefined ? "Tanımsız" : item.aracCinsi) }}
+                  </option>
+                </select>
+
+                <a target="_blank" class="btn btn-primary ml-2" [routerLink]="[urls.baseUrlTirKamyon, 'create']">
+                  Yeni Araç ekle
+                </a>
+              </div>
+
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Kilometre</span>
+                </div>
+                <input type="number" class="form-control" name="kilometre"
+                  [(ngModel)]="tirKamyonGunlukCalisma.kilometre" required />
+              </div>
+
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect04">Personel Bilgileri</label>
+                </div>
+                <select [(ngModel)]="tirKamyonGunlukCalisma.personelId" class="form-control" id="inputGroupSelect04"
+                  name="personelId" required>
+                  <option *ngFor="let item of personelList" [ngValue]="item._id">{{
+                      item.unvan + " - " + item.name + " " + item.surname
+                    }}</option>
+                </select>
+
+                <a target="_blank" class="btn btn-primary ml-2" [routerLink]="[urls.baseUrlPersonel, 'create']">
+                  Yeni Personel ekle
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6 mt-2">
+          <div class="card">
+            <div class="card-header">
+              İş bilgileri
+            </div>
+            <div class="card-body">
+
+              <div class="input-group mb-2">
                 <div class="input-group-prepend">
                   <label class="input-group-text" for="inputGroupSelect01">Çalışılan Firma Ünvanı</label>
                 </div>
@@ -52,12 +147,20 @@
                   }}</option>
                 </select>
 
-                <a target="_blank" class="btn btn-primary ml-2" [routerLink]="[newFirmaBaseUrl, 'create']">
+                <a target="_blank" class="btn btn-primary ml-2" [routerLink]="[urls.baseUrlFirma, 'create']">
                   Yeni Firma Ekle
                 </a>
               </div>
 
-              <div class="input-group mb-4">
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Çalışılan Firma Yetkilisi</span>
+                </div>
+                <input type="text" class="form-control" name="firmaYetkilisiAdSoyad"
+                  [(ngModel)]="tirKamyonGunlukCalisma.firmaYetkilisiAdSoyad" required />
+              </div>
+
+              <div class="input-group mb-2">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="inputGroup-sizing-default">Yükleme ve Kazı yeri</span>
                 </div>
@@ -65,7 +168,7 @@
                   [(ngModel)]="tirKamyonGunlukCalisma.yuklemeYeri" required />
               </div>
 
-              <div class="input-group mb-4">
+              <div class="input-group mb-2">
                 <div class="input-group-prepend">
                   <label class="input-group-text" for="inputGroupSelect02">Boşaltım Yeri</label>
                 </div>
@@ -74,12 +177,12 @@
                   <option *ngFor="let item of dokumSahasiList" [ngValue]="item._id">{{ item.name }}</option>
                 </select>
 
-                <a target="_blank" class="btn btn-primary ml-2" [routerLink]="[newDokumBaseUrl, 'create']">
+                <a target="_blank" class="btn btn-primary ml-2" [routerLink]="[urls.baseUrlDokumSahasi, 'create']">
                   Yeni Saha Ekle
                 </a>
               </div>
 
-              <div class="input-group mb-4">
+              <div class="input-group mb-2">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="inputGroup-sizing-default">Malzeme Cinsi</span>
                 </div>
@@ -87,7 +190,7 @@
                   [(ngModel)]="tirKamyonGunlukCalisma.malzemeCinsi" required />
               </div>
 
-              <div class="input-group mb-4">
+              <div class="input-group mb-2">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="inputGroup-sizing-default">Sefer Sayısı</span>
                 </div>
@@ -101,82 +204,6 @@
           </div>
         </div>
 
-        <div class="col-12 col-md-6">
-          <div class="card">
-            <div class="card-header">
-              Araç bilgileri
-            </div>
-            <div class="card-body">
-              <div class="input-group mb-4">
-                <div class="input-group-prepend">
-                  <label class="input-group-text" for="inputGroupSelect03">Tır - Kamyon</label>
-                </div>
-                <select [(ngModel)]="tirKamyonGunlukCalisma.plakaId" class="form-control" id="inputGroupSelect03"
-                  name="plakaId" required>
-                  <option *ngFor="let item of tirKamyonList" [ngValue]="item._id">
-                    {{ (item.plaka=== undefined ? "Tanımsız" : item.plaka) + " ---- " +  (item.aracCinsi=== undefined ? "Tanımsız" : item.aracCinsi) }}
-                  </option>
-                </select>
-
-                <a target="_blank" class="btn btn-primary ml-2" [routerLink]="[newTirBaseUrl, 'create']">
-                  Yeni Araç ekle
-                </a>
-              </div>
-
-              <div class="input-group mb-4">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="inputGroup-sizing-default">Kilometre</span>
-                </div>
-                <input type="number" class="form-control" name="kilometre"
-                  [(ngModel)]="tirKamyonGunlukCalisma.kilometre" required />
-              </div>
-
-              <div class="input-group mb-4">
-                <div class="input-group-prepend">
-                  <label class="input-group-text" for="inputGroupSelect04">Personel Bilgileri</label>
-                </div>
-                <select [(ngModel)]="tirKamyonGunlukCalisma.personelId" class="form-control" id="inputGroupSelect04"
-                  name="personelId" required>
-                  <option *ngFor="let item of personelList" [ngValue]="item._id">{{
-                      item.unvan + " - " + item.name + " " + item.surname
-                    }}</option>
-                </select>
-
-                <a target="_blank" class="btn btn-primary ml-2" [routerLink]="[newPersonelBaseUrl, 'create']">
-                  Yeni Personel ekle
-                </a>
-              </div>
-
-              <div class="input-group mb-4">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="inputGroup-sizing-default">Çalışılan Firma Yetkilisi</span>
-                </div>
-                <input type="text" class="form-control" name="firmaYetkilisiAdSoyad"
-                  [(ngModel)]="tirKamyonGunlukCalisma.firmaYetkilisiAdSoyad" required />
-              </div>
-
-              <div class="input-group mb-4">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">
-                    <input type="checkbox" name="imzalimi" [(ngModel)]="tirKamyonGunlukCalisma.imzalimi"
-                      aria-label="Checkbox for following text input" />
-                  </div>
-                </div>
-                <label type="text" class="form-control" aria-label="Text input with checkbox">
-                  {{ tirKamyonGunlukCalisma.imzalimi ? "İmzalı" : "İmzasız" }}
-                </label>
-              </div>
-
-              <div class="input-group mt-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="inputGroup-sizing-default">Notlar</span>
-                </div>
-                <textarea type="text" class="form-control" name="notlar"
-                  [(ngModel)]="tirKamyonGunlukCalisma.notlar"></textarea>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
       <div class="btn-group mt-4">

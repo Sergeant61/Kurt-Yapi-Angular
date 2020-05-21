@@ -7,6 +7,8 @@ import { PersonelService } from '../../../rest.module/personel.service';
 import { AuthService } from '../../../rest.module/auth.service';
 import { GelenYakitFormuService } from '../../../rest.module/gelen-yakit-formu.service';
 import { NgForm } from '@angular/forms';
+import { Santiye } from 'src/app/main/models/Santiye';
+import { SantiyeService } from 'src/app/main/rest.module/santiye.service';
 
 @Component({
   selector: 'app-gelen-yakit-formu-create-edit',
@@ -16,6 +18,7 @@ import { NgForm } from '@angular/forms';
 export class GelenYakitFormuCreateEditComponent implements OnInit {
 
   personelList: Personel[] = [];
+  santiyeList: Santiye[] = [];
 
   gelenYakitFormu: GelenYakitFormu = null;
   editing: boolean = false;
@@ -23,10 +26,11 @@ export class GelenYakitFormuCreateEditComponent implements OnInit {
   isLoading: boolean = false;
 
   baseUrl: string = environment.baseUrlGelenYakitFormu;
-  newPersonelBaseUrl: string = environment.baseUrlPersonel;
+  urls = environment;
 
   constructor(
     private personelService: PersonelService,
+    private santiyeService: SantiyeService,
     private activeRoute: ActivatedRoute,
     private router: Router,
     public authService: AuthService,
@@ -52,6 +56,12 @@ export class GelenYakitFormuCreateEditComponent implements OnInit {
     this.personelService.getAll().subscribe(data => {
       if (data.success) {
         this.personelList = data.data;
+      }
+    });
+
+    this.santiyeService.getAll().subscribe(data => {
+      if (data.success) {
+        this.santiyeList = data.data;
       }
     });
 

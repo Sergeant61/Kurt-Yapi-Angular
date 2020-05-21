@@ -46,6 +46,7 @@
                 <th>Alınan Yakıt</th>
                 <th>Birim Fiyatı</th>
                 <th>Yakıtı Alan Personel</th>
+                <th>Şantiye</th>
                 <th>Form Tarihi</th>
                 <th>İlk Kayıt Tarihi</th>
                 <th>Son Güncelleme Tarihi</th>
@@ -60,6 +61,7 @@
                 <td>{{ value.alinanYakitLitre +" Litre" }}</td>
                 <td>{{ value.birimFiyati + " ₺" }} </td>
                 <td>{{ value.yakitiAlanPersonel.name + " " + value.yakitiAlanPersonel.surname }}</td>
+                <td>{{ value.santiye.name}} </td>
                 <td>{{ value.formTarihi | date: "dd/MM/yyyy" }}</td>
                 <td>{{ value.createdAt | date: "dd/MM/yyyy - hh:mm:ss" }}</td>
                 <td>{{ value.lastEditAt | date: "dd/MM/yyyy - hh:mm:ss" }}</td>

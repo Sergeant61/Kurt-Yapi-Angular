@@ -16,14 +16,12 @@ export class TirKamyonGunlukCalismaFormuService {
 
   path = environment.path;
   baseUrl = '/api/tirKamyonGunluk';
-  headers: HttpHeaders;
 
   constructor(private http: HttpClient, private authService: AuthService, private errorService: ErrorService) {
-    this.headers = new HttpHeaders({ 'x-access-token': authService.token, 'x-browser': authService.browser });
   }
 
   post(data: TirKamyonGunlukCalisma): Observable<ApiResponse<TirKamyonGunlukCalisma>> {
-    return this.http.post<ApiResponse<TirKamyonGunlukCalisma>>(this.path + this.baseUrl, data, { headers: this.headers })
+    return this.http.post<ApiResponse<TirKamyonGunlukCalisma>>(this.path + this.baseUrl, data, { headers: this.authService.getHeaders() })
       .pipe(map(res => {
         if (!res.success) {
           if (this.errorService.getErrorParse(res)) {
@@ -36,7 +34,7 @@ export class TirKamyonGunlukCalismaFormuService {
   }
 
   getAll(): Observable<ApiResponse<TirKamyonGunlukCalisma[]>> {
-    return this.http.get<ApiResponse<TirKamyonGunlukCalisma[]>>(this.path + this.baseUrl, { headers: this.headers })
+    return this.http.get<ApiResponse<TirKamyonGunlukCalisma[]>>(this.path + this.baseUrl, { headers: this.authService.getHeaders() })
       .pipe(map(res => {
         if (!res.success) {
           if (this.errorService.getErrorParse(res)) {
@@ -49,7 +47,7 @@ export class TirKamyonGunlukCalismaFormuService {
   }
 
   getLength(): Observable<ApiResponse<number>> {
-    return this.http.put<ApiResponse<number>>(this.path + this.baseUrl, {}, { headers: this.headers })
+    return this.http.put<ApiResponse<number>>(this.path + this.baseUrl, {}, { headers: this.authService.getHeaders() })
       .pipe(map(res => {
         if (!res.success) {
           if (this.errorService.getErrorParse(res)) {
@@ -63,7 +61,7 @@ export class TirKamyonGunlukCalismaFormuService {
 
   getSkipAndLimit(start: string, end: string): Observable<ApiResponse<TirKamyonGunlukCalisma[]>> {
     return this.http.get<ApiResponse<TirKamyonGunlukCalisma[]>>(
-      this.path + this.baseUrl + '/' + start + '/' + end, { headers: this.headers })
+      this.path + this.baseUrl + '/' + start + '/' + end, { headers: this.authService.getHeaders() })
       .pipe(map(res => {
         if (!res.success) {
           if (this.errorService.getErrorParse(res)) {
@@ -76,7 +74,8 @@ export class TirKamyonGunlukCalismaFormuService {
   }
 
   get(id: string): Observable<ApiResponse<TirKamyonGunlukCalisma>> {
-    return this.http.get<ApiResponse<TirKamyonGunlukCalisma>>(this.path + this.baseUrl + '/' + id, { headers: this.headers })
+    return this.http.get<ApiResponse<TirKamyonGunlukCalisma>>(this.path + this.baseUrl + '/' + id,
+     { headers: this.authService.getHeaders() })
       .pipe(map(res => {
         if (!res.success) {
           if (this.errorService.getErrorParse(res)) {
@@ -90,7 +89,8 @@ export class TirKamyonGunlukCalismaFormuService {
 
   getDetail(id: string, mode: Mode): Observable<ApiResponse<TirKamyonGunlukCalisma>> {
     return this.http
-      .get<ApiResponse<TirKamyonGunlukCalisma>>(this.path + this.baseUrl + '/detail/' + id + '/' + mode, { headers: this.headers })
+      .get<ApiResponse<TirKamyonGunlukCalisma>>(this.path + this.baseUrl + '/detail/' + id + '/' + mode,
+       { headers: this.authService.getHeaders() })
       .pipe(map(res => {
         if (!res.success) {
           if (this.errorService.getErrorParse(res)) {
@@ -104,7 +104,8 @@ export class TirKamyonGunlukCalismaFormuService {
 
   getRaporDetail(data: any): Observable<ApiResponse<Array<TirKamyonGunlukCalisma>>> {
     return this.http
-      .post<ApiResponse<Array<TirKamyonGunlukCalisma>>>(this.path + this.baseUrl + '/detail', data, { headers: this.headers })
+      .post<ApiResponse<Array<TirKamyonGunlukCalisma>>>(this.path + this.baseUrl + '/detail', data,
+       { headers: this.authService.getHeaders() })
       .pipe(map(res => {
         if (!res.success) {
           if (this.errorService.getErrorParse(res)) {
@@ -117,7 +118,8 @@ export class TirKamyonGunlukCalismaFormuService {
   }
 
   put(id: string, data: any): Observable<ApiResponse<TirKamyonGunlukCalisma>> {
-    return this.http.put<ApiResponse<TirKamyonGunlukCalisma>>(this.path + this.baseUrl + '/' + id, data, { headers: this.headers })
+    return this.http.put<ApiResponse<TirKamyonGunlukCalisma>>(this.path + this.baseUrl + '/' + id, data,
+     { headers: this.authService.getHeaders() })
       .pipe(map(res => {
         if (!res.success) {
           if (this.errorService.getErrorParse(res)) {
@@ -130,7 +132,8 @@ export class TirKamyonGunlukCalismaFormuService {
   }
 
   delete(id: string): Observable<ApiResponse<TirKamyonGunlukCalisma>> {
-    return this.http.delete<ApiResponse<TirKamyonGunlukCalisma>>(this.path + this.baseUrl + '/' + id, { headers: this.headers })
+    return this.http.delete<ApiResponse<TirKamyonGunlukCalisma>>(this.path + this.baseUrl + '/' + id,
+     { headers: this.authService.getHeaders() })
       .pipe(map(res => {
         if (!res.success) {
           if (this.errorService.getErrorParse(res)) {

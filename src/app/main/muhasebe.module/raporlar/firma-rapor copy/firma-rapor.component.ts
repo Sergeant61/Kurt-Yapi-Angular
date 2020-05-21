@@ -8,6 +8,8 @@ import * as jsPDF from 'jspdf';
 import { FirmaRapor, AracRapor } from 'src/app/main/models/raporlar/FirmaRapor';
 import { FirmaService } from 'src/app/main/rest.module/firma.service';
 import { Firma } from 'src/app/main/models/Firma';
+import { Santiye } from 'src/app/main/models/Santiye';
+import { SantiyeService } from 'src/app/main/rest.module/santiye.service';
 
 @Component({
   selector: 'app-firma-rapor',
@@ -22,27 +24,33 @@ export class FirmaRaporComponent implements OnInit {
   sDate = new Date(this.date.getFullYear(), this.date.getMonth(), 1);
   lDate = new Date(this.date.getFullYear(), this.date.getMonth() + 1, 0);
   firmaId = '1';
+  santiyeId = '1';
 
   startDate: string = this.sDate.toISOString().slice(0, 10);
   lastDate: string = this.lDate.toISOString().slice(0, 10);
 
   firmaRaporList: FirmaRapor[] = [];
   firmaList: Firma[] = [];
+  santiyeList: Santiye[] = [];
 
   tablo: Array<string[]> = [];
   tablo2: Array<any[]> = [];
+  tablo3: Array<any[]> = [];
   tabloThead: string[] = [];
+  tabloThead3: string[] = [];
 
 
   constructor(
     public authService: AuthService,
     private firmaService: FirmaService,
+    private santiyeService: SantiyeService,
     private tirKamyonGunlukCalismaFormuService: TirKamyonGunlukCalismaFormuService,
     private isMakinesiGunlukCalismaFormuService: IsMakinesiGunlukCalismaFormuService
   ) { }
 
   async ngOnInit() {
     await this.getFirmaList();
+    await this.getSantiyeList();
     this.dateChange();
   }
 
@@ -111,7 +119,7 @@ export class FirmaRaporComponent implements OnInit {
         this.tablo.push(tablo1SonSatir);
       }
 
-      // Taoplo 2
+      // Taplo 2
       if (rapor.length !== 0) {
 
         for (let index = 1; index < this.tabloThead.length; index++) {
@@ -144,13 +152,42 @@ export class FirmaRaporComponent implements OnInit {
     }).catch(err => { });
   }
 
+  getSantiyeList() {
+    return this.santiyeService.getAll().toPromise().then(data => {
+      if (data.success) {
+        this.santiyeList = data.data;
+        this.santiyeList.splice(0, 0, new Santiye('1', 'Hepsi'));
+      }
+    }).catch(err => { });
+  }
+
   getIsmakinesi() {
     return this.isMakinesiGunlukCalismaFormuService.getRaporDetail(
-      { mode: 2, startDate: this.startDate, lastDate: this.lastDate, firmaId: this.firmaId })
+      { mode: 2, startDate: this.startDate, lastDate: this.lastDate, firmaId: this.firmaId, santiyeId: this.santiyeId })
       .toPromise().then(data => {
+
+        this.tablo3 = [];
+        this.tabloThead3 = ['Form Tarihi', 'Makina Cinsi', 'Yapılan İşin Tanımı', 'Çalışma Şekli', 'Çalışma Birimi', 'İmzalı/İmzasız'];
 
         if (data.success) {
           this.firmaRaporList = [];
+
+          // Taplo 3
+
+          data.data.forEach(r => {
+
+            const satir: any[] = [];
+
+            satir.push(this.gfg_Run(new Date(r.formTarihi)));
+            satir.push(r.isMakinesi.makineCinsi);
+            satir.push(r.yapilinIsTanimi);
+            satir.push(r.calismaSekli);
+            satir.push(r.calismaSaati);
+            satir.push(r.formTuru.name);
+
+            this.tablo3.push(satir);
+
+          });
 
           data.data.forEach(form => {
             let firmaRapor: FirmaRapor;
@@ -232,11 +269,12 @@ export class FirmaRaporComponent implements OnInit {
     /* generate worksheet */
     const d1 = document.getElementById('excelTable1');
     const d2 = document.getElementById('excelTable2');
-    // const d3 = document.getElementById('excelTable3');
+    const d3 = document.getElementById('excelTable3');
 
     const tableAll = document.createElement('table');
     tableAll.innerHTML = '<table>' + d1.innerHTML + '<tr><th></th></tr></table>' +
-      '<table>' + d2.innerHTML + '<tr><th></th></tr></table>';
+      '<table>' + d2.innerHTML + '<tr><th></th></tr></table>' +
+      '<table>' + d3.innerHTML + '<tr><th></th></tr></table>';
 
     const ws1: XLSX.WorkSheet = XLSX.utils.table_to_sheet(tableAll);
 

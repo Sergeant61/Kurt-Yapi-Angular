@@ -13,6 +13,12 @@ import { TirKamyonFormComponent } from './tir-kamyon-form/tir-kamyon-form.compon
 import { FirmaFormComponent } from './firma-form/firma-form.component';
 import { PersonelFormComponent } from './personel-form/personel-form.component';
 import { DokumSahasiFormComponent } from './dokum-sahasi-form/dokum-sahasi-form.component';
+import { IsBirimiComponent } from './is-birimi/is-birimi.component';
+import { IsBirimiFormComponent } from './is-birimi-form/is-birimi-form.component';
+import { FormTuruComponent } from './form-turu/form-turu.component';
+import { FormTuruFormComponent } from './form-turu-form/form-turu-form.component';
+import { SantiyeComponent } from './santiye/santiye.component';
+import { SantiyeFormComponent } from './santiye-form/santiye-form.component';
 
 
 
@@ -36,7 +42,16 @@ const routes: Routes = [
       { path: 'personel/:mode', component: PersonelFormComponent },
       { path: 'dokumsahasi', component: DokumSahasiComponent },
       { path: 'dokumsahasi/:mode/:id', component: DokumSahasiFormComponent },
-      { path: 'dokumsahasi/:mode', component: DokumSahasiFormComponent }
+      { path: 'dokumsahasi/:mode', component: DokumSahasiFormComponent },
+      { path: 'isbirimi', component: IsBirimiComponent },
+      { path: 'isbirimi/:mode/:id', component: IsBirimiFormComponent },
+      { path: 'isbirimi/:mode', component: IsBirimiFormComponent },
+      { path: 'formturu', component: FormTuruComponent },
+      { path: 'formturu/:mode/:id', component: FormTuruFormComponent },
+      { path: 'formturu/:mode', component: FormTuruFormComponent },
+      { path: 'santiye', component: SantiyeComponent },
+      { path: 'santiye/:mode/:id', component: SantiyeFormComponent },
+      { path: 'santiye/:mode', component: SantiyeFormComponent }
     ]
   },
   { path: '**', redirectTo: '' }

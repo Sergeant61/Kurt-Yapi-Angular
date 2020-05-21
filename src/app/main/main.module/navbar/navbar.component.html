@@ -16,18 +16,18 @@
             Ana Sayfa</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/muhasebe" routerLinkActive="active">Kurumsal</a>
+          <a class="nav-link" routerLink="/main/kurumsal" routerLinkActive="active">Kurumsal</a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" routerLink="/muhasebe" routerLinkActive="active">Hizmetlerimiz</a>
+          <a class="nav-link" routerLink="/main/hizmetlerimiz" routerLinkActive="active">Hizmetlerimiz</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/muhasebe" routerLinkActive="active">Araçlarımız</a>
+          <a class="nav-link" routerLink="/main/araclarimiz" routerLinkActive="active">Araçlarımız</a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" routerLink="/muhasebe" routerLinkActive="active">İletişim</a>
+          <a class="nav-link" routerLink="/main/iletisim" routerLinkActive="active">İletişim</a>
         </li>
 
       </ul>
@@ -36,7 +36,7 @@
         <li class="nav-item">
           <a class="nav-link" [routerLink]="[ authService.isTokenValid ? '/user/profile' :'/main/login']"
             routerLinkActive="active">
-            {{authService.isTokenValid ? authService.currentUser.name + " " + authService.currentUser.surname : "Giriş Yap"}}</a>
+            {{authService.isTokenValid ? authService.currentUser.name !==undefined?  authService.currentUser.name + " " + authService.currentUser.surname :"Yükleniyor..." : "Giriş Yap"}}</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLinkActive="active" (click)="authService.logout()"

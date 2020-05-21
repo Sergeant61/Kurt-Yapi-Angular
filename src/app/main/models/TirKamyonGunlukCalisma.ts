@@ -3,6 +3,8 @@ import { DokumSahasi } from './DokumSahasi';
 import { Personel } from './Personel';
 import { User } from './User';
 import { TirKamyon } from './TirKamyon';
+import { FormTuru } from './FormTuru';
+import { Santiye } from './Santiye';
 
 export class TirKamyonGunlukCalisma {
   _id: string;
@@ -20,7 +22,8 @@ export class TirKamyonGunlukCalisma {
   personelId: string;
   firmaYetkilisiAdSoyad: string;
   notlar: string;
-  imzalimi: boolean;
+  formTuruId: string;
+  santiyeId: string;
   onaylimi: boolean;
   createdAt: Date;
   createdUserId: string;
@@ -36,5 +39,7 @@ export class TirKamyonGunlukCalisma {
   lastEditUser: User = new User();
   onaylayanUser: User = new User();
   tirKamyon: TirKamyon = new TirKamyon();
+  formTuru: FormTuru = new FormTuru();
+  santiye: Santiye = new Santiye();
 
 }

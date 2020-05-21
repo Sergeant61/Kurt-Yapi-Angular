@@ -9,23 +9,31 @@
 
     <ul class="list-unstyled components" id="homeSubmenu">
       <li>
-        <a routerLink="/admin/ismakinesi" routerLinkActive="active">
-          İş Makinaları</a>
+        <a [routerLink]="[urls.baseUrlIsmakinesi]" routerLinkActive="active">İş Makinaları</a>
       </li>
       <li>
-        <a routerLink="/admin/ozelbinekarac" routerLinkActive="active">Özel Binek Araçlar</a>
+        <a [routerLink]="[urls.baseUrlOzelbinekarac]" routerLinkActive="active">Özel Binek Araçlar</a>
       </li>
       <li>
-        <a routerLink="/admin/tirkamyon" routerLinkActive="active">Tır Kamyonlar</a>
+        <a [routerLink]="[urls.baseUrlTirKamyon]" routerLinkActive="active">Tır Kamyonlar</a>
       </li>
       <li>
-        <a routerLink="/admin/firma" routerLinkActive="active">Firmalar</a>
+        <a [routerLink]="[urls.baseUrlFirma]" routerLinkActive="active">Firmalar</a>
       </li>
       <li>
-        <a routerLink="/admin/personel" routerLinkActive="active">Personel</a>
+        <a [routerLink]="[urls.baseUrlPersonel]" routerLinkActive="active">Personel</a>
       </li>
       <li>
-        <a routerLink="/admin/dokumsahasi" routerLinkActive="active">Döküm Sahaları</a>
+        <a [routerLink]="[urls.baseUrlDokumSahasi]" routerLinkActive="active">Döküm Sahaları</a>
+      </li>
+      <li>
+        <a [routerLink]="[urls.baseUrlIsBirimi]" routerLinkActive="active">İş Birimi</a>
+      </li>
+      <li>
+        <a [routerLink]="[urls.baseUrlFormTuru]" routerLinkActive="active">Form Turu</a>
+      </li>
+      <li>
+        <a [routerLink]="[urls.baseUrlSantiye]" routerLinkActive="active">Santiye</a>
       </li>
     </ul>
   </nav>
@@ -59,13 +67,7 @@
             <li class="nav-item">
               <a class="nav-link" [routerLink]="[ authService.isTokenValid ? '/user/profile' :'/main/login']"
                 routerLinkActive="active">
-                {{
-                  authService.isTokenValid
-                    ? authService.currentUser.name +
-                      " " +
-                      authService.currentUser.surname
-                    : "Giriş Yap"
-                }}</a>
+                {{authService.isTokenValid ? authService.currentUser.name !==undefined?  authService.currentUser.name + " " + authService.currentUser.surname :"Yükleniyor..." : "Giriş Yap"}}</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" routerLinkActive="active" (click)="authService.logout()"

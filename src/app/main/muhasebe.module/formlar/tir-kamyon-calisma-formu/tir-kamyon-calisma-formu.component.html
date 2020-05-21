@@ -43,9 +43,11 @@
                 <th>Plaka</th>
                 <th>Firma</th>
                 <th>Personel</th>
+                <th>Şantiye</th>
+                <th>Form Türü</th>
                 <th>Form Tarihi</th>
                 <th>İlk Kayıt Tarihi</th>
-                <th>Son Güncelleme Tarihi</th>
+                <th>Son Gün. Tarihi</th>
                 <th>#</th>
               </tr>
             </thead>
@@ -56,6 +58,8 @@
                 <td>{{ value.tirKamyon.plaka }}</td>
                 <td>{{ value.firma.name }}</td>
                 <td>{{ value.personel.name + " " + value.personel.surname }}</td>
+                <td>{{ value.santiye.name}} </td>
+                <td>{{ value.formTuru.name}} </td>
                 <td>{{ value.formTarihi | date: "dd/MM/yyyy" }}</td>
                 <td>{{ value.createdAt | date: "dd/MM/yyyy - hh:mm:ss" }}</td>
                 <td>{{ value.lastEditAt | date: "dd/MM/yyyy - hh:mm:ss" }}</td>
@@ -245,15 +249,17 @@
         <hr />
 
         <div class="row">
-          <div class="col-10">
+          <div class="col-8">
             <span class="badge badge-primary mr-1">Notlar :</span>
             <label>
               {{ onayTirKamyonCalismaFormu.notlar }}
             </label>
           </div>
           <div class="col-2">
-            <span class="badge badge-success mr-1" *ngIf="onayTirKamyonCalismaFormu.imzalimi">İmzalı</span>
-            <span class="badge badge-danger mr-1" *ngIf="!onayTirKamyonCalismaFormu.imzalimi">İmzasız</span>
+            <span class="badge badge-danger mr-1">{{onayTirKamyonCalismaFormu.formTuru.name}}</span>
+          </div>
+          <div class="col-2">
+            <span class="badge badge-success mr-1">{{onayTirKamyonCalismaFormu.santiye.name}}</span>
           </div>
         </div>
       </div>

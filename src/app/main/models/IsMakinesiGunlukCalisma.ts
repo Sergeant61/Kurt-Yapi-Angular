@@ -1,9 +1,9 @@
 import { Firma } from './Firma';
-import { DokumSahasi } from './DokumSahasi';
 import { Personel } from './Personel';
 import { User } from './User';
-import { TirKamyon } from './TirKamyon';
 import { IsMakinesi } from './IsMakinesi';
+import { FormTuru } from './FormTuru';
+import { Santiye } from './Santiye';
 
 export class IsMakinesiGunlukCalisma {
   _id: string;
@@ -19,7 +19,8 @@ export class IsMakinesiGunlukCalisma {
   personelId: string;
   firmaYetkilisiAdSoyad: string;
   notlar: string;
-  imzalimi: boolean;
+  formTuruId: string;
+  santiyeId: string;
   onaylimi: boolean;
   createdAt: Date;
   createdUserId: string;
@@ -34,5 +35,7 @@ export class IsMakinesiGunlukCalisma {
   lastEditUser: User = new User();
   onaylayanUser: User = new User();
   isMakinesi: IsMakinesi = new IsMakinesi();
+  formTuru: FormTuru = new FormTuru();
+  santiye: Santiye = new Santiye();
 
 }

@@ -10,69 +10,56 @@
   </div>
 
   <div class="col-md-12 bg-success p-2" *ngIf="!gidenYakitFormu">
-    <div
-      class="spinner-border spinner-border-sm text-light mr-2"
-      role="status"
-    ></div>
-    <div
-      class="spinner-grow spinner-grow-sm text-light mr-2"
-      role="status"
-    ></div>
+    <div class="spinner-border spinner-border-sm text-light mr-2" role="status"></div>
+    <div class="spinner-grow spinner-grow-sm text-light mr-2" role="status"></div>
 
     <span class="text-white">Yükleniyor lütfen bekleyin.</span>
   </div>
 
-  <div class="col-md-12 mt-2">
+  <div class="col-md-12">
     <form #form="ngForm" (ngSubmit)="save(form)" *ngIf="gidenYakitFormu">
       <div class="row">
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-6 mt-2">
           <div class="card">
             <div class="card-header">
               Genel Bilgiler
             </div>
             <div class="card-body">
-              <div class="input-group mb-4">
+              <div class="input-group mb-2">
                 <div class="input-group-prepend">
-                  <span class="input-group-text" id="inputGroup-sizing-default"
-                    >Fiş No</span
-                  >
+                  <span class="input-group-text" id="inputGroup-sizing-default">Fiş No</span>
                 </div>
-                <input
-                  type="text"
-                  class="form-control"
-                  name="siraNo"
-                  [(ngModel)]="gidenYakitFormu.fisNo"
-                  required
-                />
+                <input type="text" class="form-control" name="siraNo" [(ngModel)]="gidenYakitFormu.fisNo" required />
               </div>
 
-              <div class="input-group mb-4">
+              <div class="input-group mb-2">
                 <div class="input-group-prepend">
-                  <span class="input-group-text" id="inputGroup-sizing-default"
-                    >Tarih</span
-                  >
+                  <span class="input-group-text" id="inputGroup-sizing-default">Tarih</span>
                 </div>
-                <input
-                  type="date"
-                  class="form-control"
-                  name="formTarihi"
-                  [(ngModel)]="gidenYakitFormu.formTarihi"
-                  required
-                />
+                <input type="date" class="form-control" name="formTarihi" [(ngModel)]="gidenYakitFormu.formTarihi"
+                  required />
               </div>
 
-              <div class="input-group mb-4">
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect04">Şantiye</label>
+                </div>
+                <select [(ngModel)]="gidenYakitFormu.santiyeId" class="form-control" id="inputGroupSelect04"
+                  name="santiyeId" required>
+                  <option *ngFor="let item of santiyeList" [ngValue]="item._id">{{ item.name }}</option>
+                </select>
+
+                <a target="_blank" class="btn btn-primary ml-2" [routerLink]="[urls.baseUrlSantiye, 'create']">
+                  Yeni Şantiye ekle
+                </a>
+              </div>
+
+              <div class="input-group mb-2">
                 <div class="input-group-prepend">
                   <div class="input-group-text">
                     <div class="form-check form-check-inline">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        [(ngModel)]="isTirMi"
-                        name="inlineRadioOptions"
-                        id="inlineRadio1"
-                        value="option1"
-                      />
+                      <input class="form-check-input" type="checkbox" [(ngModel)]="isTirMi" name="inlineRadioOptions"
+                        id="inlineRadio1" value="option1" />
                       <label class="form-check-label" for="inlineRadio1">{{
                         isTirMi ? "Tır Kamyon" : "İş Makinesi"
                       }}</label>
@@ -80,146 +67,81 @@
                   </div>
                 </div>
 
-                <select
-                  *ngIf="!isTirMi"
-                  [(ngModel)]="gidenYakitFormu.isMakinesiPlakaId"
-                  class="form-control"
-                  id="inputGroupSelect01"
-                  name="personelId"
-                  required
-                >
-                  <option
-                    *ngFor="let item of isMakinesiList"
-                    [ngValue]="item._id"
-                    >{{ item.makineCinsi + " - " + item.plaka }}</option
-                  >
+                <select *ngIf="!isTirMi" [(ngModel)]="gidenYakitFormu.isMakinesiPlakaId" class="form-control"
+                  id="inputGroupSelect01" name="personelId" required>
+                  <option *ngFor="let item of isMakinesiList" [ngValue]="item._id">
+                    {{ item.makineCinsi + " - " + item.plaka }}</option>
                 </select>
 
-                <select
-                  *ngIf="isTirMi"
-                  [(ngModel)]="gidenYakitFormu.tirKamyonPlakaId"
-                  class="form-control"
-                  id="inputGroupSelect01"
-                  name="personelId"
-                  required
-                >
-                  <option
-                    *ngFor="let item of tirKamyonList"
-                    [ngValue]="item._id"
-                    >{{ item.aracCinsi + " - " + item.plaka }}</option
-                  >
+                <select *ngIf="isTirMi" [(ngModel)]="gidenYakitFormu.tirKamyonPlakaId" class="form-control"
+                  id="inputGroupSelect01" name="personelId" required>
+                  <option *ngFor="let item of tirKamyonList" [ngValue]="item._id">
+                    {{ item.aracCinsi + " - " + item.plaka }}</option>
                 </select>
 
-                <a
-                  target="_blank"
-                  class="btn btn-primary ml-2"
-                  [routerLink]="[
-                    isTirMi ? newTirBaseUrl : newIsmakinesiUrl,
+                <a target="_blank" class="btn btn-primary ml-2" [routerLink]="[
+                    isTirMi ? urls.baseUrlTirKamyon : urls.baseUrlIsmakinesi,
                     'create'
-                  ]"
-                >
+                  ]">
                   Yeni Araç ekle
                 </a>
               </div>
 
-              <div class="input-group mb-4">
+              <div class="input-group mb-2">
                 <div class="input-group-prepend">
-                  <span class="input-group-text" id="inputGroup-sizing-default"
-                    >Verilen Yakıt</span
-                  >
+                  <span class="input-group-text" id="inputGroup-sizing-default">Verilen Yakıt</span>
                 </div>
-                <input
-                  type="number"
-                  class="form-control"
-                  name="yuklemeYeri"
-                  [(ngModel)]="gidenYakitFormu.verilenYakitLitre"
-                  required
-                />
+                <input type="number" class="form-control" name="yuklemeYeri"
+                  [(ngModel)]="gidenYakitFormu.verilenYakitLitre" required />
               </div>
             </div>
           </div>
         </div>
 
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-6 mt-2">
           <div class="card">
             <div class="card-header">
               Araç bilgileri
             </div>
             <div class="card-body">
-              <div class="input-group mb-4">
+              <div class="input-group mb-2">
                 <div class="input-group-prepend">
-                  <label class="input-group-text" for="inputGroupSelect01"
-                    >Yakıtı Veren Personel</label
-                  >
+                  <label class="input-group-text" for="inputGroupSelect01">Yakıtı Veren Personel</label>
                 </div>
-                <select
-                  [(ngModel)]="gidenYakitFormu.yakitiVerenPersonelId"
-                  class="form-control"
-                  id="inputGroupSelect01"
-                  name="personelId0"
-                  required
-                >
-                  <option
-                    *ngFor="let item of personelList"
-                    [ngValue]="item._id"
-                    >{{
+                <select [(ngModel)]="gidenYakitFormu.yakitiVerenPersonelId" class="form-control" id="inputGroupSelect01"
+                  name="personelId0" required>
+                  <option *ngFor="let item of personelList" [ngValue]="item._id">{{
                       item.unvan + " - " + item.name + " " + item.surname
-                    }}</option
-                  >
+                    }}</option>
                 </select>
 
-                <a
-                  target="_blank"
-                  class="btn btn-primary ml-2"
-                  [routerLink]="[newPersonelBaseUrl, 'create']"
-                >
+                <a target="_blank" class="btn btn-primary ml-2" [routerLink]="[urls.baseUrlPersonel, 'create']">
                   Yeni Personel ekle
                 </a>
               </div>
 
-              <div class="input-group mb-4">
+              <div class="input-group mb-2">
                 <div class="input-group-prepend">
-                  <label class="input-group-text" for="inputGroupSelect01"
-                    >Yakıtı Alan Personel</label
-                  >
+                  <label class="input-group-text" for="inputGroupSelect01">Yakıtı Alan Personel</label>
                 </div>
-                <select
-                  [(ngModel)]="gidenYakitFormu.yakitiAlanPersonelId"
-                  class="form-control"
-                  id="inputGroupSelect01"
-                  name="personelId1"
-                  required
-                >
-                  <option
-                    *ngFor="let item of personelList"
-                    [ngValue]="item._id"
-                    >{{
+                <select [(ngModel)]="gidenYakitFormu.yakitiAlanPersonelId" class="form-control" id="inputGroupSelect01"
+                  name="personelId1" required>
+                  <option *ngFor="let item of personelList" [ngValue]="item._id">{{
                       item.unvan + " - " + item.name + " " + item.surname
-                    }}</option
-                  >
+                    }}</option>
                 </select>
 
-                <a
-                  target="_blank"
-                  class="btn btn-primary ml-2"
-                  [routerLink]="[newPersonelBaseUrl, 'create']"
-                >
+                <a target="_blank" class="btn btn-primary ml-2" [routerLink]="[urls.baseUrlPersonel, 'create']">
                   Yeni Personel ekle
                 </a>
               </div>
 
-              <div class="input-group mt-3">
+              <div class="input-group mb-2">
                 <div class="input-group-prepend">
-                  <span class="input-group-text" id="inputGroup-sizing-default"
-                    >Notlar</span
-                  >
+                  <span class="input-group-text" id="inputGroup-sizing-default">Notlar</span>
                 </div>
-                <textarea
-                  type="text"
-                  class="form-control"
-                  name="notlar"
-                  [(ngModel)]="gidenYakitFormu.notlar"
-                ></textarea>
+                <textarea type="text" class="form-control" name="notlar"
+                  [(ngModel)]="gidenYakitFormu.notlar"></textarea>
               </div>
             </div>
           </div>
@@ -227,19 +149,9 @@
       </div>
 
       <div class="btn-group mt-4">
-        <button
-          name="addButton"
-          type="submit"
-          class="btn btn-primary"
-          [class.disabled]="isLoading"
-          [disabled]="isLoading"
-        >
-          <span
-            name="loadingSpan"
-            class="spinner-border spinner-border-sm"
-            role="status"
-            *ngIf="isLoading"
-          ></span>
+        <button name="addButton" type="submit" class="btn btn-primary" [class.disabled]="isLoading"
+          [disabled]="isLoading">
+          <span name="loadingSpan" class="spinner-border spinner-border-sm" role="status" *ngIf="isLoading"></span>
           {{ editing ? "Düzenle" : "Oluştur" }}
         </button>
         <button type="button" [routerLink]="[baseUrl]" class="btn btn-warning">

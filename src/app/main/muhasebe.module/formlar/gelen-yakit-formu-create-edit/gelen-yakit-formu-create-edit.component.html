@@ -22,16 +22,16 @@
     <span class="text-white">Yükleniyor lütfen bekleyin.</span>
   </div>
 
-  <div class="col-md-12 mt-2">
+  <div class="col-md-12">
     <form #form="ngForm" (ngSubmit)="save(form)" *ngIf="gelenYakitFormu">
       <div class="row">
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-6 mt-2">
           <div class="card">
             <div class="card-header">
               Genel Bilgiler
             </div>
             <div class="card-body">
-              <div class="input-group mb-4">
+              <div class="input-group mb-2">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="inputGroup-sizing-default"
                     >İrsaliye No</span
@@ -46,7 +46,7 @@
                 />
               </div>
 
-              <div class="input-group mb-4">
+              <div class="input-group mb-2">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="inputGroup-sizing-default"
                     >Tarih
@@ -61,7 +61,21 @@
                 />
               </div>
 
-              <div class="input-group mb-4">
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect04">Şantiye</label>
+                </div>
+                <select [(ngModel)]="gelenYakitFormu.santiyeId" class="form-control" id="inputGroupSelect04"
+                  name="santiyeId" required>
+                  <option *ngFor="let item of santiyeList" [ngValue]="item._id">{{ item.name }}</option>
+                </select>
+
+                <a target="_blank" class="btn btn-primary ml-2" [routerLink]="[urls.baseUrlSantiye, 'create']">
+                  Yeni Şantiye ekle
+                </a>
+              </div>
+
+              <div class="input-group mb-2">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="inputGroup-sizing-default"
                     >Firma Ünvanı</span
@@ -76,7 +90,7 @@
                 />
               </div>
 
-              <div class="input-group mb-4">
+              <div class="input-group mb-2">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="inputGroup-sizing-default"
                     >Alınan Yakıt</span
@@ -91,7 +105,7 @@
                 />
               </div>
 
-              <div class="input-group mb-4">
+              <div class="input-group mb-2">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="inputGroup-sizing-default"
                     >Birim Fiyatı</span
@@ -109,13 +123,13 @@
           </div>
         </div>
 
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-6 mt-2">
           <div class="card">
             <div class="card-header">
               Araç bilgileri
             </div>
             <div class="card-body">
-              <div class="input-group mb-4">
+              <div class="input-group mb-2">
                 <div class="input-group-prepend">
                   <label class="input-group-text" for="inputGroupSelect01"
                     >Personel Bilgileri</label
@@ -140,13 +154,13 @@
                 <a
                   target="_blank"
                   class="btn btn-primary ml-2"
-                  [routerLink]="[newPersonelBaseUrl, 'create']"
+                  [routerLink]="[urls.baseUrlPersonel, 'create']"
                 >
                   Yeni Personel ekle
                 </a>
               </div>
 
-              <div class="input-group mt-3">
+              <div class="input-group mb-2">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="inputGroup-sizing-default"
                     >Notlar</span

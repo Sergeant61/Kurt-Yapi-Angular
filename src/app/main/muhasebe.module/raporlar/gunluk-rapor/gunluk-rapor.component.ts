@@ -10,6 +10,8 @@ import html2canvas from 'html2canvas';
 import * as XLSX from 'xlsx';
 import * as jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import { Santiye } from 'src/app/main/models/Santiye';
+import { SantiyeService } from 'src/app/main/rest.module/santiye.service';
 
 
 @Component({
@@ -22,6 +24,8 @@ export class GunlukRaporComponent implements OnInit {
   isLoading = true;
   gunlukRapor: GunlukRapor = new GunlukRapor();
   baseUrl: string = environment.baseUrlGunlukRapor;
+  santiyeList: Santiye[] = [];
+  santiyeId = '1';
   todayDate: string = new Date().toISOString().slice(0, 10);
   tablo: Array<string[]> = [];
   tablo2: Array<string[]> = [];
@@ -29,12 +33,23 @@ export class GunlukRaporComponent implements OnInit {
 
   constructor(
     public authService: AuthService,
+    private santiyeService: SantiyeService,
     private tirKamyonGunlukCalismaFormuService: TirKamyonGunlukCalismaFormuService,
     private isMakinesiGunlukCalismaFormuService: IsMakinesiGunlukCalismaFormuService
   ) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    await this.getSantiyeList();
     this.dateChange();
+  }
+
+  getSantiyeList() {
+    return this.santiyeService.getAll().toPromise().then(data => {
+      if (data.success) {
+        this.santiyeList = data.data;
+        this.santiyeList.splice(0, 0, new Santiye('1', 'Hepsi'));
+      }
+    }).catch(err => { });
   }
 
   dateChange() {
@@ -64,7 +79,7 @@ export class GunlukRaporComponent implements OnInit {
       });
 
       this.tirKamyonThead.push('Toplam Sefer');
-      this.tirKamyonThead.push('Toplam Tonaj');
+      // this.tirKamyonThead.push('Toplam Tonaj');
 
       // tablo1 oluşturma
 
@@ -83,6 +98,8 @@ export class GunlukRaporComponent implements OnInit {
         let yukT = 0;
         let tonajT = 0;
         data.seferBilgileri.forEach(yuk => {
+          const tablo2Satir = [];
+
           const i = this.tirKamyonThead.findIndex(t => {
             return t.calisilanFirma === yuk.calisilanFirma
               && t.yuklemeYeri === yuk.yuklemeYeri
@@ -95,6 +112,10 @@ export class GunlukRaporComponent implements OnInit {
           tonajT = tonajT + yuk.toplamTonaj;
           satirToplamTonaj[i + fark] = yuk.toplamTonaj + '';
 
+          tablo2Satir.push(data.tirKamyon);
+          tablo2Satir.push(yuk.toplamTonaj);
+          this.tablo2.push(tablo2Satir);
+
         });
 
         const k = this.tirKamyonThead.findIndex(t => {
@@ -105,7 +126,7 @@ export class GunlukRaporComponent implements OnInit {
         const j = this.tirKamyonThead.findIndex(t => {
           return t === 'Toplam Tonaj';
         });
-        satir[j + fark] = tonajT.toFixed(2); // Tonaj oplamı küsüratlı sayı olduğundan basamak 2 ili sınırlandırdım.
+        // satir[j + fark] = tonajT.toFixed(2); // Tonaj toplamı küsüratlı sayı olduğundan basamak 2 ili sınırlandırdım.
 
         this.tablo.push(satir);
 
@@ -115,32 +136,10 @@ export class GunlukRaporComponent implements OnInit {
 
       this.tablo.forEach(satirList => {
 
-        for (let index = 0; index < this.tirKamyonThead.length - 2; index++) {
+        for (let index = 0; index < this.tirKamyonThead.length - 1; index++) {
           const s = satirList[index + fark];
           satirToplamSefer[index + fark] =
             '' + (+(satirToplamSefer[index + fark] === undefined ? 0 : satirToplamSefer[index + fark]) + +(s === undefined ? 0 : s));
-        }
-      });
-
-      // tablo 2 create
-
-      this.tablo.forEach(satirL => {
-        let tablo2Satir = [];
-
-        const i = this.tablo2.findIndex(t2 => {
-          return t2[0] === satirL[1];
-        });
-
-        if (i === -1) {
-          tablo2Satir.push(satirL[1]);
-          tablo2Satir.push(satirL[satirL.length - 1]);
-          this.tablo2.push(tablo2Satir);
-
-        } else {
-          tablo2Satir = this.tablo2[i];
-          tablo2Satir[i + 1] = +tablo2Satir[i + 1] + +satirL[satirL.length - 1];
-          this.tablo2.splice(i, 1, tablo2Satir);
-
         }
       });
 
@@ -163,7 +162,7 @@ export class GunlukRaporComponent implements OnInit {
   }
 
   getIsmakinesi() {
-    return this.isMakinesiGunlukCalismaFormuService.getRaporDetail({ mode: 1, todayDate: this.todayDate })
+    return this.isMakinesiGunlukCalismaFormuService.getRaporDetail({ mode: 1, todayDate: this.todayDate, santiyeId: this.santiyeId })
       .toPromise().then(data => {
         if (data.success) {
           data.data.forEach(form => {
@@ -176,7 +175,7 @@ export class GunlukRaporComponent implements OnInit {
                 form.yapilinIsTanimi,
                 form.calismaSaati,
                 form.calismaSekli,
-                form.imzalimi ? 'İmzalı' : 'İmzasız'
+                form.formTuru.name
               ));
 
           });
@@ -186,7 +185,7 @@ export class GunlukRaporComponent implements OnInit {
   }
 
   getTirKamyon() {
-    return this.tirKamyonGunlukCalismaFormuService.getRaporDetail({ mode: 1, todayDate: this.todayDate })
+    return this.tirKamyonGunlukCalismaFormuService.getRaporDetail({ mode: 1, todayDate: this.todayDate, santiyeId: this.santiyeId })
       .toPromise().then(data => {
         if (data.success) {
 

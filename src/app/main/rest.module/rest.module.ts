@@ -19,6 +19,10 @@ import { IsMakinesiGunlukCalismaFormuService } from './is-makinesi-gunluk-calism
 import { DeviceDetectorModule, DeviceDetectorService } from 'ngx-device-detector';
 import { FormsModule } from '@angular/forms';
 import { UserService } from './user.service';
+import { SahaOlcumFormuService } from './saha-olcum-formu.service';
+import { FormTuruService } from './form-turu.service';
+import { IsBirimiService } from './is-birimi.service';
+import { SantiyeService } from './santiye.service';
 
 
 @NgModule({
@@ -45,6 +49,10 @@ import { UserService } from './user.service';
     IsMakinesiGunlukCalismaFormuService,
     GelenYakitFormuService,
     GidenYakitFormuService,
+    SahaOlcumFormuService,
+    FormTuruService,
+    IsBirimiService,
+    SantiyeService,
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     JwtHelperService,
     DeviceDetectorService

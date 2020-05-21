@@ -5,9 +5,15 @@ import { TirKamyonGunlukCalismaFormuService } from 'src/app/main/rest.module/tir
 import html2canvas from 'html2canvas';
 import * as XLSX from 'xlsx';
 import * as jsPDF from 'jspdf';
-import { FirmaRapor, AracRapor } from 'src/app/main/models/raporlar/FirmaRapor';
+import { PauntajAllRapor, PauntajRapor, AracRapor } from 'src/app/main/models/raporlar/FirmaRapor';
 import { FirmaService } from 'src/app/main/rest.module/firma.service';
 import { Firma } from 'src/app/main/models/Firma';
+import { Santiye } from 'src/app/main/models/Santiye';
+import { SantiyeService } from 'src/app/main/rest.module/santiye.service';
+import { SahaOlcumFormuService } from 'src/app/main/rest.module/saha-olcum-formu.service';
+import { SahaOlcumFormu } from 'src/app/main/models/SahaOlcumFormu';
+import { Table } from 'src/app/main/models/raporlar/Table';
+import { FormTuru } from 'src/app/main/models/FormTuru';
 
 @Component({
   selector: 'app-firma-rapor',
@@ -22,29 +28,31 @@ export class FirmaRaporComponent implements OnInit {
   sDate = new Date(this.date.getFullYear(), this.date.getMonth(), 1);
   lDate = new Date(this.date.getFullYear(), this.date.getMonth() + 1, 0);
   firmaId = '1';
+  santiyeId = '1';
 
   startDate: string = this.sDate.toISOString().slice(0, 10);
   lastDate: string = this.lDate.toISOString().slice(0, 10);
 
-  firmaRaporList: FirmaRapor[] = [];
+  pauntajAllRaporList: PauntajAllRapor[] = [];
+  sahaOlcumList: SahaOlcumFormu[] = [];
   firmaList: Firma[] = [];
+  santiyeList: Santiye[] = [];
 
-  tablo: Array<string[]> = [];
-  tablo2: Array<any[]> = [];
-  tablo3: Array<any[]> = [];
-  tabloThead: string[] = [];
-  tabloThead3: string[] = [];
-
+  table1 = new Table<void>();
+  tabloList: Table<FormTuru>[] = [];
 
   constructor(
     public authService: AuthService,
     private firmaService: FirmaService,
+    private santiyeService: SantiyeService,
+    private sahaOlcumFormuService: SahaOlcumFormuService,
     private tirKamyonGunlukCalismaFormuService: TirKamyonGunlukCalismaFormuService,
     private isMakinesiGunlukCalismaFormuService: IsMakinesiGunlukCalismaFormuService
   ) { }
 
   async ngOnInit() {
     await this.getFirmaList();
+    await this.getSantiyeList();
     this.dateChange();
   }
 
@@ -52,92 +60,120 @@ export class FirmaRaporComponent implements OnInit {
 
     this.getValues().then(rapor => {
 
-      this.tablo = [];
-      this.tablo2 = [];
-      this.tabloThead = ['Form Tarihi'];
+      this.tabloList = [];
+
+      console.log(rapor);
 
       rapor.forEach(r => {
-        r.isMakinesiList.forEach(is => {
-          const i = this.tabloThead.findIndex(d => {
-            return d === is.isMakinesi.makineCinsi + '-' + is.isMakinesi.plaka;
+        const table = new Table<FormTuru>();
+        table.thead = ['Form Tarihi'];
+        table.data = r.formTuru;
+
+        r.pauntajRaporList.forEach(puantaj => {
+
+          puantaj.isMakinesiList.forEach(is => {
+            const i = table.thead.findIndex(d => {
+              return d === is.isMakinesi.makineCinsi + '-' + is.isMakinesi.plaka;
+            });
+
+            if (i === -1) {
+              table.thead.push(is.isMakinesi.makineCinsi + '-' + is.isMakinesi.plaka);
+            }
           });
 
-          if (i === -1) {
-            this.tabloThead.push(is.isMakinesi.makineCinsi + '-' + is.isMakinesi.plaka);
+        });
+
+        if (r.formTuru.name !== 'M³ Çalışmalar (İmzasız)') {
+          table.thead.push('M³');
+        }
+
+        this.tabloList.push(table);
+      });
+
+      rapor.forEach(r => {
+
+        const k = this.tabloList.findIndex(tl => {
+          return tl.data._id === r.formTuru._id;
+        });
+
+        r.pauntajRaporList.forEach(puantaj => {
+          const line: any[] = [];
+          let top = 0;
+          let topM3 = 0;
+
+          line.push(this.gfg_Run(new Date(puantaj.formTarihi)));
+
+          puantaj.isMakinesiList.forEach(is => {
+
+            const i = this.tabloList[k].thead.findIndex(d => {
+              return d === is.isMakinesi.makineCinsi + '-' + is.isMakinesi.plaka;
+            });
+
+            line[i] = (+(line[i] === undefined ? 0 : line[i]) + (+is.calismaSaati)) + '';
+
+            top = top + (+is.calismaSaati);
+
+          });
+
+
+          if (puantaj.sahaOlcumList.length > 0) {
+            puantaj.sahaOlcumList.forEach(s => {
+              topM3 = topM3 + s.m3;
+            });
+
+            const z = this.tabloList[k].thead.findIndex(t => {
+              return t === 'M³';
+            });
+            line[z] = topM3 + '';
+
           }
+
+          this.tabloList[k].line.push(line);
+
         });
+
       });
+      console.log(this.tabloList);
 
-      this.tabloThead.push('Toplam');
+      this.tabloList.forEach(tablo => {
 
-      rapor.forEach(r => {
-        const satir: string[] = [];
-        let top = 0;
+        const lastLine: any[] = [];
 
-        satir.push(this.gfg_Run(new Date(r.formTarihi)));
+        const k = this.tabloList.findIndex(tl => {
+          return tl.data._id === tablo.data._id;
+        });
 
-        r.isMakinesiList.forEach(is => {
+        if (this.tabloList[k].line.length !== 0) {
+          lastLine.push('Toplam');
+        }
 
-          const i = this.tabloThead.findIndex(d => {
-            return d === is.isMakinesi.makineCinsi + '-' + is.isMakinesi.plaka;
+        for (let index = 1; index < tablo.thead.length; index++) {
+          tablo.line.forEach(satir => {
+            const s = satir[index];
+
+            lastLine[index] = '' + (+(lastLine[index] === undefined ? 0 : lastLine[index]) + +(s === undefined ? 0 : s));
+
           });
 
-          satir[i] = (+(satir[i] === undefined ? 0 : satir[i]) + (+is.calismaSaati)) + '';
+        }
 
-          top = top + (+is.calismaSaati);
-
-        });
-
-        const k = this.tabloThead.findIndex(t => {
-          return t === 'Toplam';
-        });
-        satir[k] = top + '';
-        this.tablo.push(satir);
-      });
-
-      const tablo1SonSatir: string[] = [];
-
-      if (rapor.length !== 0) {
-        tablo1SonSatir.push('Toplam');
-      }
-
-      this.tablo.forEach(satirList => {
-
-        for (let index = 1; index < this.tabloThead.length; index++) {
-          const s = satirList[index];
-          tablo1SonSatir[index] = '' + (+(tablo1SonSatir[index] === undefined ? 0 : tablo1SonSatir[index]) + +(s === undefined ? 0 : s));
+        if (this.tabloList[k].line.length !== 0) {
+          this.tabloList[k].line.push(lastLine);
         }
 
       });
-      if (this.tablo.length !== 0) {
-        this.tablo.push(tablo1SonSatir);
-      }
-
-      // Taplo 2
-      if (rapor.length !== 0) {
-
-        for (let index = 1; index < this.tabloThead.length; index++) {
-          const satir3: any[] = [];
-
-          satir3.push(this.tabloThead[index]);
-          satir3.push(+tablo1SonSatir[index]);
-
-
-          this.tablo2.push(satir3);
-        }
-      }
-
-
 
 
     }).catch(err => { });
+
   }
 
   async getValues() {
     this.isLoading = true;
+    await this.getSahaOlcum();
     await this.getIsmakinesi();
     this.isLoading = false;
-    return this.firmaRaporList;
+    return this.pauntajAllRaporList;
   }
 
   getFirmaList() {
@@ -149,19 +185,25 @@ export class FirmaRaporComponent implements OnInit {
     }).catch(err => { });
   }
 
+  getSantiyeList() {
+    return this.santiyeService.getAll().toPromise().then(data => {
+      if (data.success) {
+        this.santiyeList = data.data;
+        this.santiyeList.splice(0, 0, new Santiye('1', 'Hepsi'));
+      }
+    }).catch(err => { });
+  }
+
   getIsmakinesi() {
     return this.isMakinesiGunlukCalismaFormuService.getRaporDetail(
-      { mode: 2, startDate: this.startDate, lastDate: this.lastDate, firmaId: this.firmaId })
+      { mode: 2, startDate: this.startDate, lastDate: this.lastDate, firmaId: this.firmaId, santiyeId: this.santiyeId })
       .toPromise().then(data => {
-
-        this.tablo3 = [];
-        this.tabloThead3 = ['Form Tarihi', 'Makina Cinsi', 'Yapılan İşin Tanımı', 'Çalışma Şekli', 'Çalışma Birimi', 'İmzalı/İmzasız'];
+        this.table1.line = [];
+        this.table1.thead = ['Form Tarihi', 'Makina Cinsi', 'Yapılan İşin Tanımı', 'Çalışma Şekli', 'Çalışma Birimi', 'İmzalı/İmzasız'];
 
         if (data.success) {
-          this.firmaRaporList = [];
 
-          // Taplo 3
-          console.log(data.data);
+          // Taplo 1
 
           data.data.forEach(r => {
 
@@ -172,63 +214,109 @@ export class FirmaRaporComponent implements OnInit {
             satir.push(r.yapilinIsTanimi);
             satir.push(r.calismaSekli);
             satir.push(r.calismaSaati);
-            satir.push(r.imzalimi ? 'İmzalı' : 'İmzasız');
+            satir.push(r.formTuru.name);
 
-            this.tablo3.push(satir);
+            this.table1.line.push(satir);
 
           });
+
+          this.pauntajAllRaporList = [];
 
           data.data.forEach(form => {
-            let firmaRapor: FirmaRapor;
 
-            const index = this.firmaRaporList.findIndex(f => {
-              return f.formTarihi === form.formTarihi;
+            // pauntajAllRaporList listesinde kayıtlı form türleri arasında kontrol sağlanıyor.
+            const i = this.pauntajAllRaporList.findIndex(f => {
+              return f.formTuru._id === form.formTuru._id;
             });
 
-            if (index === -1) {
-              firmaRapor = new FirmaRapor(form.formTarihi);
+            const pauntajRaporList: PauntajRapor[] = [];
+            let pauntajAllRapor: PauntajAllRapor;
+            let pauntajRapor: PauntajRapor;
 
-              firmaRapor.isMakinesiList.push(new AracRapor(form.isMakinesi, form.calismaSaati, form.calismaSekli));
+            if (i === -1) {
 
-              this.firmaRaporList.push(firmaRapor);
+              pauntajRapor = new PauntajRapor(form.formTarihi);
+              pauntajRapor.isMakinesiList.push(new AracRapor(form.isMakinesi, form.calismaSaati, form.calismaSekli));
+
+              pauntajRaporList.push(pauntajRapor);
+
+              pauntajAllRapor = new PauntajAllRapor(form.formTuru);
+              pauntajAllRapor.pauntajRaporList = pauntajRaporList;
+
+              this.pauntajAllRaporList.push(pauntajAllRapor);
 
             } else {
-              firmaRapor = this.firmaRaporList[index];
+              pauntajAllRapor = this.pauntajAllRaporList[i];
 
-              const i = firmaRapor.isMakinesiList.findIndex(m => {
-                return m.isMakinesi._id === form.isMakinesi._id;
+              const index = pauntajAllRapor.pauntajRaporList.findIndex(f => {
+                return f.formTarihi === form.formTarihi;
               });
 
-              if (i === -1) {
-                firmaRapor.isMakinesiList.push(new AracRapor(form.isMakinesi, form.calismaSaati, form.calismaSekli));
+              if (index === -1) {
+
+                pauntajRapor = new PauntajRapor(form.formTarihi);
+                pauntajRapor.isMakinesiList.push(new AracRapor(form.isMakinesi, form.calismaSaati, form.calismaSekli));
+
+                pauntajAllRapor.pauntajRaporList.push(pauntajRapor);
 
               } else {
-                const aracRapor = firmaRapor.isMakinesiList[i];
-                aracRapor.calismaSaati = ((+aracRapor.calismaSaati) + (+form.calismaSaati)) + '';
+                pauntajRapor = pauntajAllRapor.pauntajRaporList[index];
 
-                firmaRapor.isMakinesiList.splice(i, 1, aracRapor);
+                const l = pauntajRapor.isMakinesiList.findIndex(m => {
+                  return m.isMakinesi._id === form.isMakinesi._id;
+                });
+
+                if (l === -1) {
+                  pauntajRapor.isMakinesiList.push(new AracRapor(form.isMakinesi, form.calismaSaati, form.calismaSekli));
+
+                } else {
+                  const aracRapor = pauntajRapor.isMakinesiList[l];
+                  aracRapor.calismaSaati = ((+aracRapor.calismaSaati) + (+form.calismaSaati)) + '';
+
+                  pauntajRapor.isMakinesiList.splice(l, 1, aracRapor);
+                }
+
+                pauntajAllRapor.pauntajRaporList.splice(index, 1, pauntajRapor);
+
               }
-              this.firmaRaporList.splice(index, 1, firmaRapor);
-            }
 
+              this.pauntajAllRaporList.splice(i, 1, pauntajAllRapor);
+            }
           });
+
+          const aa = this.pauntajAllRaporList.findIndex(par => {
+            return par.formTuru.name === 'İmzalı Extra';
+          });
+
+
+          console.log(this.sahaOlcumList);
+
+
+          for (let k = 0; k < this.pauntajAllRaporList[aa].pauntajRaporList.length; k++) {
+
+            const filtersahaL = this.sahaOlcumList.filter(saha => {
+              return saha.formTarihi === this.pauntajAllRaporList[aa].pauntajRaporList[k].formTarihi;
+            });
+
+            this.pauntajAllRaporList[aa].pauntajRaporList[k].sahaOlcumList = filtersahaL;
+
+          }
+
+
+
         }
       }).catch(err => { });
 
   }
 
-  changeBirim(i) {
-    this.tablo2[i][3] = (+this.tablo2[i][2] * +this.tablo2[i][1]);
-
-    this.tablo2[this.tablo2.length - 1][3] = 0;
-
-    let topla = 0;
-    for (let index = 0; index < this.tablo2.length - 1; index++) {
-      topla = topla + +(this.tablo2[index][3] === undefined ? 0 : this.tablo2[index][3]);
-    }
-
-    this.tablo2[this.tablo2.length - 1][3] = topla;
-
+  getSahaOlcum() {
+    return this.sahaOlcumFormuService.getRaporDetail(
+      { mode: 2, startDate: this.startDate, lastDate: this.lastDate, firmaId: this.firmaId, santiyeId: this.santiyeId })
+      .toPromise().then(data => {
+        if (data.success) {
+          this.sahaOlcumList = data.data;
+        }
+      }).catch(err => { });
   }
 
   gfg_Run(date): string {

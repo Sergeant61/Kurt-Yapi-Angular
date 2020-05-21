@@ -16,6 +16,12 @@ import { FirmaFormComponent } from './firma-form/firma-form.component';
 import { PersonelFormComponent } from './personel-form/personel-form.component';
 import { DokumSahasiFormComponent } from './dokum-sahasi-form/dokum-sahasi-form.component';
 import { MalihuScrollbarService } from 'ngx-malihu-scrollbar';
+import { IsBirimiComponent } from './is-birimi/is-birimi.component';
+import { IsBirimiFormComponent } from './is-birimi-form/is-birimi-form.component';
+import { FormTuruComponent } from './form-turu/form-turu.component';
+import { FormTuruFormComponent } from './form-turu-form/form-turu-form.component';
+import { SantiyeComponent } from './santiye/santiye.component';
+import { SantiyeFormComponent } from './santiye-form/santiye-form.component';
 
 
 
@@ -32,7 +38,13 @@ import { MalihuScrollbarService } from 'ngx-malihu-scrollbar';
     TirKamyonFormComponent,
     FirmaFormComponent,
     PersonelFormComponent,
-    DokumSahasiFormComponent
+    DokumSahasiFormComponent,
+    IsBirimiComponent,
+    IsBirimiFormComponent,
+    FormTuruComponent,
+    FormTuruFormComponent,
+    SantiyeComponent,
+    SantiyeFormComponent
   ],
   imports: [
     AdminRoutingModule,

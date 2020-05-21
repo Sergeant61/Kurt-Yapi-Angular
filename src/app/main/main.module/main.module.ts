@@ -9,11 +9,24 @@ import { FooterComponent } from './footer/footer.component';
 import { RecaptchaModule, RecaptchaFormsModule, RECAPTCHA_SETTINGS, RecaptchaSettings } from 'ng-recaptcha';
 import { MainRoutingModule } from './main-routing.module';
 import { HomePageComponent } from './home-page/home-page.component';
+import { KurumsalComponent } from './kurumsal/kurumsal.component';
+import { HizmetlerComponent } from './hizmetler/hizmetler.component';
+import { AraclarComponent } from './araclar/araclar.component';
+import { IletisimComponent } from './iletisim/iletisim.component';
 
 
 
 @NgModule({
-  declarations: [NavbarComponent, MainPageComponent, LoginPageComponent, FooterComponent, HomePageComponent],
+  declarations: [
+    NavbarComponent,
+    MainPageComponent,
+    LoginPageComponent,
+    FooterComponent,
+    HomePageComponent,
+    KurumsalComponent,
+    HizmetlerComponent,
+    AraclarComponent,
+    IletisimComponent],
   imports: [
     MainRoutingModule,
     CommonModule,

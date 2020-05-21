@@ -17,6 +17,8 @@ import { GunlukRaporComponent } from './raporlar/gunluk-rapor/gunluk-rapor.compo
 import { PerMesaiPuantajiComponent } from './raporlar/per-mesai-puantaji/per-mesai-puantaji.component';
 import { PerMesaiOdemesiComponent } from './raporlar/per-mesai-odemesi/per-mesai-odemesi.component';
 import { FirmaRaporComponent } from './raporlar/firma-rapor/firma-rapor.component';
+import { SahaOlcumFormuComponent } from './formlar/saha-olcum-formu/saha-olcum-formu.component';
+import { SahaOlcumFormuCreateEditComponent } from './formlar/saha-olcum-formu-create-edit/saha-olcum-formu-create-edit.component';
 
 
 const routes: Routes = [
@@ -35,6 +37,9 @@ const routes: Routes = [
       { path: 'gidenyakitformu', component: GidenYakitFormuComponent },
       { path: 'gidenyakitformu/:mode/:id', component: GidenYakitFormuCreateEditComponent },
       { path: 'gidenyakitformu/:mode', component: GidenYakitFormuCreateEditComponent },
+      { path: 'sahaolcumformu', component: SahaOlcumFormuComponent },
+      { path: 'sahaolcumformu/:mode/:id', component: SahaOlcumFormuCreateEditComponent },
+      { path: 'sahaolcumformu/:mode', component: SahaOlcumFormuCreateEditComponent },
       { path: 'firmacarileri', component: FirmaCarileriComponent },
       { path: 'firmarapor', component: FirmaRaporComponent },
       { path: 'tahsilat', component: TahsilatComponent },

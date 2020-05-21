@@ -1,0 +1,144 @@
+<div class="row">
+  <div class="col-md-12 bg-dark p-2">
+    <h5 class="text-white">
+      Saha Ölçüm Formu {{ editing ? "Düzenle" : "Oluştur" }}
+    </h5>
+  </div>
+
+  <div class="col-md-12 bg-danger p-2" *ngIf="errorMessage">
+    <h6 class="text-white">{{ errorMessage }}</h6>
+  </div>
+
+  <div class="col-md-12 bg-success p-2" *ngIf="!sahaOlcumFormu">
+    <div class="spinner-border spinner-border-sm text-light mr-2" role="status"></div>
+    <div class="spinner-grow spinner-grow-sm text-light mr-2" role="status"></div>
+
+    <span class="text-white">Yükleniyor lütfen bekleyin.</span>
+  </div>
+
+  <div class="col-md-12 ">
+    <form #form="ngForm" (ngSubmit)="save(form)" (change)="formChange(form)" *ngIf="sahaOlcumFormu">
+      <div class="row">
+        <div class="col-12 col-md-6 mt-2">
+          <div class="card">
+            <div class="card-header">
+              Genel Bilgiler
+            </div>
+            <div class="card-body">
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Sıra No</span>
+                </div>
+                <input type="text" class="form-control" name="siraNo" [(ngModel)]="sahaOlcumFormu.siraNo" required />
+              </div>
+
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Tarih</span>
+                </div>
+                <input type="date" class="form-control" name="formTarihi" [(ngModel)]="sahaOlcumFormu.formTarihi"
+                  required />
+              </div>
+
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect04">Şantiye</label>
+                </div>
+                <select [(ngModel)]="sahaOlcumFormu.santiyeId" class="form-control" id="inputGroupSelect04"
+                  name="personelId" required>
+                  <option *ngFor="let item of santiyeList" [ngValue]="item._id">{{ item.name }}</option>
+                </select>
+
+                <a target="_blank" class="btn btn-primary ml-2" [routerLink]="[urls.baseUrlSantiye, 'create']">
+                  Yeni Şantiye ekle
+                </a>
+              </div>
+
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect01">Çalışılan Firma Ünvanı</label>
+                </div>
+                <select [(ngModel)]="sahaOlcumFormu.firmaId" class="form-control" id="inputGroupSelect01" name="firmaId"
+                  required>
+                  <option *ngFor="let item of firmaList" [ngValue]="item._id">{{
+                    item.name
+                  }}</option>
+                </select>
+
+                <a target="_blank" class="btn btn-primary ml-2" [routerLink]="[urls.baseUrlFirma, 'create']">
+                  Yeni Firma Ekle
+                </a>
+              </div>
+
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Yetkili Firma</span>
+                </div>
+                <input type="text" class="form-control" name="yuklemeYeri" [(ngModel)]="sahaOlcumFormu.yekitiFirma"
+                  required />
+              </div>
+
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Yetkili Personel</span>
+                </div>
+                <input type="text" class="form-control" name="malzemeCinsi" [(ngModel)]="sahaOlcumFormu.yekitiAdiSoyadi"
+                  required />
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6 mt-2">
+          <div class="card">
+            <div class="card-header">
+              Diğer bilgileri
+            </div>
+            <div class="card-body">
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect01">İş Birimi</label>
+                </div>
+                <select [(ngModel)]="sahaOlcumFormu.isBirimiId" class="form-control" id="inputGroupSelect01"
+                  name="plakaId" required>
+                  <option *ngFor="let item of isBirimilList" [ngValue]="item._id">
+                    {{ item.name }}</option>
+                </select>
+
+                <a target="_blank" class="btn btn-primary ml-2" [routerLink]="[urls.baseUrlIsBirimi, 'create']">
+                  Yeni Birim ekle
+                </a>
+              </div>
+
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">M³</span>
+                </div>
+                <input type="number" class="form-control" name="kilometre" [(ngModel)]="sahaOlcumFormu.m3" required />
+              </div>
+
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Notlar</span>
+                </div>
+                <textarea type="text" class="form-control" name="notlar" [(ngModel)]="sahaOlcumFormu.notlar"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-group mt-4">
+        <button name="addButton" type="submit" class="btn btn-primary" [class.disabled]="isLoading"
+          [disabled]="isLoading">
+          <span name="loadingSpan" class="spinner-border spinner-border-sm" role="status" *ngIf="isLoading"></span>
+          {{ editing ? "Düzenle" : "Oluştur" }}
+        </button>
+        <button type="button" [routerLink]="[baseUrl]" class="btn btn-warning">
+          Vazgeç
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

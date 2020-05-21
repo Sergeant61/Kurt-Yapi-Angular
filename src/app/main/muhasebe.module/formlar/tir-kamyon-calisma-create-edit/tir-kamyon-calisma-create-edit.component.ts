@@ -14,6 +14,10 @@ import { TirKamyonGunlukCalisma } from '../../../models/TirKamyonGunlukCalisma';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../../../rest.module/auth.service';
 import { SeferTonaj } from '../../../models/SeferTonaj';
+import { FormTuru } from 'src/app/main/models/FormTuru';
+import { Santiye } from 'src/app/main/models/Santiye';
+import { FormTuruService } from 'src/app/main/rest.module/form-turu.service';
+import { SantiyeService } from 'src/app/main/rest.module/santiye.service';
 
 @Component({
   selector: 'app-tir-kamyon-calisma-create-edit',
@@ -26,6 +30,8 @@ export class TirKamyonCalismaCreateEditComponent implements OnInit {
   firmaList: Firma[] = [];
   dokumSahasiList: DokumSahasi[] = [];
   personelList: Personel[] = [];
+  formTuruList: FormTuru[] = [];
+  santiyeList: Santiye[] = [];
 
   seferTonajList: SeferTonaj[] = [];
 
@@ -34,23 +40,24 @@ export class TirKamyonCalismaCreateEditComponent implements OnInit {
   errorMessage: string;
   isLoading: boolean = false;
 
+  urls = environment;
   baseUrl: string = environment.baseUrlTirKamyonCalisma;
-  newTirBaseUrl: string = environment.baseUrlTirKamyon;
-  newFirmaBaseUrl: string = environment.baseUrlFirma;
-  newDokumBaseUrl: string = environment.baseUrlDokumSahasi;
-  newPersonelBaseUrl: string = environment.baseUrlPersonel;
 
   @ViewChild('closebutton') closebutton;
+
+  tag = 'tirKamyonGunlukCalisma';
 
   constructor(
     private tirKamyonService: TirKamyonService,
     private firmaService: FirmaService,
     private dokumSahasiService: DokumSahasiService,
     private personelService: PersonelService,
+    private formTuruService: FormTuruService,
+    private santiyeService: SantiyeService,
     private activeRoute: ActivatedRoute,
     private router: Router,
     public authService: AuthService,
-    private tirKamyonGunlukCalismaFormuService: TirKamyonGunlukCalismaFormuService
+    private tirKamyonGunlukCalismaFormuService: TirKamyonGunlukCalismaFormuService,
   ) {
     this.editing = activeRoute.snapshot.params.mode === 'edit';
     if (this.editing) {
@@ -58,17 +65,17 @@ export class TirKamyonCalismaCreateEditComponent implements OnInit {
         if (data.success) {
           this.tirKamyonGunlukCalisma = data.data;
           this.setTonajList(this.tirKamyonGunlukCalisma.seferSayisi);
-          localStorage.removeItem('tirKamyonGunlukCalisma');
+          localStorage.removeItem(this.tag);
         }
       }, err => {
 
       });
     } else {
-      const gunlukCalisma: TirKamyonGunlukCalisma = JSON.parse(localStorage.getItem('tirKamyonGunlukCalisma'));
+      const gunlukCalisma: TirKamyonGunlukCalisma = JSON.parse(localStorage.getItem(this.tag));
 
       if (gunlukCalisma !== undefined && gunlukCalisma !== null) {
         if (gunlukCalisma._id !== undefined && gunlukCalisma._id !== null) {
-          localStorage.removeItem('tirKamyonGunlukCalisma');
+          localStorage.removeItem(this.tag);
           this.tirKamyonGunlukCalisma = new TirKamyonGunlukCalisma();
         } else {
           this.tirKamyonGunlukCalisma = gunlukCalisma;
@@ -104,6 +111,18 @@ export class TirKamyonCalismaCreateEditComponent implements OnInit {
       }
     });
 
+    this.formTuruService.getAll().subscribe(data => {
+      if (data.success) {
+        this.formTuruList = data.data;
+      }
+    });
+
+    this.santiyeService.getAll().subscribe(data => {
+      if (data.success) {
+        this.santiyeList = data.data;
+      }
+    });
+
   }
 
   save(form: NgForm) {
@@ -115,7 +134,7 @@ export class TirKamyonCalismaCreateEditComponent implements OnInit {
         this.tirKamyonGunlukCalismaFormuService.put(this.tirKamyonGunlukCalisma._id, this.tirKamyonGunlukCalisma).subscribe(data => {
           if (data.success) {
             this.router.navigateByUrl(this.baseUrl);
-            localStorage.removeItem('tirKamyonGunlukCalisma');
+            localStorage.removeItem(this.tag);
           } else {
             this.errorMessage = data.message;
           }
@@ -128,7 +147,7 @@ export class TirKamyonCalismaCreateEditComponent implements OnInit {
         this.tirKamyonGunlukCalismaFormuService.post(this.tirKamyonGunlukCalisma).subscribe(data => {
           if (data.success) {
             this.router.navigateByUrl(this.baseUrl);
-            localStorage.removeItem('tirKamyonGunlukCalisma');
+            localStorage.removeItem(this.tag);
           } else {
             this.errorMessage = data.message;
           }
@@ -141,7 +160,7 @@ export class TirKamyonCalismaCreateEditComponent implements OnInit {
   }
 
   formChange(form: NgForm) {
-    localStorage.setItem('tirKamyonGunlukCalisma', JSON.stringify(this.tirKamyonGunlukCalisma));
+    localStorage.setItem(this.tag, JSON.stringify(this.tirKamyonGunlukCalisma));
   }
 
   setTonajList(event: any) {

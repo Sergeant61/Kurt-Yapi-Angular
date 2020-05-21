@@ -16,14 +16,12 @@ export class GidenYakitFormuService {
 
   path = environment.path;
   baseUrl = '/api/gidenYakit';
-  headers: HttpHeaders;
 
   constructor(private http: HttpClient, private authService: AuthService, private errorService: ErrorService) {
-    this.headers = new HttpHeaders({ 'x-access-token': authService.token, 'x-browser': authService.browser });
   }
 
   post(data: GidenYakitFormu): Observable<ApiResponse<GidenYakitFormu>> {
-    return this.http.post<ApiResponse<GidenYakitFormu>>(this.path + this.baseUrl, data, { headers: this.headers })
+    return this.http.post<ApiResponse<GidenYakitFormu>>(this.path + this.baseUrl, data, { headers: this.authService.getHeaders() })
     .pipe(map(res => {
       if (!res.success) {
         if (this.errorService.getErrorParse(res)) {
@@ -36,7 +34,7 @@ export class GidenYakitFormuService {
   }
 
   getAll(): Observable<ApiResponse<GidenYakitFormu[]>> {
-    return this.http.get<ApiResponse<GidenYakitFormu[]>>(this.path + this.baseUrl, { headers: this.headers })
+    return this.http.get<ApiResponse<GidenYakitFormu[]>>(this.path + this.baseUrl, { headers: this.authService.getHeaders() })
     .pipe(map(res => {
       if (!res.success) {
         if (this.errorService.getErrorParse(res)) {
@@ -49,7 +47,7 @@ export class GidenYakitFormuService {
   }
 
   getLength(): Observable<ApiResponse<number>> {
-    return this.http.put<ApiResponse<number>>(this.path + this.baseUrl, {}, { headers: this.headers })
+    return this.http.put<ApiResponse<number>>(this.path + this.baseUrl, {}, { headers: this.authService.getHeaders() })
     .pipe(map(res => {
       if (!res.success) {
         if (this.errorService.getErrorParse(res)) {
@@ -63,11 +61,11 @@ export class GidenYakitFormuService {
 
   getSkipAndLimit(start: string, end: string): Observable<ApiResponse<GidenYakitFormu[]>> {
     return this.http.get<ApiResponse<GidenYakitFormu[]>>(
-      this.path + this.baseUrl + '/' + start + '/' + end, { headers: this.headers });
+      this.path + this.baseUrl + '/' + start + '/' + end, { headers: this.authService.getHeaders() });
   }
 
   get(id: string): Observable<ApiResponse<GidenYakitFormu>> {
-    return this.http.get<ApiResponse<GidenYakitFormu>>(this.path + this.baseUrl + '/' + id, { headers: this.headers })
+    return this.http.get<ApiResponse<GidenYakitFormu>>(this.path + this.baseUrl + '/' + id, { headers: this.authService.getHeaders() })
     .pipe(map(res => {
       if (!res.success) {
         if (this.errorService.getErrorParse(res)) {
@@ -81,7 +79,7 @@ export class GidenYakitFormuService {
 
   getDetail(id: string, mode: Mode): Observable<ApiResponse<GidenYakitFormu>> {
     return this.http
-    .get<ApiResponse<GidenYakitFormu>>(this.path + this.baseUrl + '/detail/' + id + '/' + mode, { headers: this.headers })
+    .get<ApiResponse<GidenYakitFormu>>(this.path + this.baseUrl + '/detail/' + id + '/' + mode, { headers: this.authService.getHeaders() })
     .pipe(map(res => {
       if (!res.success) {
         if (this.errorService.getErrorParse(res)) {
@@ -94,7 +92,8 @@ export class GidenYakitFormuService {
   }
 
   put(id: string, data: any): Observable<ApiResponse<GidenYakitFormu>> {
-    return this.http.put<ApiResponse<GidenYakitFormu>>(this.path + this.baseUrl + '/' + id, data, { headers: this.headers })
+    return this.http.put<ApiResponse<GidenYakitFormu>>(this.path + this.baseUrl + '/' + id, data,
+     { headers: this.authService.getHeaders() })
     .pipe(map(res => {
       if (!res.success) {
         if (this.errorService.getErrorParse(res)) {
@@ -107,7 +106,8 @@ export class GidenYakitFormuService {
   }
 
   delete(id: string): Observable<ApiResponse<GidenYakitFormu>> {
-    return this.http.delete<ApiResponse<GidenYakitFormu>>(this.path + this.baseUrl + '/' + id, { headers: this.headers })
+    return this.http.delete<ApiResponse<GidenYakitFormu>>(this.path + this.baseUrl + '/' + id,
+     { headers: this.authService.getHeaders() })
     .pipe(map(res => {
       if (!res.success) {
         if (this.errorService.getErrorParse(res)) {
