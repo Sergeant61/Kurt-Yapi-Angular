@@ -12,6 +12,7 @@ import * as jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { Santiye } from 'src/app/main/models/Santiye';
 import { SantiyeService } from 'src/app/main/rest.module/santiye.service';
+import { TonajData } from 'src/app/main/models/TirKamyonGunlukCalisma';
 
 
 @Component({
@@ -47,7 +48,8 @@ export class GunlukRaporComponent implements OnInit {
     return this.santiyeService.getAll().toPromise().then(data => {
       if (data.success) {
         this.santiyeList = data.data;
-        this.santiyeList.splice(0, 0, new Santiye('1', 'Hepsi'));
+        this.santiyeId = this.santiyeList[0]._id;
+        // this.santiyeList.splice(0, 0, new Santiye('1', 'Hepsi'));
       }
     }).catch(err => { });
   }
@@ -56,7 +58,6 @@ export class GunlukRaporComponent implements OnInit {
     this.getValues().then(rapor => {
 
       this.tablo = [];
-      this.tablo2 = [];
       this.tirKamyonThead = [];
       const fark = 2; // satir ile başlık arasında ki kayma yani başlık satırdan fark kadar sonra başlıyor
 
@@ -98,7 +99,6 @@ export class GunlukRaporComponent implements OnInit {
         let yukT = 0;
         let tonajT = 0;
         data.seferBilgileri.forEach(yuk => {
-          const tablo2Satir = [];
 
           const i = this.tirKamyonThead.findIndex(t => {
             return t.calisilanFirma === yuk.calisilanFirma
@@ -112,9 +112,7 @@ export class GunlukRaporComponent implements OnInit {
           tonajT = tonajT + yuk.toplamTonaj;
           satirToplamTonaj[i + fark] = yuk.toplamTonaj + '';
 
-          tablo2Satir.push(data.tirKamyon);
-          tablo2Satir.push(yuk.toplamTonaj);
-          this.tablo2.push(tablo2Satir);
+
 
         });
 
@@ -122,11 +120,6 @@ export class GunlukRaporComponent implements OnInit {
           return t === 'Toplam Sefer';
         });
         satir[k + fark] = yukT + '';
-
-        const j = this.tirKamyonThead.findIndex(t => {
-          return t === 'Toplam Tonaj';
-        });
-        // satir[j + fark] = tonajT.toFixed(2); // Tonaj toplamı küsüratlı sayı olduğundan basamak 2 ili sınırlandırdım.
 
         this.tablo.push(satir);
 
@@ -188,6 +181,7 @@ export class GunlukRaporComponent implements OnInit {
     return this.tirKamyonGunlukCalismaFormuService.getRaporDetail({ mode: 1, todayDate: this.todayDate, santiyeId: this.santiyeId })
       .toPromise().then(data => {
         if (data.success) {
+          this.tablo2 = [];
 
           data.data.forEach(form => {
             let tirKamyonRapor: TirKamyonRapor;
@@ -198,12 +192,24 @@ export class GunlukRaporComponent implements OnInit {
               // this.gunlukRapor.tirKamyonRapor listesin eklenmiş veri var ise kontrol sağlıyorum
             });
 
+            form.tonajDataList.forEach(tonajData => {
+              const tablo2Satir = [];
+
+              tablo2Satir.push(form.tirKamyon.plaka);
+              tablo2Satir.push(form.firma.name);
+              tablo2Satir.push(form.malzemeCinsi.name);
+              tablo2Satir.push(tonajData.tonaj);
+              tablo2Satir.push(tonajData.irsaliyeNo);
+              tablo2Satir.push(tonajData.tartimNo);
+              this.tablo2.push(tablo2Satir);
+            });
+
             if (index === -1) {
               // listede yok ise ekliyorum
 
               const seferBilgileri = new SeferBilgileri(
                 form.firma.name, form.yuklemeYeri,
-                form.dokumsahasi.name, form.malzemeCinsi, +form.seferSayisi, this.getToplamTonaj(form.tonajList)
+                form.dokumsahasi.name, form.malzemeCinsi.name, +form.seferSayisi, this.getToplamTonaj(form.tonajDataList)
               );
 
               tirKamyonRapor = new TirKamyonRapor(
@@ -225,17 +231,17 @@ export class GunlukRaporComponent implements OnInit {
                 return s.calisilanFirma === form.firma.name
                   && s.yuklemeYeri === form.yuklemeYeri
                   && s.dokumYeri === form.dokumsahasi.name
-                  && s.malzeme === form.malzemeCinsi;
+                  && s.malzeme === form.malzemeCinsi.name;
               });
 
               if (seferBilgileriListIndex === -1) {
                 tirKamyonRapor.seferBilgileri.push(new SeferBilgileri(
                   form.firma.name, form.yuklemeYeri,
-                  form.dokumsahasi.name, form.malzemeCinsi, +form.seferSayisi, this.getToplamTonaj(form.tonajList)));
+                  form.dokumsahasi.name, form.malzemeCinsi.name, +form.seferSayisi, this.getToplamTonaj(form.tonajDataList)));
               } else {
                 const sefer = tirKamyonRapor.seferBilgileri[seferBilgileriListIndex];
 
-                sefer.toplamTonaj = sefer.toplamTonaj + this.getToplamTonaj(form.tonajList);
+                sefer.toplamTonaj = sefer.toplamTonaj + this.getToplamTonaj(form.tonajDataList);
                 sefer.sefer = sefer.sefer + (+form.seferSayisi);
 
                 tirKamyonRapor.seferBilgileri.splice(seferBilgileriListIndex, 1, sefer);
@@ -251,12 +257,12 @@ export class GunlukRaporComponent implements OnInit {
 
   }
 
-  getToplamTonaj(tonajList: string[]): number {
+  getToplamTonaj(tonajDataList: TonajData[]): number {
     let tonajTop = 0;
 
-    if (tonajList !== undefined) {
-      tonajList.forEach(tonaj => {
-        tonajTop = tonajTop + (parseFloat(tonaj) ? +tonaj : 0);
+    if (tonajDataList !== undefined) {
+      tonajDataList.forEach(data => {
+        tonajTop = tonajTop + (parseFloat(data.tonaj) ? +data.tonaj : 0);
       });
     }
 

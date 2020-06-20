@@ -1,3 +1,5 @@
+import { MalzemeCinsi } from '../MalzemeCinsi';
+
 export class TirKamyonRapor {
   _id: string;
   raporDate: string;

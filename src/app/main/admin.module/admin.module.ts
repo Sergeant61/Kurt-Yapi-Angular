@@ -22,6 +22,8 @@ import { FormTuruComponent } from './form-turu/form-turu.component';
 import { FormTuruFormComponent } from './form-turu-form/form-turu-form.component';
 import { SantiyeComponent } from './santiye/santiye.component';
 import { SantiyeFormComponent } from './santiye-form/santiye-form.component';
+import { MalzemeCinsiComponent } from './malzeme-cinsi/malzeme-cinsi.component';
+import { MalzemeCinsiFormComponent } from './malzeme-cinsi-form/malzeme-cinsi-form.component';
 
 
 
@@ -44,7 +46,9 @@ import { SantiyeFormComponent } from './santiye-form/santiye-form.component';
     FormTuruComponent,
     FormTuruFormComponent,
     SantiyeComponent,
-    SantiyeFormComponent
+    SantiyeFormComponent,
+    MalzemeCinsiComponent,
+    MalzemeCinsiFormComponent
   ],
   imports: [
     AdminRoutingModule,

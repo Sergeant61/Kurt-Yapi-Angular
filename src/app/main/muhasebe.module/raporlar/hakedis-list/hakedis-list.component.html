@@ -1,0 +1,240 @@
+<div class="row">
+  <div class="col-md-12 bg-dark p-2">
+
+    <div class="form-inline float-right m-0 p-0">
+
+      <div class="input-group input-group-sm mr-2">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="inputGroupSelect01">Onaylı / Onaysız</label>
+        </div>
+        <select class="form-control-sm" [(ngModel)]="isOnayli" (change)="getList()">
+          <option value="true">Onaylı</option>
+          <option value="false">Onaysız</option>
+        </select>
+      </div>
+
+
+      <div class="input-group input-group-sm mr-2">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="inputGroupSelect01">Şantiye</label>
+        </div>
+        <select (change)="getList()" [(ngModel)]="santiyeId" class="form-control form-control-sm" #santiyeId1
+          id="inputGroupSelect01" name="santiyeId" required>
+          <option *ngFor="let item of santiyeList" [ngValue]="item._id">{{
+            item.name
+          }}</option>
+        </select>
+      </div>
+
+      <div class="input-group input-group-sm mr-2">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="inputGroupSelect01">Çalışılan Firma Ünvanı</label>
+        </div>
+        <select (change)="getList()" [(ngModel)]="firmaId" class="form-control form-control-sm" #firmaId1
+          id="inputGroupSelect01" name="firmaId" required>
+          <option *ngFor="let item of firmaList" [ngValue]="item._id">{{
+            item.name
+          }}</option>
+        </select>
+      </div>
+
+      <select class="form-control-sm" [value]="perViewPage" (change)="changePageSize($event.target.value)">
+        <option value="5">5 tane</option>
+        <option value="10">10 tane</option>
+        <option value="15">15 tane</option>
+        <option value="20">20 tane</option>
+        <option value="25">25 tane</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="col-md-12 bg-success p-2" *ngIf="!hakedisList">
+    <div class="spinner-border spinner-border-sm text-light mr-2" role="status"></div>
+    <div class="spinner-grow spinner-grow-sm text-light mr-2" role="status"></div>
+    <span class="text-white">Yükleniyor lütfen bekleyin.</span>
+  </div>
+
+  <div class="container-fluid" *ngIf="hakedisList">
+    <div class="card shadow mb-4 mt-4">
+      <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
+
+        <h6 class="m-0 font-weight-bold text-dark">Hakediş Listesi</h6>
+        <div class="btn-group">
+
+        </div>
+      </div>
+
+      <div class="card-body p-2">
+        <div class="table-responsive">
+
+          <table class="table table-sm">
+            <thead class="thead-dark">
+              <tr>
+                <th>#</th>
+                <th>Firma</th>
+                <th>Şantiye</th>
+                <th>Kayıt Eden Kullanıcı</th>
+                <th>Başlangıç Tarihi</th>
+                <th>Başlangıç Tarihi</th>
+                <th>Kayıt Tarihi</th>
+                <th>#</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let value of hakedisList; index as i">
+                <th>{{ index + i + 1 }}</th>
+                <td>{{ value.firma.name }}</td>
+                <td>{{ value.santiye.name}} </td>
+                <td>{{ value.saveUser.name + " " + value.saveUser.surname}} </td>
+                <td>{{ value.firtDate | date: "dd/MM/yyyy" }}</td>
+                <td>{{ value.lastDate | date: "dd/MM/yyyy" }}</td>
+                <td>{{ value.createdAt | date: "dd/MM/yyyy - hh:mm:ss" }}</td>
+                <td>
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-warning" [routerLink]="[baseUrl, 'edit', value._id]">
+                      Düzenle
+                    </button>
+                    <button type="button" class="btn btn-danger" *ngIf="authService.currentUser.isAdmin"
+                      data-toggle="modal" data-target="#exampleModal" (click)="setSelected(value)">
+                      Sil
+                    </button>
+                    <button type="button" class="btn btn-success" *ngIf="authService.currentUser.isAdmin && !value.onaylimi" data-toggle="modal"
+                      data-target="#largeModal" (click)="setSelected(value)">
+                      Onayla
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <ngb-pagination class="d-flex justify-content-center" [collectionSize]="listLength" [(page)]="selectedPage"
+          [pageSize]="perViewPage" [maxSize]="5" [boundaryLinks]="true" (pageChange)="changePage($event)">
+        </ngb-pagination>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal dialog penceresi -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          Silmek istediğinize emin misiniz ?
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Seçtiğiniz veri kalıcı olarak silinecektir.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" #closebutton data-dismiss="modal">
+          Vazgeç
+        </button>
+        <button type="button" class="btn btn-danger" (click)="delete()" [class.disabled]="isLoading"
+          [disabled]="isLoading">
+          <span name="loadingSpan" class="spinner-border spinner-border-sm" role="status" *ngIf="isLoading"></span>
+          Evet
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="largeModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+  aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          Onaylamak istediğinize emin misiniz ?
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-6">
+            <span class="badge badge-primary mr-1">Firma :</span>
+            <label>
+              {{ selectedHakedis.firma.name }}
+            </label>
+            <br />
+
+            <span class="badge badge-primary mr-1">Şantiye :</span>
+            <label>
+              {{ selectedHakedis.santiye.name  }}
+            </label>
+            <br />
+
+          </div>
+
+          <div class="col-6">
+            <span class="badge badge-primary mr-1">Başlangıç Tarihi :</span>
+            <label>
+              {{ selectedHakedis.firtDate | date: "dd/MM/yyyy" }}
+            </label>
+            <br />
+
+            <span class="badge badge-primary mr-1">Bitiş Tarihi :</span>
+            <label>
+              {{ selectedHakedis.lastDate | date: "dd/MM/yyyy" }}
+            </label>
+            <br />
+
+            <span class="badge badge-primary mr-1">Kayıt Eden Personel Bilgileri :</span>
+            <label>
+              {{
+                selectedHakedis.saveUser.name +
+                  " " +
+                  selectedHakedis.saveUser.surname
+              }}
+            </label>
+            <br />
+
+          </div>
+        </div>
+
+        <hr />
+
+        <div class="row">
+
+          <hr />
+
+          <div class="row">
+            <div class="col-10">
+              <span class="badge badge-primary mr-1">Notlar :</span>
+              <label>
+                {{ selectedHakedis._id }}
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" #closebuttonOnay data-dismiss="modal">
+            Hayır
+          </button>
+          <button type="button" (click)="onayla()" [class.disabled]="isLoading" [disabled]="isLoading"
+            class="btn btn-success">
+            <span name="loadingSpan" class="spinner-border spinner-border-sm" role="status" *ngIf="isLoading"></span>
+            Evet
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

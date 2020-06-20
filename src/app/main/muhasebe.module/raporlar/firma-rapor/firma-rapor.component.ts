@@ -1,19 +1,22 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/main/rest.module/auth.service';
-import { IsMakinesiGunlukCalismaFormuService } from 'src/app/main/rest.module/is-makinesi-gunluk-calisma-formu.service';
 import { TirKamyonGunlukCalismaFormuService } from 'src/app/main/rest.module/tir-kamyon-gunluk-calisma-formu.service';
 import html2canvas from 'html2canvas';
 import * as XLSX from 'xlsx';
 import * as jsPDF from 'jspdf';
-import { PauntajAllRapor, PauntajRapor, AracRapor } from 'src/app/main/models/raporlar/FirmaRapor';
+import { PauntajAllRapor, } from 'src/app/main/models/raporlar/FirmaRapor';
 import { FirmaService } from 'src/app/main/rest.module/firma.service';
 import { Firma } from 'src/app/main/models/Firma';
 import { Santiye } from 'src/app/main/models/Santiye';
 import { SantiyeService } from 'src/app/main/rest.module/santiye.service';
-import { SahaOlcumFormuService } from 'src/app/main/rest.module/saha-olcum-formu.service';
 import { SahaOlcumFormu } from 'src/app/main/models/SahaOlcumFormu';
 import { Table } from 'src/app/main/models/raporlar/Table';
 import { FormTuru } from 'src/app/main/models/FormTuru';
+import { empty } from 'rxjs';
+import { RaporlarService } from 'src/app/main/rest.module/raporlar.service';
+import { HakedisService } from 'src/app/main/rest.module/hakedis.service';
+import { Hakedis } from 'src/app/main/models/Hakedis';
+import { AlertifyService } from 'src/app/main/services/alertify.service';
 
 @Component({
   selector: 'app-firma-rapor',
@@ -23,31 +26,32 @@ import { FormTuru } from 'src/app/main/models/FormTuru';
 export class FirmaRaporComponent implements OnInit {
 
   isLoading = true;
+  isLoadHakedisBtn = false;
   date = new Date();
 
   sDate = new Date(this.date.getFullYear(), this.date.getMonth(), 1);
   lDate = new Date(this.date.getFullYear(), this.date.getMonth() + 1, 0);
-  firmaId = '1';
-  santiyeId = '1';
-
   startDate: string = this.sDate.toISOString().slice(0, 10);
   lastDate: string = this.lDate.toISOString().slice(0, 10);
 
-  pauntajAllRaporList: PauntajAllRapor[] = [];
+  firmaId = '1';
+  santiyeId = '1';
+  errorMessage: string = null;
+
   sahaOlcumList: SahaOlcumFormu[] = [];
   firmaList: Firma[] = [];
   santiyeList: Santiye[] = [];
 
-  table1 = new Table<void>();
   tabloList: Table<FormTuru>[] = [];
 
   constructor(
     public authService: AuthService,
     private firmaService: FirmaService,
     private santiyeService: SantiyeService,
-    private sahaOlcumFormuService: SahaOlcumFormuService,
+    private raporlarService: RaporlarService,
+    private hakedisService: HakedisService,
+    private alertifyService: AlertifyService,
     private tirKamyonGunlukCalismaFormuService: TirKamyonGunlukCalismaFormuService,
-    private isMakinesiGunlukCalismaFormuService: IsMakinesiGunlukCalismaFormuService
   ) { }
 
   async ngOnInit() {
@@ -56,275 +60,72 @@ export class FirmaRaporComponent implements OnInit {
     this.dateChange();
   }
 
-  dateChange() {
+  async dateChange() {
+    this.errorMessage = null;
+    this.tabloList = [];
 
-    this.getValues().then(rapor => {
-
-      this.tabloList = [];
-
-      console.log(rapor);
-
-      rapor.forEach(r => {
-        const table = new Table<FormTuru>();
-        table.thead = ['Form Tarihi'];
-        table.data = r.formTuru;
-
-        r.pauntajRaporList.forEach(puantaj => {
-
-          puantaj.isMakinesiList.forEach(is => {
-            const i = table.thead.findIndex(d => {
-              return d === is.isMakinesi.makineCinsi + '-' + is.isMakinesi.plaka;
-            });
-
-            if (i === -1) {
-              table.thead.push(is.isMakinesi.makineCinsi + '-' + is.isMakinesi.plaka);
-            }
-          });
-
-        });
-
-        if (r.formTuru.name !== 'M³ Çalışmalar (İmzasız)') {
-          table.thead.push('M³');
-        }
-
-        this.tabloList.push(table);
-      });
-
-      rapor.forEach(r => {
-
-        const k = this.tabloList.findIndex(tl => {
-          return tl.data._id === r.formTuru._id;
-        });
-
-        r.pauntajRaporList.forEach(puantaj => {
-          const line: any[] = [];
-          let top = 0;
-          let topM3 = 0;
-
-          line.push(this.gfg_Run(new Date(puantaj.formTarihi)));
-
-          puantaj.isMakinesiList.forEach(is => {
-
-            const i = this.tabloList[k].thead.findIndex(d => {
-              return d === is.isMakinesi.makineCinsi + '-' + is.isMakinesi.plaka;
-            });
-
-            line[i] = (+(line[i] === undefined ? 0 : line[i]) + (+is.calismaSaati)) + '';
-
-            top = top + (+is.calismaSaati);
-
-          });
-
-
-          if (puantaj.sahaOlcumList.length > 0) {
-            puantaj.sahaOlcumList.forEach(s => {
-              topM3 = topM3 + s.m3;
-            });
-
-            const z = this.tabloList[k].thead.findIndex(t => {
-              return t === 'M³';
-            });
-            line[z] = topM3 + '';
-
-          }
-
-          this.tabloList[k].line.push(line);
-
-        });
-
-      });
-      console.log(this.tabloList);
-
-      this.tabloList.forEach(tablo => {
-
-        const lastLine: any[] = [];
-
-        const k = this.tabloList.findIndex(tl => {
-          return tl.data._id === tablo.data._id;
-        });
-
-        if (this.tabloList[k].line.length !== 0) {
-          lastLine.push('Toplam');
-        }
-
-        for (let index = 1; index < tablo.thead.length; index++) {
-          tablo.line.forEach(satir => {
-            const s = satir[index];
-
-            lastLine[index] = '' + (+(lastLine[index] === undefined ? 0 : lastLine[index]) + +(s === undefined ? 0 : s));
-
-          });
-
-        }
-
-        if (this.tabloList[k].line.length !== 0) {
-          this.tabloList[k].line.push(lastLine);
-        }
-
-      });
-
-
-    }).catch(err => { });
-
-  }
-
-  async getValues() {
     this.isLoading = true;
-    await this.getSahaOlcum();
-    await this.getIsmakinesi();
+    await this.raporlarService.getIsmakinesi(this.startDate, this.lastDate, this.firmaId, this.santiyeId).then(data => {
+      const pauntajAllRaporList = data;
+
+      this.raporlarService.createFirmaRaporTable(pauntajAllRaporList).then(tableList => {
+        this.tabloList = tableList;
+      }).catch(err => {
+
+      });
+
+    }).catch(err => {
+    });
     this.isLoading = false;
-    return this.pauntajAllRaporList;
+
   }
 
-  getFirmaList() {
-    return this.firmaService.getAll().toPromise().then(data => {
+  async getFirmaList() {
+    try {
+      const data = await this.firmaService.getAll().toPromise();
       if (data.success) {
         this.firmaList = data.data;
-        this.firmaList.splice(0, 0, new Firma('1', 'Hepsi'));
+        this.firmaId = this.firmaList[0]._id;
+        // this.firmaList.splice(0, 0, new Firma('1', 'Hepsi'));
       }
-    }).catch(err => { });
+    } catch (err) { }
   }
 
-  getSantiyeList() {
-    return this.santiyeService.getAll().toPromise().then(data => {
+  async getSantiyeList() {
+    try {
+      const data = await this.santiyeService.getAll().toPromise();
       if (data.success) {
         this.santiyeList = data.data;
-        this.santiyeList.splice(0, 0, new Santiye('1', 'Hepsi'));
+        this.santiyeId = this.santiyeList[0]._id;
+        // this.santiyeList.splice(0, 0, new Santiye('1', 'Hepsi'));
       }
-    }).catch(err => { });
+    } catch (err) { }
   }
 
-  getIsmakinesi() {
-    return this.isMakinesiGunlukCalismaFormuService.getRaporDetail(
-      { mode: 2, startDate: this.startDate, lastDate: this.lastDate, firmaId: this.firmaId, santiyeId: this.santiyeId })
-      .toPromise().then(data => {
-        this.table1.line = [];
-        this.table1.thead = ['Form Tarihi', 'Makina Cinsi', 'Yapılan İşin Tanımı', 'Çalışma Şekli', 'Çalışma Birimi', 'İmzalı/İmzasız'];
+  async setHakedis() {
+    this.isLoadHakedisBtn = true;
 
-        if (data.success) {
+    const hakedis = new Hakedis();
+    hakedis.firtDate = new Date(this.startDate);
+    hakedis.lastDate = new Date(this.lastDate);
+    hakedis.firmaId = this.firmaId;
+    hakedis.santiyeId = this.santiyeId;
+    hakedis.saveUserId = this.authService.currentUser._id;
 
-          // Taplo 1
+    const data = await this.hakedisService.post(hakedis).toPromise();
 
-          data.data.forEach(r => {
+    try {
+      if (data.success) {
+        this.alertifyService.success('Hakedis firmanın hanesine eklendi.');
+      } else {
+        this.errorMessage = data.message;
+      }
+    } catch (err) {
+      return Promise.reject(err);
+    }
 
-            const satir: any[] = [];
+    this.isLoadHakedisBtn = false;
 
-            satir.push(this.gfg_Run(new Date(r.formTarihi)));
-            satir.push(r.isMakinesi.makineCinsi);
-            satir.push(r.yapilinIsTanimi);
-            satir.push(r.calismaSekli);
-            satir.push(r.calismaSaati);
-            satir.push(r.formTuru.name);
-
-            this.table1.line.push(satir);
-
-          });
-
-          this.pauntajAllRaporList = [];
-
-          data.data.forEach(form => {
-
-            // pauntajAllRaporList listesinde kayıtlı form türleri arasında kontrol sağlanıyor.
-            const i = this.pauntajAllRaporList.findIndex(f => {
-              return f.formTuru._id === form.formTuru._id;
-            });
-
-            const pauntajRaporList: PauntajRapor[] = [];
-            let pauntajAllRapor: PauntajAllRapor;
-            let pauntajRapor: PauntajRapor;
-
-            if (i === -1) {
-
-              pauntajRapor = new PauntajRapor(form.formTarihi);
-              pauntajRapor.isMakinesiList.push(new AracRapor(form.isMakinesi, form.calismaSaati, form.calismaSekli));
-
-              pauntajRaporList.push(pauntajRapor);
-
-              pauntajAllRapor = new PauntajAllRapor(form.formTuru);
-              pauntajAllRapor.pauntajRaporList = pauntajRaporList;
-
-              this.pauntajAllRaporList.push(pauntajAllRapor);
-
-            } else {
-              pauntajAllRapor = this.pauntajAllRaporList[i];
-
-              const index = pauntajAllRapor.pauntajRaporList.findIndex(f => {
-                return f.formTarihi === form.formTarihi;
-              });
-
-              if (index === -1) {
-
-                pauntajRapor = new PauntajRapor(form.formTarihi);
-                pauntajRapor.isMakinesiList.push(new AracRapor(form.isMakinesi, form.calismaSaati, form.calismaSekli));
-
-                pauntajAllRapor.pauntajRaporList.push(pauntajRapor);
-
-              } else {
-                pauntajRapor = pauntajAllRapor.pauntajRaporList[index];
-
-                const l = pauntajRapor.isMakinesiList.findIndex(m => {
-                  return m.isMakinesi._id === form.isMakinesi._id;
-                });
-
-                if (l === -1) {
-                  pauntajRapor.isMakinesiList.push(new AracRapor(form.isMakinesi, form.calismaSaati, form.calismaSekli));
-
-                } else {
-                  const aracRapor = pauntajRapor.isMakinesiList[l];
-                  aracRapor.calismaSaati = ((+aracRapor.calismaSaati) + (+form.calismaSaati)) + '';
-
-                  pauntajRapor.isMakinesiList.splice(l, 1, aracRapor);
-                }
-
-                pauntajAllRapor.pauntajRaporList.splice(index, 1, pauntajRapor);
-
-              }
-
-              this.pauntajAllRaporList.splice(i, 1, pauntajAllRapor);
-            }
-          });
-
-          const aa = this.pauntajAllRaporList.findIndex(par => {
-            return par.formTuru.name === 'İmzalı Extra';
-          });
-
-
-          console.log(this.sahaOlcumList);
-
-
-          for (let k = 0; k < this.pauntajAllRaporList[aa].pauntajRaporList.length; k++) {
-
-            const filtersahaL = this.sahaOlcumList.filter(saha => {
-              return saha.formTarihi === this.pauntajAllRaporList[aa].pauntajRaporList[k].formTarihi;
-            });
-
-            this.pauntajAllRaporList[aa].pauntajRaporList[k].sahaOlcumList = filtersahaL;
-
-          }
-
-
-
-        }
-      }).catch(err => { });
-
-  }
-
-  getSahaOlcum() {
-    return this.sahaOlcumFormuService.getRaporDetail(
-      { mode: 2, startDate: this.startDate, lastDate: this.lastDate, firmaId: this.firmaId, santiyeId: this.santiyeId })
-      .toPromise().then(data => {
-        if (data.success) {
-          this.sahaOlcumList = data.data;
-        }
-      }).catch(err => { });
-  }
-
-  gfg_Run(date): string {
-    const sdate = date.toJSON().slice(0, 10);
-    const nDate = sdate.slice(8, 10) + '/'
-      + sdate.slice(5, 7) + '/'
-      + sdate.slice(0, 4);
-    return nDate;
   }
 
   excelExport(data) {

@@ -24,6 +24,8 @@ import { PerMesaiPuantajiComponent } from './raporlar/per-mesai-puantaji/per-mes
 import { PerMesaiOdemesiComponent } from './raporlar/per-mesai-odemesi/per-mesai-odemesi.component';
 import { SahaOlcumFormuComponent } from './formlar/saha-olcum-formu/saha-olcum-formu.component';
 import { SahaOlcumFormuCreateEditComponent } from './formlar/saha-olcum-formu-create-edit/saha-olcum-formu-create-edit.component';
+import { HakedisListComponent } from './raporlar/hakedis-list/hakedis-list.component';
+import { HakedisEditComponent } from './raporlar/hakedis-edit/hakedis-edit.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +47,9 @@ import { SahaOlcumFormuCreateEditComponent } from './formlar/saha-olcum-formu-cr
     PerMesaiPuantajiComponent,
     PerMesaiOdemesiComponent,
     SahaOlcumFormuComponent,
-    SahaOlcumFormuCreateEditComponent
+    SahaOlcumFormuCreateEditComponent,
+    HakedisListComponent,
+    HakedisEditComponent
   ],
   imports: [
     MuhasebeRoutingModule,

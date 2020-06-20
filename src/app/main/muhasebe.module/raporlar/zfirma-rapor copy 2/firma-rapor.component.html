@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md-12 bg-dark p-2">
-    <span class="text-light">Günlük Rapor</span>
-    <div class="form-inline float-right m-0 p-0">
+    <span class="text-light">Firma Rapor</span>
+    <div class="form-inline float-right m-0 p-0" >
 
       <div class="btn-group  mr-2">
         <button type="button" class="btn btn-primary btn-sm" (click)="excelExportAll()">Tüm Excel</button>
@@ -58,48 +58,6 @@
             {{lastDate | date: "dd MMMM yyyy"}} Çalışma (Pauntaj) Çizelgesi
           </h6>
           <div class="btn-group">
-            <button type="button" class="btn btn-primary btn-sm" (click)="excelExport(excelTable1)">Excel</button>
-            <button type="button" class="btn btn-success btn-sm" (click)="pdfExport(excelTable1)">Pdf</button>
-          </div>
-
-        </div>
-
-        <div class="card-body p-2">
-          <div class="table-responsive">
-            <table id="excelTable1" #excelTable1 class="table table-sm table-bordered" width="100%" cellspacing="0">
-              <thead class="thead-dark">
-                <tr>
-                  <th>#</th>
-                  <th class="text-center" *ngFor="let item of tabloThead"> {{item}} </th>
-
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let value of tablo;index as i">
-                  <td>{{ i + 1 }}</td>
-                  <td class="text-center" *ngFor="let item of value">{{item}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-        </div>
-      </div>
-
-
-    </div>
-
-    <div class="container-fluid" *ngIf="!isLoading">
-
-      <div class="card shadow mb-4 mt-4">
-        <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
-
-          <h6 class="m-0 font-weight-bold text-dark">
-            {{santiyeList[santiyeId1.selectedIndex].name}} Şantiyesi -
-            {{firmaList[firmaId1.selectedIndex].name}} {{startDate | date: "dd MMMM yyyy"}} -
-            {{lastDate | date: "dd MMMM yyyy"}} Çalışma (Pauntaj) Çizelgesi
-          </h6>
-          <div class="btn-group">
             <button type="button" class="btn btn-primary btn-sm" (click)="excelExport(excelTable2)">Excel</button>
             <button type="button" class="btn btn-success btn-sm" (click)="pdfExport(excelTable2)">Pdf</button>
           </div>
@@ -112,12 +70,12 @@
               <thead class="thead-dark">
                 <tr>
                   <th>#</th>
-                  <th class="text-center" *ngFor="let item of tabloThead3"> {{item}} </th>
+                  <th class="text-center" *ngFor="let item of table1.thead"> {{item}} </th>
 
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let value of tablo3;index as i">
+                <tr *ngFor="let value of table1.line;index as i">
                   <td>{{ i + 1 }}</td>
                   <td class="text-center" *ngFor="let item of value">{{item}}</td>
                 </tr>
@@ -132,40 +90,38 @@
     </div>
 
     <div class="container-fluid" *ngIf="!isLoading">
-
-      <div class="card shadow mb-4 mt-4">
+      <div class="card shadow mb-4 mt-4" *ngFor="let table of tabloList">
         <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
 
           <h6 class="m-0 font-weight-bold text-dark">
-            Fiyatlandırma
+            {{santiyeList[santiyeId1.selectedIndex].name}} Şantiyesi -
+            {{firmaList[firmaId1.selectedIndex].name}} {{startDate | date: "dd MMMM yyyy"}} -
+            {{lastDate | date: "dd MMMM yyyy"}} {{table.data.name}} Çizelgesi
           </h6>
           <div class="btn-group">
-            <button type="button" class="btn btn-primary btn-sm" (click)="excelExport(excelTable3)">Excel</button>
-            <button type="button" class="btn btn-success btn-sm" (click)="pdfExport(excelTable3)">Pdf</button>
+            <button type="button" class="btn btn-primary btn-sm" (click)="excelExport(excelTable1)">Excel</button>
+            <button type="button" class="btn btn-success btn-sm" (click)="pdfExport(excelTable1)">Pdf</button>
           </div>
 
         </div>
 
         <div class="card-body p-2">
           <div class="table-responsive">
-            <table id="excelTable3" #excelTable3 class="table table-sm table-bordered" width="100%" cellspacing="0">
+            <table id="excelTable1" #excelTable1 class="table table-sm table-bordered" width="100%" cellspacing="0">
               <thead class="thead-dark">
                 <tr>
                   <th>#</th>
-                  <th>Makina Cinsi</th>
-                  <th>Çalışma Saati</th>
-                  <th>Birim Fiyatı</th>
-                  <th>Toplam</th>
+                  <th class="text-center" *ngFor="let item of table.thead"> {{item}} </th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let value of tablo2;index as i">
+                <tr *ngFor="let value of table.line | slice:0:table.line.length-1 ;index as i">
                   <td>{{ i + 1 }}</td>
-                  <td class="text-center" *ngFor="let item of value | slice:0:2; let i=index">{{item}}</td>
-                  <td *ngIf="value[0]!=='Toplam' else notShow">
-                    <input type="number" name="birim" #birim class="form-control form-control-sm"
-                      (change)="changeBirim(i)" [(ngModel)]="value[2]"></td>
-                  <td>{{value[3] | currency:'₺ '}}</td>
+                  <td class="text-center" *ngFor="let item of value">{{item}}</td>
+                </tr>
+                <tr *ngFor="let value of table.line | slice:table.line.length-1:table.line.length ;index as i">
+                  <td></td>
+                  <th class="text-center" *ngFor="let item of value">{{item}}</th>
                 </tr>
               </tbody>
             </table>

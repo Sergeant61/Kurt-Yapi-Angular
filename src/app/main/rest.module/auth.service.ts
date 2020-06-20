@@ -29,7 +29,6 @@ export class AuthService {
     private alertifyService: AlertifyService,
     private deviceService: DeviceDetectorService) {
     this.browser = JSON.stringify(this.epicFunction());
-    console.log(this.browser);
   }
 
   epicFunction(): any {
@@ -96,7 +95,6 @@ export class AuthService {
   }
 
   getHeaders(): HttpHeaders {
-    // console.log(this);
     return new HttpHeaders({ 'x-access-token': this.token, 'x-browser': this.browser });
   }
 

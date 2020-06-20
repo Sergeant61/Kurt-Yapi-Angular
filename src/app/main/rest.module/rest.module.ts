@@ -23,6 +23,7 @@ import { SahaOlcumFormuService } from './saha-olcum-formu.service';
 import { FormTuruService } from './form-turu.service';
 import { IsBirimiService } from './is-birimi.service';
 import { SantiyeService } from './santiye.service';
+import { MalzemeCinsiService } from './malzeme-cinsi.service';
 
 
 @NgModule({
@@ -53,6 +54,7 @@ import { SantiyeService } from './santiye.service';
     FormTuruService,
     IsBirimiService,
     SantiyeService,
+    MalzemeCinsiService,
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     JwtHelperService,
     DeviceDetectorService

@@ -1,7 +1,8 @@
 export const environment = {
   production: true,
-  path: 'https://kurt-yapi-api.herokuapp.com',
-  path1: 'http://localhost:3001',
+  path1: 'https://kurt-yapi-api.herokuapp.com',
+  path: 'http://localhost:3001',
+  path2: 'https://us-central1-kurt-yapi-api.cloudfunctions.net/app',
   baseUrlOzelbinekarac: '/admin/ozelbinekarac',
   baseUrlIsmakinesi: '/admin/ismakinesi',
   baseUrlTirKamyon: '/admin/tirkamyon',

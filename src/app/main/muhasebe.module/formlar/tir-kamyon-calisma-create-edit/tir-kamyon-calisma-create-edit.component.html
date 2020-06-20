@@ -184,10 +184,16 @@
 
               <div class="input-group mb-2">
                 <div class="input-group-prepend">
-                  <span class="input-group-text" id="inputGroup-sizing-default">Malzeme Cinsi</span>
+                  <label class="input-group-text" for="inputGroupSelect02">Malzeme Cinsi</label>
                 </div>
-                <input type="text" class="form-control" name="malzemeCinsi"
-                  [(ngModel)]="tirKamyonGunlukCalisma.malzemeCinsi" required />
+                <select [(ngModel)]="tirKamyonGunlukCalisma.malzemeCinsiId" class="form-control" id="inputGroupSelect02"
+                  name="malzemeCinsiId" required>
+                  <option *ngFor="let item of malzemeCinsiList" [ngValue]="item._id">{{ item.name }}</option>
+                </select>
+
+                <a target="_blank" class="btn btn-primary ml-2" [routerLink]="[urls.baseUrlMalzemeCinsi, 'create']">
+                  Yeni Malzeme Ekle
+                </a>
               </div>
 
               <div class="input-group mb-2">
@@ -235,15 +241,25 @@
       </div>
       <div class="modal-body">
         <table class="table table-bordered table-condensed">
+          <thead class="thead-dark">
+            <tr>
+              <th>#</th>
+              <th>Tonaj</th>
+              <th>İrsaliye No</th>
+              <th>Tartım No</th>
+            </tr>
+          </thead>
           <tbody>
-            <tr *ngFor="let value of seferTonajList; index as i">
+            <tr *ngFor="let value of tirKamyonGunlukCalisma.tonajDataList; index as i">
+              <td> {{ i + 1 }} </td>
               <td>
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroup-sizing-default">{{ i + 1 + ". Tonaj" }}</span>
-                  </div>
-                  <input type="number" name="s" [(ngModel)]="value.tonaj" class="form-control" />
-                </div>
+                <input type="number" name="tonaj" [(ngModel)]="value.tonaj" class="form-control" />
+              </td>
+              <td>
+                <input type="text" name="irsaliyeNo" [(ngModel)]="value.irsaliyeNo" class="form-control" />
+              </td>
+              <td>
+                <input type="text" name="tartimNo" [(ngModel)]="value.tartimNo" class="form-control" />
               </td>
             </tr>
           </tbody>

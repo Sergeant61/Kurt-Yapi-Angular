@@ -3,5 +3,6 @@ export class ApiResponse<T> {
   success: boolean;
   statusCode: number;
   data: T;
+  length: any;
 
 }

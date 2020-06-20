@@ -4,8 +4,9 @@
 
 export const environment = {
   production: true,
-  path: 'https://kurt-yapi-api.herokuapp.com',
-  path1: 'http://localhost:3001',
+  path1: 'https://kurt-yapi-api.herokuapp.com',
+  path: 'http://localhost:3001',
+  path2: 'https://us-central1-kurt-yapi-api.cloudfunctions.net/app',
   baseUrlOzelbinekarac: '/admin/ozelbinekarac',
   baseUrlIsmakinesi: '/admin/ismakinesi',
   baseUrlTirKamyon: '/admin/tirkamyon',
@@ -15,6 +16,7 @@ export const environment = {
   baseUrlIsBirimi: '/admin/isbirimi',
   baseUrlFormTuru: '/admin/formturu',
   baseUrlSantiye: '/admin/santiye',
+  baseUrlMalzemeCinsi: '/admin/malzemecinsi',
   // --------
   baseUrlTirKamyonCalisma: '/muhasebe/tirkamyon',
   baseUrlIsMakinesiCalisma: '/muhasebe/ismakinesi',
@@ -25,6 +27,7 @@ export const environment = {
 
   // --Raporlar
   baseUrlGunlukRapor : '/muhasebe/gunlukrapor',
+  baseUrlHakedis : '/muhasebe/hakedis',
 
   // User
   baseUrlProfile : '/user/profile',

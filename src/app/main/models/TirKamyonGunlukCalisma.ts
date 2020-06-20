@@ -5,6 +5,7 @@ import { User } from './User';
 import { TirKamyon } from './TirKamyon';
 import { FormTuru } from './FormTuru';
 import { Santiye } from './Santiye';
+import { MalzemeCinsi } from './MalzemeCinsi';
 
 export class TirKamyonGunlukCalisma {
   _id: string;
@@ -14,9 +15,9 @@ export class TirKamyonGunlukCalisma {
   firmaId: string;
   yuklemeYeri: string;
   dokumSahasiId: string;
-  malzemeCinsi: string;
+  malzemeCinsiId: string;
   seferSayisi: string;
-  tonajList: string[] = [];
+  tonajDataList: TonajData[] = [];
   alinanMotorin: string;
   kilometre: string;
   personelId: string;
@@ -32,6 +33,7 @@ export class TirKamyonGunlukCalisma {
   onaylayanUserId: string;
 
   /** */
+  malzemeCinsi: MalzemeCinsi = new MalzemeCinsi();
   firma: Firma = new Firma();
   dokumsahasi: DokumSahasi = new DokumSahasi();
   personel: Personel = new Personel();
@@ -41,5 +43,15 @@ export class TirKamyonGunlukCalisma {
   tirKamyon: TirKamyon = new TirKamyon();
   formTuru: FormTuru = new FormTuru();
   santiye: Santiye = new Santiye();
+}
 
+export class TonajData {
+  tonaj: string;
+  irsaliyeNo: string;
+  tartimNo: string;
+  constructor(tonaj: string, irsaliyeNo: string, tartimNo: string) {
+    tonaj = tonaj;
+    irsaliyeNo = irsaliyeNo;
+    tartimNo = tartimNo;
+  }
 }
