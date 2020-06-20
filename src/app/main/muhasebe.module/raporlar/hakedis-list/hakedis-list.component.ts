@@ -125,7 +125,7 @@ export class HakedisListComponent implements OnInit {
     });
   }
 
-  onayla(value) {
+  onayla() {
     this.isLoading = true;
     this.hakedisService.put(this.selectedHakedis._id,
       { onaylimi: true, confirmUserId: this.authService.currentUser._id })
